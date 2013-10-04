@@ -39,4 +39,9 @@ public class Registry {
 		
 	}
 	
+	// TODO: Implement End Migrate
+	public void endMigrate (String str){
+		
+	}
+	
 }
