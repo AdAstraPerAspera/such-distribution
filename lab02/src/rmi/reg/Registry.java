@@ -29,4 +29,14 @@ public class Registry {
 		return ref;
 	}
 	
+	// TODO: Implement Bind
+	public void bind (String str) {
+		
+	}
+	
+	// TODO: Implement Migrate
+	public void migrate (String str){
+		
+	}
+	
 }
