@@ -17,6 +17,10 @@ public class ServerTask implements Runnable{
 		this.ssock = ssock;
 	}
 	
+	private RMIResponseMessage invoke(RMIInvocationMessage message){
+		return null;
+	}
+	
 	/**
 	 * TODO: Add exception handling
 	 * TODO: Call function on specified object
@@ -31,12 +35,9 @@ public class ServerTask implements Runnable{
 				ObjectOutputStream oostream = new ObjectOutputStream(ostream);
 				
 				RMIInvocationMessage message = (RMIInvocationMessage) oistream.readObject();
-				RMIResponseMessage response = null;
+				RMIResponseMessage response = invoke(message);
 				
 				//do stuff here
-				
-				//TODO: Call function on object using message
-				
 				//TODO: Return to function
 				
 				oostream.writeObject(response);

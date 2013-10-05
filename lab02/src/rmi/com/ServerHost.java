@@ -3,7 +3,6 @@ package rmi.com;
 import java.net.*;
 
 public class ServerHost {
-	private static final int NUM_SOCK = 5;
 	
 	private static ServerSocket[] sockets;
 	private static int[]          ports;
@@ -15,7 +14,7 @@ public class ServerHost {
 	 * @throws Exception
 	 */
 	public static void main(String[] args) throws Exception{
-		ports = new int[NUM_SOCK];
+		ports = new int[PortInfo.NUM_SOCK];
 		
 		for(int i = 0; i < ports.length; i++){
 			sockets[i] = new ServerSocket(ports[i]);
