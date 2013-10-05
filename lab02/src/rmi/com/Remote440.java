@@ -15,6 +15,6 @@ public interface Remote440 {
 	 * @return RMIMessage containing the return value and arguments to the
 	 * function
 	 */
-	public RMIInvocationMessage remoteCall(RMIInvocationMessage message) throws Exception;
+	public RMIResponseMessage remoteCall(RMIInvocationMessage message) throws Exception;
 	
 }
