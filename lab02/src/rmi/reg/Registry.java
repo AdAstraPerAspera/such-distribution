@@ -3,20 +3,11 @@ package rmi.reg;
 import java.util.Hashtable;
 
 public class Registry {
-	
-	public class Pair<X, Y> {
-		public X x;
-		public Y y;
-		public Pair(X x, Y y){
-			this.x = x;
-			this.y = y;
-		}
-	}
-	
+
 	private String host;
 	private int port;
 	
-	private Hashtable<String, RefObject> H = new Hashtable<String, RefObject>();
+	private Hashtable<String, ReferenceObject> H = new Hashtable<String, ReferenceObject>();
 	
 	/* TODO: Set up the registry's location and listening
 	 *  
@@ -28,8 +19,8 @@ public class Registry {
 		
 	}
 
-	public RefObject lookup (String str) {
-		RefObject ref = H.get(str);
+	public ReferenceObject lookup (String str) {
+		ReferenceObject ref = H.get(str);
 		return ref;
 	}
 	
