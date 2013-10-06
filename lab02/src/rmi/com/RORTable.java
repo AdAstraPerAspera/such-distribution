@@ -6,7 +6,7 @@ import rmi.reg.ReferenceObject;
 /*
  * Implementation of a RemoteObjectReference Table.
  * 
- * @author - William Maynes - wmaynes
+ * @author William Maynes - wmaynes
  */
 
 public class RORTable {

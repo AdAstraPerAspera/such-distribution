@@ -5,7 +5,7 @@ import java.io.Serializable;
 /*
  * Basic implementation of a Remote Object Reference. 
  * 
- * 
+ * @author William Maynes - wmaynes
  */
 
 public class ReferenceObject implements Serializable {
@@ -22,6 +22,15 @@ public class ReferenceObject implements Serializable {
 	}
 	
 	public Object localize() {
-		return null;
+		String stubName = name + "_stub";
+		Class c;
+		try {
+			c = Class.forName(stubName);
+			Object o = c.newInstance();
+			return o;
+		} catch (Exception e) {
+			System.out.print(e);
+			return null;
+		}
 	}
 }

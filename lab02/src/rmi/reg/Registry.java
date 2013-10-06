@@ -2,42 +2,43 @@ package rmi.reg;
 
 import java.util.Hashtable;
 
+/*
+ * Simple Registry for RMI
+ * 
+ * @author William Maynes - wmaynes
+ */
 public class Registry {
 
-	private String host;
-	private int port;
-	
-	private Hashtable<String, ReferenceObject> H = new Hashtable<String, ReferenceObject>();
+	private static String host;
+	private static int port;
+
+	private static Hashtable<String, ReferenceObject> H;
 	
 	/* TODO: Set up the registry's location and listening
-	 *  
-	 * TODO: Constructor
-	 * 
 	 */
 	
 	public Registry (String h, int p) {
 		this.host = h;
 		this.port = p;
+		this.H = new Hashtable<String, ReferenceObject>();
 	}
 
-	public ReferenceObject lookup (String str) {
-		ReferenceObject ref = H.get(str);
-		return ref;
+	public static ReferenceObject lookup (String str) {
+		return H.get(str);
 	}
 	
-	// TODO: Implement Bind
-	public void bind (String str) {
-		
+	public static void unbind (String name) {
+		H.remove(name);
 	}
 	
-	// TODO: Implement Migrate
-	public void migrate (String str){
-		
+	public static void bind (String name, ReferenceObject ror) {
+		if(!H.containsKey(name)) {
+			H.put(name, ror);
+		}
 	}
 	
-	// TODO: Implement End Migrate
-	public void endMigrate (String str){
-		
+	public static void rebind (String name, ReferenceObject ror) {
+		unbind(name);
+		bind(name, ror);
 	}
-	
 }
