@@ -16,7 +16,8 @@ public class Registry {
 	 */
 	
 	public Registry (String h, int p) {
-		
+		this.host = h;
+		this.port = p;
 	}
 
 	public ReferenceObject lookup (String str) {

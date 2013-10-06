@@ -2,6 +2,12 @@ package rmi.reg;
 
 import java.io.Serializable;
 
+/*
+ * Basic implementation of a Remote Object Reference. 
+ * 
+ * 
+ */
+
 public class ReferenceObject implements Serializable {
 	private String host;
 	private int port;
