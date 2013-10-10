@@ -21,19 +21,6 @@ public class ReferenceObject implements Serializable {
 		this.key = k;
 	}
 	
-	public Object localize() {
-		String stubName = name + "_stub";
-		Class c;
-		try {
-			c = Class.forName(stubName);
-			Object o = c.newInstance();
-			return o;
-		} catch (Exception e) {
-			System.out.print(e);
-			return null;
-		}
-	}
-	
 	public String getHost () {
 		return this.host;
 	}
