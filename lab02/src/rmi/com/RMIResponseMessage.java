@@ -6,6 +6,7 @@ import java.util.ArrayList;
 public class RMIResponseMessage implements Serializable {
 	private Serializable[] params;
 	private Serializable   retVal;
+	private Exception      except;
 	
 	/**
 	 * 
@@ -25,6 +26,20 @@ public class RMIResponseMessage implements Serializable {
 		for (int i = 0; i < paramList.size(); i++){
 			this.params[i] = paramList.get(i);
 		}
+		
+		this.except = null;
+	}
+	
+	public RMIResponseMessage(Exception e){
+		this.except = e;
+		
+		this.params = null;
+		
+		this.retVal = null;
+	}
+	
+	public Exception getExcept(){
+		return except;
 	}
 	
 	public Serializable[] getParams(){
