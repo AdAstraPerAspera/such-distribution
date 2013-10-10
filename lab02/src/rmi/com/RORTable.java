@@ -1,5 +1,6 @@
 package rmi.com;
 
+import java.net.URL;
 import java.util.Hashtable;
 import rmi.reg.ReferenceObject;
 
@@ -19,9 +20,9 @@ public class RORTable {
 		this.objCount = 0;
 	}
 	
-	public void addObj (String host, int port, String name, Object o) {
+	public void addObj (String host, int port, String name, Object o, URL... urls) {
 		if(o instanceof Remote440) {
-			ReferenceObject ror = new ReferenceObject(host, port, objCount, name);
+			ReferenceObject ror = new ReferenceObject(host, port, objCount, name, urls);
 			this.objCount ++;
 			H.put(ror, o);
 		}

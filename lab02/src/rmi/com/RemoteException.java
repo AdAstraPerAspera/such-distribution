@@ -8,9 +8,11 @@ package rmi.com;
 
 public class RemoteException extends Exception {
 
-		public RemoteException () {}
+	// Constructor without arguments
+	public RemoteException () {}
 		
-		public RemoteException (String message) {
-			super(message);
-		}
+	// Constructor if you have a message
+	public RemoteException (String message) {
+		super(message);
+	}
 }

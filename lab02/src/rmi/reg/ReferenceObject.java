@@ -1,6 +1,9 @@
 package rmi.reg;
 
 import java.io.Serializable;
+import java.net.URL;
+
+import rmi.com.Stub;
 
 /*
  * Basic implementation of a Remote Object Reference. 
@@ -13,12 +16,14 @@ public class ReferenceObject implements Serializable {
 	private int port;
 	private String name;
 	private int key;
+	private URL[] urls;
 	
-	public ReferenceObject (String h, int p, int k, String n){
+	public ReferenceObject (String h, int p, int k, String n, URL... urls){
 		this.host = h;
 		this.port = p;
 		this.name = n;
 		this.key = k;
+		this.urls = urls;
 	}
 	
 	public String getHost () {
@@ -35,5 +40,10 @@ public class ReferenceObject implements Serializable {
 	
 	public String getName () {
 		return this.name;
+	}
+	
+	// TODO: Implement localize
+	public Stub localize () {
+		return ;
 	}
 }
