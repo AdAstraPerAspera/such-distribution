@@ -12,6 +12,7 @@ public class RMIInvocationMessage implements Serializable {
 	private String objID;
 	private String funcID;
 	private Serializable[] params;
+	private String[] urls;
 	
 	/**
 	 * 
@@ -19,9 +20,10 @@ public class RMIInvocationMessage implements Serializable {
 	 * @param funcID the name of the function to invoke
 	 * @param args necessary arguments to invoke the function, if any
 	 */
-	public RMIInvocationMessage(String objID, String funcID, Serializable... args){
+	public RMIInvocationMessage(String objID, String funcID, String[] urls, Serializable... args){
 		this.objID  = objID;
 		this.funcID = funcID;
+		this.urls   = urls;
 		ArrayList<Serializable> paramList = new ArrayList<Serializable>();
 		for (Serializable arg : args){
 			paramList.add(arg);
