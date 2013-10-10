@@ -10,6 +10,7 @@ import java.util.ArrayList;
  * @author William Maynes - wmaynes
  */
 public class RMIInvocationMessage implements Serializable {
+	private String typeName;
 	private String objID;
 	private String funcID;
 	private Serializable[] params;
@@ -21,9 +22,10 @@ public class RMIInvocationMessage implements Serializable {
 	 * @param funcID the name of the function to invoke
 	 * @param args necessary arguments to invoke the function, if any
 	 */
-	public RMIInvocationMessage(String objID, String funcID, /*String[] urls,*/ Serializable... args){
-		this.objID  = objID;
-		this.funcID = funcID;
+	public RMIInvocationMessage(String typeName, String objID, String funcID, /*String[] urls,*/ Serializable... args){
+		this.typeName = typeName;
+		this.objID    = objID;
+		this.funcID   = funcID;
 		//this.urls   = urls;
 		ArrayList<Serializable> paramList = new ArrayList<Serializable>();
 		for (Serializable arg : args){
@@ -35,6 +37,10 @@ public class RMIInvocationMessage implements Serializable {
 		for (int i = 0; i < paramList.size(); i++){
 			this.params[i] = paramList.get(i);
 		}
+	}
+	
+	public String getTypeName(){
+		return typeName;
 	}
 	
 	public String getObj(){

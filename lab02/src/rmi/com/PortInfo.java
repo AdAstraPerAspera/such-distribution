@@ -14,4 +14,6 @@ public class PortInfo {
 	protected static final int MIN_PORT = 15440;
 	protected static final int MAX_PORT = 15440;
 	protected static final int NUM_SOCK = MAX_PORT - MIN_PORT + 1;
+	
+	protected static final int DEFAULT_PORT = 15440;
 }
