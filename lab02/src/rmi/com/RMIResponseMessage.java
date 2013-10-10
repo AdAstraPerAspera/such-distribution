@@ -7,6 +7,7 @@ public class RMIResponseMessage implements Serializable {
 	private Serializable[] params;
 	private Serializable   retVal;
 	private Exception      except;
+	private boolean        isVoid;
 	
 	/**
 	 * 
@@ -14,7 +15,7 @@ public class RMIResponseMessage implements Serializable {
 	 * @param funcID the name of the function to invoke
 	 * @param args necessary arguments to invoke the function, if any
 	 */
-	public RMIResponseMessage(Serializable retVal, Serializable... args){
+	public RMIResponseMessage(Serializable retVal, boolean isVoid, Serializable... args){
 		this.retVal = retVal;
 		ArrayList<Serializable> paramList = new ArrayList<Serializable>();
 		for (Serializable arg : args){
@@ -26,15 +27,14 @@ public class RMIResponseMessage implements Serializable {
 		for (int i = 0; i < paramList.size(); i++){
 			this.params[i] = paramList.get(i);
 		}
-		
+		this.isVoid = isVoid;
 		this.except = null;
 	}
 	
 	public RMIResponseMessage(Exception e){
 		this.except = e;
-		
 		this.params = null;
-		
+		this.isVoid = false;
 		this.retVal = null;
 	}
 	

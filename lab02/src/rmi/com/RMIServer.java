@@ -8,6 +8,8 @@ import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.net.*;
 
+import rmi.reg.ReferenceObject;
+
 public class RMIServer{
 	
 	private static String   host;
@@ -66,12 +68,46 @@ public class RMIServer{
 				parameterTypes[i] = arguments[i].getClass();
 			}
 			
-			try {
-				Method methods = clazz.getDeclaredMethod(message.getFunc(), parameterTypes);
-			} catch (NoSuchMethodException e){
-				
+			boolean      isVoid    = false;
+			Serializable ret       = null;
+			Object[]     newParams = message.getParams();
+			
+			//replace RORs with stubs
+			for(int i = 0; i < newParams.length; i++){
+				if(newParams[i] instanceof ReferenceObject){
+					newParams[i] = newParams[i].localize();
+				}
 			}
-			clazz.cast(obj);
+			
+			//invoke method
+			try {
+				Method method = clazz.getDeclaredMethod(message.getFunc(), parameterTypes);
+				method.invoke(clazz.cast(obj), newParams);
+				
+				if(method.getReturnType().equals(Void.TYPE)){
+					isVoid = true;
+					method.invoke(clazz.cast(obj), newParams);
+				} else {
+					ret = (Serializable) method.invoke(clazz.cast(obj), newParams); 
+				}
+			} catch (Exception e){
+				response = new RMIResponseMessage(e);
+				oostream.writeObject(response);
+				
+				oostream.close();
+				oistream.close();
+				ostream.close();
+				istream.close();
+				sock.close();
+				continue;
+			}
+			
+			if(isVoid){
+				response = new RMIResponseMessage(null, isVoid, newParams);
+			} else {
+				response = new RMIResponseMessage(ret, isVoid, newParams);
+			}
+			
 			//do stuff here
 			//TODO: Return to function
 			
