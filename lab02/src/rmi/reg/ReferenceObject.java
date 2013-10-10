@@ -33,4 +33,20 @@ public class ReferenceObject implements Serializable {
 			return null;
 		}
 	}
+	
+	public String getHost () {
+		return this.host;
+	}
+	
+	public int getPort () {
+		return this.port;
+	}
+	
+	public int getKey () {
+		return this.key;
+	}
+	
+	public String getName () {
+		return this.name;
+	}
 }
