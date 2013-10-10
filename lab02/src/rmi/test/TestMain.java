@@ -1,4 +1,4 @@
-package rmi.com;
+package rmi.test;
 
 import java.lang.reflect.*;
 

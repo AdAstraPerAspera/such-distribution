@@ -103,9 +103,9 @@ public class RMIServer{
 			}
 			
 			if(isVoid){
-				response = new RMIResponseMessage(null, isVoid, newParams);
+				response = new RMIResponseMessage(null, isVoid, message.getParams());
 			} else {
-				response = new RMIResponseMessage(ret, isVoid, newParams);
+				response = new RMIResponseMessage(ret, isVoid, message.getParams());
 			}
 			
 			//do stuff here
