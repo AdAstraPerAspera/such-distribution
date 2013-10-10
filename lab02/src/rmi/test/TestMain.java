@@ -1,6 +1,7 @@
 package rmi.test;
 
 import java.lang.reflect.*;
+import java.net.InetAddress;
 
 import com.sun.org.apache.bcel.internal.util.Class2HTML;
 
@@ -25,7 +26,7 @@ public class TestMain {
 		}
 	}
 	
-	public static void main(String[] args){
+	public static void main(String[] args) throws Exception{
 		TestMain t = new TestMain();
 		Bar b = t.new Bar();
 		Foo f = (Foo) b;

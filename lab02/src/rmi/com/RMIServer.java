@@ -9,39 +9,61 @@ import java.lang.reflect.Method;
 import java.net.*;
 
 import rmi.reg.ReferenceObject;
+import rmi.reg.RegistryRequest;
 
 public class RMIServer{
-	
+	//Static variables ensures that only one instance of the server can run on any host
 	private static String   host;
 	private static int      port;
+	private static String   registryHost;
+	private static int      registryPort;
 	private static RORTable t = null;
 	private static boolean  running = false;
 	
-	public static void bind(String name, Remote440 o) throws Exception{
+	/**
+	 * Static method.  Call to bind a remote object to the RORTable.
+	 * @param name - name to bind the remote object to
+	 * @param o - the object itself
+	 * @param urls - URLs where the .class files for the stub for the object can be found
+	 * @throws Exception - If the RMI server is not running or if there is a failure to contact the registry
+	 */
+	public static void bind(String name, Remote440 o, URL... urls) throws Exception{
 		if(!running) throw new Exception("RMI Server is not running at the moment");
 		try {
-			t.addObj((InetAddress.getLocalHost()).getHostName(), port, name, o);
+			t.addObj(host, port, name, o, urls);
+			
+			ReferenceObject ror = new ReferenceObject(host, port, name, urls);
+			RegistryRequest req = new RegistryRequest(RegistryRequest.RequestType.BIND, name, ror);
+			
+			Socket             sock     = new Socket(registryHost, registryPort);
+			OutputStream       ostream  = sock.getOutputStream();
+			ObjectOutputStream oostream = new ObjectOutputStream(ostream);
+			
+			oostream.writeObject(req);
+			
+			oostream.close();
+			ostream.close();
+			sock.close();
 		} catch (Exception e) {
-			throw new Exception("Failed to get local hostname!");
+			throw new Exception("Failure to bind to registry");
 		}
 	}
 	
 	/**
-	 * TODO: Add exception handling
+	 * The main method for the RMI Server.  
 	 * 
 	 * @param args
 	 * @throws Exception
 	 */
 	public static void main(String[] args) throws Exception{
-		host = (InetAddress.getLocalHost()).getHostName();
-		port                = Integer.parseInt(args[0]);
-		String registryHost = args[1];
-		int    registryPort = Integer.parseInt(args[2]);
-		String serviceName  = args[3];
+		host         = args[0];
+		port         = Integer.parseInt(args[1]);
+		registryHost = args[2];
+		registryPort = Integer.parseInt(args[3]);
 
 		if(t == null) t = new RORTable();
 		
-		//TODO: register in registry
+		running = true;
 		
 		ServerSocket ssock = new ServerSocket(port);
 		
@@ -91,6 +113,7 @@ public class RMIServer{
 					ret = (Serializable) method.invoke(clazz.cast(obj), newParams); 
 				}
 			} catch (Exception e){
+				//if invocation message throws an exception, send that exception back to the client
 				response = new RMIResponseMessage(e);
 				oostream.writeObject(response);
 				
@@ -102,15 +125,14 @@ public class RMIServer{
 				continue;
 			}
 			
+			//generate response message
 			if(isVoid){
 				response = new RMIResponseMessage(null, isVoid, message.getParams());
 			} else {
 				response = new RMIResponseMessage(ret, isVoid, message.getParams());
 			}
 			
-			//do stuff here
-			//TODO: Return to function
-			
+			//send response back to client
 			oostream.writeObject(response);
 			
 			oostream.close();

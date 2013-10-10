@@ -23,7 +23,7 @@ public class RMIInvocation {
 			ObjectInputStream ois = new ObjectInputStream(S.getInputStream());
 			ObjectOutputStream oos = new ObjectOutputStream(S.getOutputStream());
 			
-			// If the call is being made with any stubs, replae the stub with a ROR.
+			// If the call is being made with any stubs, replace the stub with a ROR.
 			Serializable[] A = new Serializable[args.length];
 			for(int i = 0; i < args.length; i++){
 				if(args[i] instanceof Stub) {

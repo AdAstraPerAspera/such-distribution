@@ -22,7 +22,7 @@ public class RORTable {
 	
 	public void addObj (String host, int port, String name, Object o, URL... urls) {
 		if(o instanceof Remote440) {
-			ReferenceObject ror = new ReferenceObject(host, port, objCount, name, urls);
+			ReferenceObject ror = new ReferenceObject(host, port, name, urls);
 			this.objCount ++;
 			H.put(ror, o);
 		}
