@@ -8,9 +8,22 @@ import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.net.*;
 
+import rmi.reg.LocateRegistry;
 import rmi.reg.ReferenceObject;
 import rmi.reg.RegistryRequest;
 
+/**
+ * The RMI Server that receives invocation requests from clients.
+ * Requires four arguments when starting on the command line:
+ * The host name used for external locations.
+ * The port that this server listens to.
+ * The host name used to connect to the registry (to bind remote objects).
+ * The port that the registry listens to. 
+ * 
+ * Single threaded, single socket.
+ * 
+ * @author Michael Wang - mhw1
+ */
 public class RMIServer{
 	//Static variables ensures that only one instance of the server can run on any host
 	private static String   host;
@@ -30,8 +43,12 @@ public class RMIServer{
 	public static void bind(String name, Remote440 o, URL... urls) throws Exception{
 		if(!running) throw new Exception("RMI Server is not running at the moment");
 		try {
+			//Add object to local ror table
 			t.addObj(host, port, name, o, urls);
 			
+			if(!LocateRegistry.hasRegistry(registryHost, registryPort)) throw new Exception("Registry does not exist!");
+			
+			//bind object to registry
 			ReferenceObject ror = new ReferenceObject(host, port, name, urls);
 			RegistryRequest req = new RegistryRequest(RegistryRequest.RequestType.BIND, name, ror);
 			

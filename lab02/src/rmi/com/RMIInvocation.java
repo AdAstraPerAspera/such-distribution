@@ -7,8 +7,8 @@ import java.net.Socket;
 
 import rmi.reg.ReferenceObject;
 
-/*
- * Client side communication protocal to shield them from sockets and networking.
+/**
+ * Client side communication protocol to shield them from sockets and networking.
  * 
  * @author William Maynes - wmaynes
  */

@@ -5,7 +5,7 @@ import java.net.URL;
 
 import rmi.com.Stub;
 
-/*
+/**
  * Basic implementation of a Remote Object Reference. 
  * 
  * @author William Maynes - wmaynes

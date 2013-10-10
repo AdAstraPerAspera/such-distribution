@@ -4,7 +4,7 @@ import java.net.URL;
 import java.util.Hashtable;
 import rmi.reg.ReferenceObject;
 
-/*
+/**
  * Implementation of a RemoteObjectReference Table.
  * 
  * @author William Maynes - wmaynes

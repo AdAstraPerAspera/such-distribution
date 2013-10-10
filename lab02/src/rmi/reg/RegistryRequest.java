@@ -2,7 +2,15 @@ package rmi.reg;
 
 import java.io.Serializable;
 
+/**
+ * Class to encapsulate requests to the registry 
+ *  
+ * @author Michael Wang - mhw1
+ */
 public class RegistryRequest implements Serializable {
+	/**
+	 * Enum that specifies the request types 
+	 */
 	public enum RequestType{
 		LOOKUP, UNBIND, BIND, REBIND, PING;
 	}
