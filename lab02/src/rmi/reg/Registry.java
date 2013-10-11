@@ -50,40 +50,54 @@ public class Registry {
 		ServerSocket ssock = new ServerSocket(port);
 		
 		while(true){
-			Socket sock = ssock.accept();
-			InputStream         istream = sock.getInputStream();
-			OutputStream        ostream = sock.getOutputStream();
-			ObjectInputStream  oistream = new ObjectInputStream(istream);
-			ObjectOutputStream oostream = new ObjectOutputStream(ostream);
-			
-			RegistryRequest req = (RegistryRequest) oistream.readObject();
-			
-			switch(req.getRequestType()){
-			case LOOKUP:
-				oostream.writeObject(lookup(req.getName()));
-				break;
+			Socket             sock     = null;
+			InputStream        istream  = null;
+			OutputStream       ostream  = null;
+			ObjectInputStream  oistream = null;
+			ObjectOutputStream oostream = null;
+			try {
+				sock     = ssock.accept();
+				istream  = sock.getInputStream();
+				ostream  = sock.getOutputStream();
+				oistream = new ObjectInputStream(istream);
+				oostream = new ObjectOutputStream(ostream);
 				
-			case UNBIND:
-				unbind(req.getName());
-				break;
-			
-			case BIND:
-				bind(req.getName(), req.getRor());
-				break;
-			
-			case REBIND:
-				rebind(req.getName(), req.getRor());
-				break;
+				RegistryRequest req = (RegistryRequest) oistream.readObject();
 				
-			default:
-				oostream.writeObject(new Integer(1));
+				switch(req.getRequestType()){
+				case LOOKUP:
+					oostream.writeObject(lookup(req.getName()));
+					break;
+					
+				case UNBIND:
+					unbind(req.getName());
+					break;
+				
+				case BIND:
+					bind(req.getName(), req.getRor());
+					break;
+				
+				case REBIND:
+					rebind(req.getName(), req.getRor());
+					break;
+					
+				default:
+					oostream.writeObject(new Integer(1));
+				}
+				
+				oostream.close();
+				oistream.close();
+				ostream.close();
+				istream.close();
+				sock.close();
+			} catch (Exception e){
+				if(oostream != null) oostream.close();
+				if(oistream != null) oistream.close();
+				if(ostream  != null) ostream.close();
+				if(istream  != null) istream.close();
+				if(sock     != null) sock.close();
+				continue;
 			}
-			
-			oostream.close();
-			oistream.close();
-			ostream.close();
-			istream.close();
-			sock.close();
 		}
 	}
 }
