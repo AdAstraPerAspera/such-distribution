@@ -17,7 +17,6 @@ import java.util.Hashtable;
  */
 public class Registry {
 
-	private static String host;
 	private static int port;
 
 	private static Hashtable<String, ReferenceObject> H;
@@ -41,9 +40,7 @@ public class Registry {
 		bind(name, ror);
 	}
 	
-	//TODO: Add socket stuff.
 	public static void main(String[] args) throws Exception{
-		host = (InetAddress.getLocalHost()).getHostName();
 		port = Integer.parseInt(args[0]);
 		H = new Hashtable<String, ReferenceObject>();
 		
@@ -71,18 +68,21 @@ public class Registry {
 					
 				case UNBIND:
 					unbind(req.getName());
+					oostream.writeObject(new Integer(0));
 					break;
 				
 				case BIND:
 					bind(req.getName(), req.getRor());
+					oostream.writeObject(new Integer(0));
 					break;
 				
 				case REBIND:
 					rebind(req.getName(), req.getRor());
+					oostream.writeObject(new Integer(0));
 					break;
 					
 				default:
-					oostream.writeObject(new Integer(1));
+					oostream.writeObject(new Integer(0));
 				}
 				
 				oostream.close();

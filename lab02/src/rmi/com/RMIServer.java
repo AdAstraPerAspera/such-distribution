@@ -64,14 +64,20 @@ public class RMIServer {
 			ReferenceObject ror = new ReferenceObject(host, port, name, o.getClass().getCanonicalName(), urls);
 			RegistryRequest req = new RegistryRequest(RegistryRequest.RequestType.BIND, name, ror);
 			
-			Socket             sock     = new Socket(registryHost, registryPort);
-			OutputStream       ostream  = sock.getOutputStream();
-			ObjectOutputStream oostream = new ObjectOutputStream(ostream);
+			Socket       sock    = new Socket(registryHost, registryPort);
+			OutputStream ostream = sock.getOutputStream();
+			InputStream  istream = sock.getInputStream(); 
 			
+			ObjectOutputStream oostream = new ObjectOutputStream(ostream);
 			oostream.writeObject(req);
 			
+			ObjectInputStream  oistream = new ObjectInputStream(istream);
+			oistream.readObject();
+			
 			oostream.close();
+			oistream.close();
 			ostream.close();
+			istream.close();
 			sock.close();
 		} catch (Exception e) {
 			throw new Exception("Failure to bind to registry");

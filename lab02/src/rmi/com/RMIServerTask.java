@@ -11,6 +11,11 @@ import java.net.Socket;
 
 import rmi.reg.ReferenceObject;
 
+/**
+ * Thread to allow RMI Server to serve multiple requests concurrently.
+ * 
+ * @author Michael Wang - mhw1
+ */
 public class RMIServerTask implements Runnable {
 	
 	private ServerSocket ssock;

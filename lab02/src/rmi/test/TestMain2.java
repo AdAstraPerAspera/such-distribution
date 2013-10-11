@@ -1,16 +1,19 @@
 package rmi.test;
 
-import java.io.File;
-
-import rmi.com.RMIServer;
 import rmi.com.Stub;
 import rmi.reg.LocateRegistry;
 import rmi.reg.ReferenceObject;
 
+/**
+ * Tests remote function invocation.  Takes the port that the registry
+ * listens on as a command-line argument.
+ * 
+ * @author Michael Wang - mhw1
+ */
 public class TestMain2 {
 	public static void main(String[] args){
-		ReferenceObject ref  = LocateRegistry.registryLookup("doubletest", "localhost", 15550);
-		ReferenceObject ref2 = LocateRegistry.registryLookup("doubletest2", "localhost", 15550);
+		ReferenceObject ref  = LocateRegistry.registryLookup("doubletest", "localhost", Integer.parseInt(args[0]));
+		ReferenceObject ref2 = LocateRegistry.registryLookup("doubletest2", "localhost", Integer.parseInt(args[0]));
 		FieldClass f = new FieldClass(1);
 		
 		try {
