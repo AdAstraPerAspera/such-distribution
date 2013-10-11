@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.net.Socket;
 
 import rmi.reg.ReferenceObject;
+import rmi.test.FieldClass;
 
 /**
  * Client side communication protocol to shield them from sockets and networking.
@@ -15,13 +16,11 @@ import rmi.reg.ReferenceObject;
 
 public class RMIInvocation {
 
-	public static Object invoke (String fnId, String name, ReferenceObject ror, Serializable... args) 
+	public static Object invoke (String fnId, String type, ReferenceObject ror, Serializable... args) 
 			throws RemoteException{
 		try {
 			// Set up the network connections.
 			Socket S = new Socket(ror.getHost(), ror.getPort());
-			ObjectInputStream ois = new ObjectInputStream(S.getInputStream());
-			ObjectOutputStream oos = new ObjectOutputStream(S.getOutputStream());
 			
 			// If the call is being made with any stubs, replace the stub with a ROR.
 			Serializable[] A = new Serializable[args.length];
@@ -34,24 +33,21 @@ public class RMIInvocation {
 				}
 			}
 			
-			RMIInvocationMessage invMsg = new RMIInvocationMessage(name, ror, fnId, A);
+			RMIInvocationMessage invMsg = new RMIInvocationMessage(type, ror, fnId, A);
 			
+			ObjectOutputStream oos = new ObjectOutputStream(S.getOutputStream());
 			oos.writeObject(invMsg);
+			
+			ObjectInputStream ois = new ObjectInputStream(S.getInputStream());
 			RMIResponseMessage respMsg = (RMIResponseMessage) ois.readObject();
 			
-			if(respMsg.getExcept() != null) throw new RemoteException();
-			
-			// Reset any possible side effects that happened when we called our function.
-			Serializable[] params = respMsg.getParams();
-			for(int i = 0; i < params.length; i++){
-				if(!(params[i] instanceof ReferenceObject)) {
-					args[i] = params[i];
-				}
-			}
+			if(respMsg.getExcept() != null) throw new RemoteException(respMsg.getExcept().getMessage());
 			
 			return respMsg.getRetVal();
 		} catch (Exception e) {
-			throw new RemoteException();
+			System.err.println(e.getMessage());
+			e.printStackTrace();
+			throw new RemoteException(e.getMessage());
 		}
 	}
 	

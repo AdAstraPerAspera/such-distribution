@@ -1,6 +1,8 @@
 package rmi.test;
 
-public class FieldClass {
+import java.io.Serializable;
+
+public class FieldClass implements Serializable{
 	private int state;
 	
 	public FieldClass(int i){

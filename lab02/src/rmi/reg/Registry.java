@@ -91,6 +91,7 @@ public class Registry {
 				istream.close();
 				sock.close();
 			} catch (Exception e){
+				System.err.println(e.getMessage());
 				if(oostream != null) oostream.close();
 				if(oistream != null) oistream.close();
 				if(ostream  != null) ostream.close();

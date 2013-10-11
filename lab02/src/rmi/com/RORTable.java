@@ -13,17 +13,14 @@ import rmi.reg.ReferenceObject;
 public class RORTable {
 	
 	private Hashtable<ReferenceObject, Object> H;
-	private int objCount;
 	
 	public RORTable () {
 		this.H = new Hashtable<ReferenceObject, Object>();
-		this.objCount = 0;
 	}
 	
 	public void addObj (String host, int port, String name, Object o, URL... urls) {
 		if(o instanceof Remote440) {
-			ReferenceObject ror = new ReferenceObject(host, port, name, urls);
-			this.objCount ++;
+			ReferenceObject ror = new ReferenceObject(host, port, name, o.getClass().getCanonicalName(), urls);
 			H.put(ror, o);
 		}
 	}

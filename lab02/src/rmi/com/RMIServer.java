@@ -14,6 +14,9 @@ import rmi.reg.RegistryRequest;
 
 /**
  * The RMI Server that receives invocation requests from clients.
+ * 
+ * Can be started either in a thread of its own or by the command line.
+ * 
  * Requires four arguments when starting on the command line:
  * The host name used for external locations.
  * The port that this server listens to.
@@ -24,7 +27,9 @@ import rmi.reg.RegistryRequest;
  * 
  * @author Michael Wang - mhw1
  */
-public class RMIServer{
+public class RMIServer {
+	private static final int MAX_CONNECTIONS = 5;
+	
 	//Static variables ensures that only one instance of the server can run on any host
 	private static String   host;
 	private static int      port;
@@ -32,6 +37,13 @@ public class RMIServer{
 	private static int      registryPort;
 	private static RORTable t = null;
 	private static boolean  running = false;
+	
+	public RMIServer(String host, int port, String registryHost, int registryPort){
+		RMIServer.host = host;
+		RMIServer.port = port;
+		RMIServer.registryHost = registryHost;
+		RMIServer.registryPort = registryPort;
+	}
 	
 	/**
 	 * Static method.  Call to bind a remote object to the RORTable.
@@ -49,7 +61,7 @@ public class RMIServer{
 			if(!LocateRegistry.hasRegistry(registryHost, registryPort)) throw new Exception("Registry does not exist!");
 			
 			//bind object to registry
-			ReferenceObject ror = new ReferenceObject(host, port, name, urls);
+			ReferenceObject ror = new ReferenceObject(host, port, name, o.getClass().getCanonicalName(), urls);
 			RegistryRequest req = new RegistryRequest(RegistryRequest.RequestType.BIND, name, ror);
 			
 			Socket             sock     = new Socket(registryHost, registryPort);
@@ -63,6 +75,27 @@ public class RMIServer{
 			sock.close();
 		} catch (Exception e) {
 			throw new Exception("Failure to bind to registry");
+		}
+	}
+	
+	/**
+	 * Static method that allows the server to be started using the main method
+	 * @param host - host IP of the server
+	 * @param port - port to listen on
+	 * @param registryHost - host IP of the registry
+	 * @param registryPort - port that the registry listens on
+	 */
+	public static void startServerMain(String host, int port, String registryHost, int registryPort){
+		try {
+		    final Class<?> clazz = Class.forName("rmi.com.RMIServer");
+		    final Method method = clazz.getMethod("main", String[].class);
+
+		    final Object[] args = new Object[1];
+		    args[0] = new String[] { host,         (new Integer(port)).toString(),
+		    						 registryHost, (new Integer(registryPort)).toString() };
+		    method.invoke(null, args);
+		} catch (Exception e) {
+		    e.printStackTrace();
 		}
 	}
 	
@@ -84,79 +117,10 @@ public class RMIServer{
 		
 		ServerSocket ssock = new ServerSocket(port);
 		
-		while(true){
-			//Read in message
-			Socket sock = ssock.accept();
-			InputStream         istream = sock.getInputStream();
-			OutputStream        ostream = sock.getOutputStream();
-			ObjectInputStream  oistream = new ObjectInputStream(istream);
-			ObjectOutputStream oostream = new ObjectOutputStream(ostream);
-			
-			RMIInvocationMessage message = (RMIInvocationMessage) oistream.readObject();
-			RMIResponseMessage response = null;
-			
-			//pull local copy of object from ror table
-			Object obj = t.findObj(message.getObj());
-			Class clazz = Class.forName(message.getTypeName());
-			
-			//get function from local object using reflections
-			Serializable[] arguments = message.getParams();
-			Class[] parameterTypes = new Class[arguments.length];
-			
-			for (int i = 0; i < arguments.length; i++){
-				parameterTypes[i] = arguments[i].getClass();
-			}
-			
-			boolean      isVoid    = false;
-			Serializable ret       = null;
-			Object[]     newParams = message.getParams();
-			
-			//replace RORs with stubs
-			for(int i = 0; i < newParams.length; i++){
-				if(newParams[i] instanceof ReferenceObject){
-					newParams[i] = newParams[i].localize();
-				}
-			}
-			
-			//invoke method
-			try {
-				Method method = clazz.getDeclaredMethod(message.getFunc(), parameterTypes);
-				method.invoke(clazz.cast(obj), newParams);
-				
-				if(method.getReturnType().equals(Void.TYPE)){
-					isVoid = true;
-					method.invoke(clazz.cast(obj), newParams);
-				} else {
-					ret = (Serializable) method.invoke(clazz.cast(obj), newParams); 
-				}
-			} catch (Exception e){
-				//if invocation message throws an exception, send that exception back to the client
-				response = new RMIResponseMessage(e);
-				oostream.writeObject(response);
-				
-				oostream.close();
-				oistream.close();
-				ostream.close();
-				istream.close();
-				sock.close();
-				continue;
-			}
-			
-			//generate response message
-			if(isVoid){
-				response = new RMIResponseMessage(null, isVoid, message.getParams());
-			} else {
-				response = new RMIResponseMessage(ret, isVoid, message.getParams());
-			}
-			
-			//send response back to client
-			oostream.writeObject(response);
-			
-			oostream.close();
-			oistream.close();
-			ostream.close();
-			istream.close();
-			sock.close();
+		for(int i = 0; i < MAX_CONNECTIONS; i++){
+			RMIServerTask task = new RMIServerTask(ssock, t);
+			Thread thr = new Thread(task);
+			thr.start();
 		}
 	}
 }

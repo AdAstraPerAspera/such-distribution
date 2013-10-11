@@ -27,10 +27,10 @@ public class LocateRegistry {
 					new RegistryRequest(RegistryRequest.RequestType.PING, null, null);
 			InputStream         istream = sock.getInputStream();
 			OutputStream        ostream = sock.getOutputStream();
-			ObjectInputStream  oistream = new ObjectInputStream(istream);
 			ObjectOutputStream oostream = new ObjectOutputStream(ostream);
-			
 			oostream.writeObject(req);
+			
+			ObjectInputStream  oistream = new ObjectInputStream(istream);
 			resp = (Integer) oistream.readObject();
 			
 			if(resp != null){
@@ -41,11 +41,39 @@ public class LocateRegistry {
 		} catch (Exception e) {
 			try {
 				sock.close();
-			} catch (Exception f){
-				
+			} catch (Exception f) {
+				return false;
 			}
 			return false;
 		}
+	}
+	
+	public static ReferenceObject registryLookup(String name, String host, int port){
+		Socket          sock = null;
+		ReferenceObject resp = null;
+		
+		try {
+			sock = new Socket(host, port);
+			RegistryRequest         req =
+					new RegistryRequest(RegistryRequest.RequestType.LOOKUP, name, null);
+			InputStream         istream = sock.getInputStream();
+			OutputStream        ostream = sock.getOutputStream();
+			
+			ObjectOutputStream oostream = new ObjectOutputStream(ostream);
+			oostream.writeObject(req);
+			
+			ObjectInputStream  oistream = new ObjectInputStream(istream);
+			resp = (ReferenceObject) oistream.readObject();
+			
+		} catch (Exception e) {
+			try {
+				sock.close();
+			} catch (IOException f) {
+				return resp;
+			}
+		}
+		
+		return resp;
 	}
 	
 	/**
@@ -60,7 +88,7 @@ public class LocateRegistry {
 		    final Object[] args = new Object[1];
 		    args[0] = new String[] { (new Integer(port)).toString()};
 		    method.invoke(null, args);
-		} catch (final Exception e) {
+		} catch (Exception e) {
 		    e.printStackTrace();
 		}
 	}

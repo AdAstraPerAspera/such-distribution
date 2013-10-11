@@ -1,46 +1,26 @@
 package rmi.test;
 
-import java.lang.reflect.*;
-import java.net.InetAddress;
+import java.io.File;
 
-import com.sun.org.apache.bcel.internal.util.Class2HTML;
+import rmi.com.RMIServer;
+import rmi.com.ServerTask;
+import rmi.reg.LocateRegistry;
+import rmi.reg.ReferenceObject;
 
 public class TestMain {
-	private class Foo{
-		public int sum(int... a){
-			int ret = 0;
-			for(int i : a){
-				ret += i;
-			}
-			return ret;
-		}
-	}
-	
-	private class Bar extends Foo{
-		public int mul(int... a){
-			int ret = 1;
-			for(int i : a){
-				ret *= i;
-			}
-			return ret;
-		}
-	}
-	
 	public static void main(String[] args) throws Exception{
-		TestMain t = new TestMain();
-		Bar b = t.new Bar();
-		Foo f = (Foo) b;
+		ServerTask task = new ServerTask("localhost", 15441, "localhost", 15550);
 		
-		Class clazzB = b.getClass();
-		Class clazzF = f.getClass();
+		Thread t = new Thread(task);
 		
-		System.out.println(clazzB);
-		System.out.println(clazzF);
+		t.start();
 		
-		Method sum = clazzB.getMethods()[0];
-		Method mul = clazzF.getMethods()[0];
+		DoubleTest dt  = new DoubleTest(10);
+		DoubleTest dt2 = new DoubleTest(10);
 		
-		System.out.println(sum);
-		System.out.println(mul);
+		Thread.sleep(5);
+		
+		RMIServer.bind("doubletest", dt, new File("C:\\User\\Michael\\Documents\\GitHub\\such-distribution\\lab02\\bin\\rmi\\test\\").toURI().toURL());
+		RMIServer.bind("doubletest2", dt2, new File("C:\\User\\Michael\\Documents\\GitHub\\such-distribution\\lab02\\bin\\rmi\\test\\").toURI().toURL());
 	}
 }
