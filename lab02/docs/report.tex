@@ -1,0 +1,71 @@
+\documentclass{scrartcl}
+
+\usepackage{amsmath, amssymb, graphicx, enumerate, fullpage}
+\pagestyle{plain}
+\usepackage{fancyhdr}
+\setlength{\headheight}{15.2pt}
+\pagestyle{fancy}
+
+\newcommand{\twopage}{\clearpage\thispagestyle{empty}\mbox{}\clearpage}
+\newcommand{\lequiv}{\models\mkern-3.1mu$\reflectbox{$\models$}$ }
+
+\lhead[15-440 Distributed Systems]{15-440 Distributed Systems}
+\chead[]{}
+\rhead[Michael Wang - mhw1]{Michael Wang - mhw1}
+
+\lfoot[]{}
+\cfoot[]{}
+\rfoot[]{}
+\title{15-440 Distributed Systems}
+\subtitle{Lab 02}
+\author{Michael Wang - mhw1\\William Maynes - wmaynes}
+
+\begin{document}
+\begin{center}
+
+\maketitle
+
+\end{center}
+
+\section{General Design}
+
+Our RMI facility is split into two packages: rmi.com, which handles communications between the client and the server, and rmi.reg, which handles the registry.  The rmi.com package may be further split into two distinct sections: the classes which 
+handle the Remote Object Reference (ROR) table and the RMI server, and the client-side marshaller.
+
+\subsection{Remote Objects}
+
+We require several things from any client who wishes to implement a remote object.  First of all, the remote object must implement the Remote440 interface, solely as a flag to indicate that a class can have methods invoked remotely.  Secondly, certain guarantees about the remote object must be met: any access to or modification of fields within the object must be through methods.  Every function of any object that implements Remote440 must be declared to throw rmi.com.RemoteException or one of its supertypes.
+
+Additionally, every method parameter must either implement Serializable or be a stub for a remote object itself.  In this way, we can avoid difficulties in attempting to directly set or get values of fields from remote objects, and the requirement on the method parameters ensures that marshalling when we attempt to make the function call will succeed.
+
+Furthermore, no method parameter can be of a primitive type.  For example, any parameters of type \verb$int$ should be replaced with parameters of type \verb$Integer$.  This is to avoid complications involving serialization.  Note that, due to the way Java handles wrapper classes for primitives, it is possible to directly alter the function signature of any affected functions without altering function behavior.
+
+Side-effects should be limited to parameters that implement the Remote440 interface.  Due to Java's pass-by-value semantics during function calls and the way in which we marshal function invocation requests, supporting side-effects for any objects that are not remote objects is prohibitively complicated.
+
+Finally, each remote object must have a stub class that contains a ROR for its parent object, and which handles all remote method invocation requests by overriding every method in the parent class.
+
+Note that, due to the limitations of Java's pass-by-value semantics, side-effects in function calls are only supported for objects that implement the Remote440 interface.
+
+\subsection{Stubs}
+
+Stub objects must both extend the parent Remote440 object and implement the Stub interface.  While no stub compiler has been provided, implementation of such a compiler is certainly possible.  Constructors of the parent object can be given arbitrary values, and all parent methods should be overridden using calls to \verb$RMIInvocation.invoke$ (described in the Client-Side Communications section below).  Additionally, the Stub should store the ROR corresponding to its parent and, in its constructor, should accept said ROR.  A sample Stub object, demonstrating how a stub class can be procedurally generated from a class that implements Remote440 has been provided for your reference in rmi.test.
+
+\subsection{Registry}
+
+The registry listens to a port specified on the command line.  It accepts requests to bind a name to a ROR, unbind a name from a ROR, lookup a ROR given a name, and rebind a bound name to a different ROR.  The registry can be instantiated on any host by using the \verb$createRegistry$ method provided in the \verb$LocateRegistry$ class, and providing the port number to use.
+
+\verb$LocateRegistry$ also contains a method, \verb$hasRegistry$, which polls a host at a specified port and attempts to find a registry there.  While requests to the registry must utilize \verb$RegistryRequest$ objects, all such requests are handled by the framework, and at no point should the programmer need to make a request to the registry.
+
+\subsection{Client-Side Communications}
+
+On the client side, once the user has located a thing, he can 
+
+\subsection{RMI Server}
+
+
+
+\section{Compilation and Testing}
+
+
+
+\end{document}
