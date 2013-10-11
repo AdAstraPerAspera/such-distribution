@@ -20,7 +20,8 @@ public class TestMain {
 		
 		Thread.sleep(5);
 		
-		RMIServer.bind("doubletest", dt, new File("C:\\User\\Michael\\Documents\\GitHub\\such-distribution\\lab02\\bin\\rmi\\test\\").toURI().toURL());
-		RMIServer.bind("doubletest2", dt2, new File("C:\\User\\Michael\\Documents\\GitHub\\such-distribution\\lab02\\bin\\rmi\\test\\").toURI().toURL());
+		//Replace the filepath with the appropriate value when testing
+		RMIServer.bind("doubletest", dt, new File("./bin/rmi/test/").toURI().toURL());
+		RMIServer.bind("doubletest2", dt2, new File("./bin/rmi/test/").toURI().toURL());
 	}
 }

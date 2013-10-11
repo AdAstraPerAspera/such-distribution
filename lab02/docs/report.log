@@ -1,7 +1,7 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (MiKTeX 2.9) (preloaded format=pdflatex 2013.9.7)  11 OCT 2013 03:11
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (MiKTeX 2.9) (preloaded format=pdflatex 2013.9.7)  11 OCT 2013 05:09
 entering extended mode
 **report.tex
-(G:\15440\lab02\docs\report.tex
+(C:\Users\Michael\Documents\GitHub\such-distribution\lab02\docs\report.tex
 LaTeX2e <2011/06/27>
 Babel <v3.8m> and hyphenation patterns for english, afrikaans, ancientgreek, ar
 abic, armenian, assamese, basque, bengali, bokmal, bulgarian, catalan, coptic, 
@@ -212,7 +212,7 @@ Package: fullpage 1999/02/23 1.1 (PWD)
 \f@ncyO@olf=\skip58
 \f@ncyO@orf=\skip59
 )
-(G:\15440\lab02\docs\report.aux)
+(C:\Users\Michael\Documents\GitHub\such-distribution\lab02\docs\report.aux)
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 23.
 LaTeX Font Info:    ... okay on input line 23.
 LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 23.
@@ -239,41 +239,46 @@ LaTeX Font Info:    ... okay on input line 23.
 \MPnumerator=\count105
 \makeMPintoPDFobject=\count106
 \everyMPtoPDFconversion=\toks22
-) [1{C:/Users/Michael/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}
-
-]
-LaTeX Font Info:    Try loading font information for U+msa on input line 27.
-
-("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\amsfonts\umsa.fd"
+)
+LaTeX Font Info:    Try loading font information for U+msa on input line 25.
+ ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\amsfonts\umsa.fd"
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 27.
+LaTeX Font Info:    Try loading font information for U+msb on input line 25.
 
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\amsfonts\umsb.fd"
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-) [2
+) [1
 
-]
-Overfull \hbox (7.83398pt too wide) in paragraph at lines 57--58
+
+{C:/Users/Michael/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}]
+Overfull \hbox (7.83398pt too wide) in paragraph at lines 54--55
 \OT1/cmr/m/n/10.95 and at-tempts to find a reg-istry there. While re-quests to 
 the reg-istry must uti-lize []\OT1/cmtt/m/n/10.95 RegistryRequest
  []
 
-[3] (G:\15440\lab02\docs\report.aux) ) 
+[2]
+Overfull \hbox (31.46582pt too wide) in paragraph at lines 80--81
+\OT1/cmr/m/n/10.95 and []\OT1/cmtt/m/n/10.95 TestMain2 \OT1/cmr/m/n/10.95 ex-e-
+cutes meth-ods us-ing the RMI server.. Al-ter-na-tively, you can run []\OT1/cmt
+t/m/n/10.95 rmi.reg.Registry
+ []
+
+[3] (C:\Users\Michael\Documents\GitHub\such-distribution\lab02\docs\report.aux)
+ ) 
 Here is how much of TeX's memory you used:
  3231 strings out of 493921
- 44918 string characters out of 3144871
- 124322 words of memory out of 3000000
+ 45219 string characters out of 3144871
+ 125374 words of memory out of 3000000
  6511 multiletter control sequences out of 15000+200000
  8188 words of font info for 32 fonts, out of 3000000 for 9000
  841 hyphenation exceptions out of 8191
- 35i,10n,47p,732b,272s stack positions out of 5000i,500n,10000p,200000b,50000s
-<C:/Program Files (x86)/MiKTeX 2.9/fonts/
-type1/public/amsfonts/cm/cmr10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/typ
-e1/public/amsfonts/cm/cmr12.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/
-public/amsfonts/cm/cmssbx10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/
-public/amsfonts/cm/cmtt10.pfb>
-Output written on report.pdf (3 pages, 65440 bytes).
+ 35i,10n,47p,732b,218s stack positions out of 5000i,500n,10000p,200000b,50000s
+<C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><
+C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/
+Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmssbx10.pfb><C:/
+Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
+Output written on report.pdf (3 pages, 69960 bytes).
 PDF statistics:
  28 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)

@@ -11,7 +11,7 @@
 
 \lhead[15-440 Distributed Systems]{15-440 Distributed Systems}
 \chead[]{}
-\rhead[Michael Wang - mhw1]{Michael Wang - mhw1}
+\rhead[Michael Wang - mhw1, William Maynes - wmaynes]{Michael Wang - mhw1, William Maynes - wmaynes}
 
 \lfoot[]{}
 \cfoot[]{}
@@ -21,11 +21,8 @@
 \author{Michael Wang - mhw1\\William Maynes - wmaynes}
 
 \begin{document}
-\begin{center}
-
 \maketitle
 
-\end{center}
 
 \section{General Design}
 
@@ -58,14 +55,28 @@ The registry listens to a port specified on the command line.  It accepts reques
 
 \subsection{Client-Side Communications}
 
-On the client side, once the user has located a thing, he can 
+On the client side, once the user has successfully looked up a remote object and retrieved the corresponding ROR, he can use call the \verb$localize$ function provided by the ROR to generate a Stub object that can be used to remotely invoke method calls.  As described in the Stubs section above, the Stub object uses \verb$RMIInvocation.invoke$ make the remote message call.
+
+\verb$RMIInvocation.invoke$ takes the name of the function being invoked, the type of the object on which the method is to be invoked, the ROR corresponding to the object, and the parameters for the method passed into the Stub object.  All function parameters that implement Stub are converted into their corresponding RORs, and then \verb$RMIInvocation.invoke$ marshalls all the information passed into it, sending it to the server specified by the ROR.
+
+Then, it listens for a response from the server (the process of which is described below), and returns a value or throws an exception as appropriate.
 
 \subsection{RMI Server}
 
+The RMI server can be run by creating an instance of \verb$ServerTask$ and running it using a \verb$Thread$ object.  It contains a \verb$RORTable$, mapping RORs to the objects they represent.
 
+The server listens on a specified port for incoming RMI invocation requests.  Once such a request is received, it unpacks the request and retrieves the corresponding object from the RORTable.  Then, the server uses reflections to generate a \verb$Method$ object corresponding to the method being invoked.  Then, for each ROR in the list of parameters given in the request, it converts that ROR into the corresponding Stub object, and invokes the method with the modified list of parameters.
+
+If, at any point during this process, an exception is thrown, then the server returns a response containing an exception to the client.  Otherwise, if the function returns a value, then a value is returned to the client.  If the function has return type \verb$void$, the return type is indicated, \verb$null$ is returned instead.
 
 \section{Compilation and Testing}
 
+\subsection{Compilation}
 
+When in the same directory as \verb$build.xml$, run \verb$ant$ to build the project.
+
+\subsection{Testing}
+
+Test files and example main files are provided in the \verb$rmi.test$ package: run them using \verb$java -cp bin path.to.MainClass$.  \verb$RegMain$ runs the registry, \verb$TestMain$ runs the RMI server, and \verb$TestMain2$ executes methods using the RMI server.. Alternatively, you can run \verb$rmi.reg.Registry$ on the command line using \verb$java -cp bin rmi.reg.Registry <port number>$.  
 
 \end{document}
