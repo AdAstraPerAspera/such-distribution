@@ -1,19 +1,21 @@
 package mrf.taskengine.worker;
 
-import mrf.config.Settings;
+import java.util.HashMap;
 
-public class WorkerSettings implements Settings {
+import mrf.config.AbstractSettings;
 
-	@Override
-	public String getValue(String s) {
-		// TODO Auto-generated method stub
-		return null;
+public class WorkerSettings extends AbstractSettings {
+
+	public WorkerSettings(HashMap<String,String> settings){
+		super(settings);
 	}
-
-	@Override
-	public boolean setValue(String k, String v) {
-		// TODO Auto-generated method stub
-		return false;
+	
+	public String getMasterHost(){
+		return getValue("masterhost");
 	}
-
+	
+	public int getMasterPort(){
+		return Integer.getInteger(getValue("masterport"));
+	}
+	
 }
