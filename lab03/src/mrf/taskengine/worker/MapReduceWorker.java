@@ -1,5 +1,7 @@
 package mrf.taskengine.worker;
 
+import mrf.taskengine.master.SerializableRunnable;
+
 /**
  * An interface for a compute node class.
  * 
@@ -13,12 +15,14 @@ public interface MapReduceWorker {
 	 * Otherwise, adds a task to the master queue.
 	 * 
 	 * Can also be called on a master.
+	 * 
+	 * @return success of operation
 	 */
-	public void addTask();
+	public boolean addTask(SerializableRunnable s);
 	
 	/**
 	 * Adds a task to the node's queue.
 	 */
-	public void queueTask();
+	public void queueTask(SerializableRunnable s);
 	
 }

@@ -18,4 +18,7 @@ public class WorkerSettings extends AbstractSettings {
 		return Integer.getInteger(getValue("masterport"));
 	}
 	
+	public int getSelfPort(){
+		return Integer.getInteger(getValue("selfport"));
+	}
 }
