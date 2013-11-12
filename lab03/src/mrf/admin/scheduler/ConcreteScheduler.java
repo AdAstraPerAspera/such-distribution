@@ -1,0 +1,94 @@
+package mrf.admin.scheduler;
+
+import java.util.*;
+
+public class ConcreteScheduler implements Scheduler{
+	private HashMap<String, Integer> load;
+	private HashMap<String, Set<String>> asgn;
+	
+	/**
+	 * Must have at least one node
+	 * @param nodes
+	 */
+	public ConcreteScheduler(Set<String> nodes){
+		this.load = new HashMap<String, Integer>();
+		this.asgn = new HashMap<String, Set<String>>();
+		for (String s : nodes){
+			load.put(s, 0);
+			asgn.put(s, new HashSet<String>());
+		}
+	}
+
+	@Override
+	public boolean addNode(String node){
+		if(load.containsValue(node)) return false;
+		load.put(node, 0);
+		asgn.put(node, new HashSet<String>());
+		return true;
+	}
+	
+	@Override
+	public Set<String> removeNode(String node){
+		return false;
+	}
+	
+	@Override
+	public String schedule(String task) {
+		int    minVal = -1;
+		String minKey = "";
+		
+		for (String k : load.keySet()){
+			if (load.get(k) > minVal || minVal < 0){
+				minVal = load.get(k);
+				minKey = k;
+			}
+		}
+		
+		load.put(minKey, load.get(minVal) + 1);
+		asgn.get(minKey).add(task);
+		
+		return minKey;
+	}
+
+	@Override
+	public HashMap<String, Set<String>> schedule(Set<String> task) {
+		HashMap<String, Set<String>> retVal = new HashMap<String, Set<String>>();
+		
+		for(String s : task){
+			String result = schedule(s);
+			if(!retVal.containsKey(result)){
+				retVal.put(result, new HashSet<String>());
+			}
+			retVal.get(result).add(s);
+		}
+		
+		return retVal;
+	}
+
+	@Override
+	public String fail(String task) {
+		for(String k : asgn.keySet()){
+			
+		}
+		
+		return null;
+	}
+
+	@Override
+	public HashMap<String, Set<String>> fail(Set<String> task) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void complete(String task) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void complete(Set<String> task) {
+		// TODO Auto-generated method stub
+		
+	}
+}
