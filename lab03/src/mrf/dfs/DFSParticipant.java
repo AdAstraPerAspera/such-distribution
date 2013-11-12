@@ -1,5 +1,7 @@
 package mrf.dfs;
 
+import java.io.File;
+
 public class DFSParticipant {
 
 	/*
@@ -13,4 +15,8 @@ public class DFSParticipant {
 	 * 
 	 * TODO: Return list of ORIGINAL replicas that it has access to.
 	 */
+	
+	public void writeFile (File f) {
+		
+	}
 }
