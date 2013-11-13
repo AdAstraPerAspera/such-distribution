@@ -43,31 +43,7 @@ public class ConcreteMapReduceWorker implements RemoteMapReduceWorker {
 			return false;
 		}
 	}
-	
-	public boolean addTask(String s, SerializableCallable c){
-		String mhost = settings.getMasterHost();
-		int    mport = settings.getMasterPort();
 		
-		try {
-			Socket sock  = new Socket(mhost, mport);
-			OutputStream ostream = sock.getOutputStream();
-			ObjectOutputStream oostream = new ObjectOutputStream(ostream);
-			
-			oostream.writeObject(CommonObjects.RequestType.ADD_TASK_ID);
-			oostream.writeObject(s);
-			oostream.writeObject(c);
-			
-			oostream.close();
-			ostream.close();
-			sock.close();
-			return true;
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return false;
-		}
-	}
-	
 	public boolean queueTask(String s, SerializableCallable c){
 		if(c == null) return false;
 			

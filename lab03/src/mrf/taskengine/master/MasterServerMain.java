@@ -10,10 +10,10 @@ import mrf.config.ConfigParser;
 
 public class MasterServerMain {
 	public static void main(String[] args){
-		int            startpt = Integer.parseInt(args[0]);
-		int            portnum = Integer.parseInt(args[1]);
 		try {
-			MasterSettings setting = new MasterSettings(ConfigParser.parse(new FileInputStream(new File(args[2]))));
+			MasterSettings setting = new MasterSettings(ConfigParser.parse(new FileInputStream(new File(args[0]))));
+			int 		   startpt = Integer.parseInt(setting.getValue("masterport"));
+			int			   portnum = Integer.parseInt(setting.getValue("socketnum"));
 			ServerSocket[] sockarr = new ServerSocket[portnum];
 			int[]          portarr = new int[portnum];
 			

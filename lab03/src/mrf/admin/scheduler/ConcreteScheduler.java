@@ -1,18 +1,19 @@
 package mrf.admin.scheduler;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class ConcreteScheduler implements Scheduler{
-	private HashMap<String, Integer> load;
-	private HashMap<String, Set<String>> asgn;
+	private ConcurrentHashMap<String, Integer> load;
+	private ConcurrentHashMap<String, Set<String>> asgn;
 	
 	/**
 	 * Must have at least one node
 	 * @param nodes
 	 */
 	public ConcreteScheduler(Set<String> nodes){
-		this.load = new HashMap<String, Integer>();
-		this.asgn = new HashMap<String, Set<String>>();
+		this.load = new ConcurrentHashMap<String, Integer>();
+		this.asgn = new ConcurrentHashMap<String, Set<String>>();
 		for (String s : nodes){
 			load.put(s, 0);
 			asgn.put(s, new HashSet<String>());

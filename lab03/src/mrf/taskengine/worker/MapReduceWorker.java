@@ -23,18 +23,7 @@ public interface MapReduceWorker {
 	 * @return success of operation
 	 */
 	public boolean addTask(SerializableCallable c);
-	
-	/**
-	 * Adds a task to the master's queue.
-	 * 
-	 * Can also be called on a master node.
-	 * 
-	 * @param s - user-provided identifier for the task
-	 * @param c - task to be added
-	 * @return success of operation
-	 */
-	public boolean addTask(String s, SerializableCallable c);
-	
+		
 	/**
 	 * Adds a task to the node's queue.
 	 * 

@@ -1,7 +1,8 @@
 package mrf.taskengine.master;
 
-import java.io.IOException;
+import java.io.*;
 import java.net.*;
+import java.util.UUID;
 
 public class MasterServerThread implements Runnable {
 
@@ -16,10 +17,31 @@ public class MasterServerThread implements Runnable {
 	@Override
 	public void run() {
 		while(true){
+			Socket          sock = null;
+			InputStream  istream = null;
+			OutputStream ostream = null;
 			try {
-				Socket sock = ssock.accept();
+				sock = ssock.accept();
+				istream = sock.getInputStream();
+				
+				ObjectInputStream oistream = new ObjectInputStream(istream);
+				
+				CommonObjects.RequestType req = (CommonObjects.RequestType) oistream.readObject();
+				
+				switch(req){
+				case ADD_TASK:
+					String n = UUID.randomUUID().toString();
+					while(!state.addTask(n)) n = UUID.randomUUID().toString();
+					SerializableCallable t = (SerializableCallable) oistream.readObject();
+					String node = state.getScheduler().schedule(n);
+					break;
+				case ADD_NODE:
+					String s = (String) oistream.readObject();
+					state.addNode(s);
+					break;
+				}
 				sock.close();
-			} catch (IOException e) {
+			} catch (IOException | ClassNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
