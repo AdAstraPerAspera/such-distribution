@@ -38,6 +38,7 @@ public class MasterServerMain {
 			System.err.println("Error accessing config file!");
 		}
 		
-		//TODO: get results from Maps and Reduce
+		//TODO: poll on an interval
+		//TODO: Once all results from a Map tasks are in, retrieve Reduce
 	}
 }
