@@ -3,11 +3,11 @@ package mrf.tasks;
 import java.util.ArrayList;
 
 public class MapReduceTask {
-	private SerializableCallable mapTask;
-	private SerializableCallable reduceTask;
+	private MapCallable          mapTask;
+	private ReduceCallable       reduceTask;
 	private ArrayList<String>    files;
 	
-	public MapReduceTask(SerializableCallable mapTask, SerializableCallable reduceTask, ArrayList<String> files){
+	public MapReduceTask(MapCallable mapTask, ReduceCallable reduceTask, ArrayList<String> files){
 		this.mapTask    = mapTask;
 		this.reduceTask = reduceTask;
 		this.files      = files;

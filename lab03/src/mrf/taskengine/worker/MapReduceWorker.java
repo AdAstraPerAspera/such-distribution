@@ -30,7 +30,7 @@ public interface MapReduceWorker {
 	 * 
 	 * @return success of operation
 	 */
-	public boolean queueTask(String s, SerializableCallable c);
+	public boolean queueTask(String s, SerializableCallable c, String p);
 	
 	/**
 	 * Checks to see which, if any of the processes have returned successfully

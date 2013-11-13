@@ -38,6 +38,6 @@ public class MasterServerMain {
 			System.err.println("Error accessing config file!");
 		}
 		
-		//TODO: get results from 
+		//TODO: get results from Maps and Reduce
 	}
 }

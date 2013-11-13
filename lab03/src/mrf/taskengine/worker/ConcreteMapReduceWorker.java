@@ -45,7 +45,7 @@ public class ConcreteMapReduceWorker implements RemoteMapReduceWorker {
 		}
 	}
 		
-	public boolean queueTask(String s, SerializableCallable c){
+	public boolean queueTask(String s, SerializableCallable c, String p){
 		if(c == null) return false;
 			
 		Future<Object> f = threadpool.submit(c);
