@@ -1,8 +1,22 @@
 package mrf.dfs;
 
 import java.io.File;
+import java.io.ObjectInputStream;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
 
-public class DFSParticipant {
+public class DFSParticipant implements DFSNode {
+	String name;
+	String coordinator;
+	
+	public DFSParticipant (String name, String coordinator) {
+		this.name = name;
+		this.coordinator = coordinator;
+	}
 
 	/*
 	 * TODO: Write File to local-space AND send to coordinator for replication
@@ -18,5 +32,30 @@ public class DFSParticipant {
 	
 	public void writeFile (File f) {
 		
+	}
+
+	@Override
+	public void getFile(String name) throws RemoteException {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public static void main (String[] args) {
+		int port = (args.length < 1) ? 15150 : Integer.parseInt(args[0]);
+		try {
+			ServerSocket s = new ServerSocket(port);
+			Socket soc = s.accept();
+			ObjectInputStream ois = new ObjectInputStream(soc.getInputStream());
+			ConfigInfo ci = (ConfigInfo) ois.readObject();
+			String host = ci.getHost();
+			String name = ci.getName();
+			DFSParticipant DFS = new DFSParticipant(name, host);
+			DFSNode stub = (DFSNode) UnicastRemoteObject.exportObject(DFS, 0);
+			Registry registry = LocateRegistry.getRegistry(host);
+			registry.bind(name, stub);
+			
+		} catch (Exception e) {
+			System.err.println("Client exception: " + e);
+		}
 	}
 }

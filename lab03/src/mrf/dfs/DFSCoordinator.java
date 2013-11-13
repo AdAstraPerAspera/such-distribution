@@ -4,12 +4,17 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.HashMap;
 import java.util.HashSet;
 
+
 import mrf.config.ConfigParser;
 
-public class DFSCoordinator {
+public class DFSCoordinator implements DFSMaster {
 
 	HashMap<String, HashSet<String>> part2file;
 	HashMap<String, HashSet<String>> file2part;
@@ -33,17 +38,19 @@ public class DFSCoordinator {
 	 */
 	
 	
-	public DFSCoordinator (String configPath, String initData) throws Exception {
+	public DFSCoordinator (String host, String configPath) throws Exception {
 		try {
 			FileInputStream fis = new FileInputStream(configPath);
 			HashMap<String, String> parsed = ConfigParser.parse(fis);
 			fis.close();
 			
+			String initData = null;
 			for(String s: parsed.keySet()) {
 				if(s.equals("factor")) {
-					this.repfactor = Integer.parseInt(parsed.get("factor"));
-				}
-				else {
+					this.repfactor = Integer.parseInt(parsed.get(s));
+				} else if (s.equals("initData")) {
+					initData = parsed.get(s);
+				} else {
 					HashSet<String> files = new HashSet();
 					String tmploc = parsed.get(s);
 					this.part2file.put(s, files);
@@ -86,4 +93,33 @@ public class DFSCoordinator {
 			System.err.println("Exception: " + e);
 		}
 	}
+
+
+	@Override
+	public HashSet<String> lookupFile(String name) throws RemoteException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public void distributeFile(File f) throws RemoteException {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public static void main (String[] args) {
+		String host = (args.length < 1) ? null : args[0];
+		String config = (args.length < 2) ? null : args[1];
+		int port = (args.length < 3) ? 15150 : Integer.parseInt(args[2]);
+		try {
+			Registry registry = LocateRegistry.getRegistry(host);
+			DFSCoordinator DFS = new DFSCoordinator(host, config);
+			DFSMaster stub = (DFSMaster) UnicastRemoteObject.exportObject(DFS, 0);
+			registry.bind("master", stub);
+		} catch (Exception e) {
+			System.err.println("Client exception: " + e);
+		}
+	}
+	
 }
