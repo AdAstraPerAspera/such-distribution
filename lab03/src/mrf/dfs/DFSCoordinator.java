@@ -26,8 +26,8 @@ public class DFSCoordinator implements DFSMaster {
 	private HashMap<String, HashSet<String>> file2part;
 	private HashMap<String, String> part2loc;
 	private HashMap<String, String> loc2part;
-	private int repfactor;
-	private int chunksize;
+	private int repfactor = 0;
+	private int chunksize = 0;
 	
 	private static int partIndex;
 	private String[] partNames;
@@ -44,27 +44,6 @@ public class DFSCoordinator implements DFSMaster {
 	 * 
 	 * TODO: Threads
 	 */
-	
-	protected int portFromLoc(String str) {
-		String[] s = str.split(":");
-		return Integer.parseInt(s[1]);
-	}
-	protected String hostFromLoc(String str) {
-		String[] s = str.split(":");
-		return s[0];
-	}
-	
-	private ArrayList<MRFile> partitionFile (ArrayList<Object> A, String name) {
-		int c = chunksize;
-		int partCount = (A.size() % c == 0) ? A.size() / c : (A.size() / c) + 1;
-		ArrayList<MRFile> newFiles = new ArrayList<MRFile>(partCount);
-		Object[] arr = A.toArray();
-		for (int i = 0; i < partCount; i++) {
-			ArrayList<Object> newChunk = new ArrayList<Object>(Arrays.asList(Arrays.copyOfRange(arr, i*c, (i+1)*c)));
-			newFiles.add(new MRFile(newChunk, name + "-" + i));
-		}
-		return newFiles;
-	}
 	
 	public DFSCoordinator (String host, String configPath, int port) throws Exception {
 		this.url = host;
@@ -112,9 +91,7 @@ public class DFSCoordinator implements DFSMaster {
 				oos.close();
 				ois.close();
 				soc.close();
-			}
-			
-			
+			}	
 			
 			File data = new File(initData);
 			File[] dataFiles = data.listFiles();
@@ -137,7 +114,43 @@ public class DFSCoordinator implements DFSMaster {
 			System.err.println("Exception: " + e);
 		}
 	}
-
+	
+	protected int portFromLoc(String str) {
+		String[] s = str.split(":");
+		return Integer.parseInt(s[1]);
+	}
+	protected String hostFromLoc(String str) {
+		String[] s = str.split(":");
+		return s[0];
+	}
+	
+	private ArrayList<MRFile> partitionFile (MRFile mrf) {
+		String name = mrf.getName();
+		int c = chunksize;
+		int partCount = (mrf.size() % c == 0) ? mrf.size() / c : (mrf.size() / c) + 1;
+		ArrayList<MRFile> newFiles = new ArrayList<MRFile>(partCount);
+		Object[] arr = mrf.getContents().toArray();
+		for (int i = 0; i < partCount; i++) {
+			ArrayList<Object> newChunk = new ArrayList<Object>(Arrays.asList(Arrays.copyOfRange(arr, i*c, (i+1)*c)));
+			newFiles.add(new MRFile(newChunk, name + "-" + i));
+		}
+		return newFiles;
+	}
+	
+	private MRFile F2MRFile (File f) throws Exception{
+		MRFile mrf = null;
+		if(f.isFile()) {
+			try {
+				FileInputStream fis = new FileInputStream(f);
+				ObjectInputStream ois = new ObjectInputStream(fis);
+				ArrayList<Object> A = (ArrayList<Object>) ois.readObject();
+				mrf = new MRFile(A, f.getName());
+			} catch (Exception e) {
+				throw new Exception ("Exception while parsing file: " + e);
+			}
+		}
+		return mrf;
+	}
 
 	@Override
 	public HashSet<String> lookupFile(String name) throws RemoteException {
@@ -147,8 +160,8 @@ public class DFSCoordinator implements DFSMaster {
 
 
 	@Override
-	public void distributeFile(File f) throws RemoteException {
-		// TODO Auto-generated method stub
+	public void distributeFile(MRFile f) throws RemoteException {
+		
 		
 	}
 	

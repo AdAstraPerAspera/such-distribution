@@ -8,8 +8,8 @@ import java.rmi.RemoteException;
 
 public interface DFSNode extends Remote {
 	
-	public void writeFile(File f) throws RemoteException;
+	public void writeFile(MRFile f) throws RemoteException;
 	
-	public File getFile(String name) throws RemoteException;
+	public MRFile getFile(String name) throws RemoteException;
 
 }

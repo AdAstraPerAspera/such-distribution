@@ -11,9 +11,9 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 
 public class DFSParticipant implements DFSNode {
-	String name;
-	String coordinator;
-	int hPort;
+	private String name;
+	private String coordinator;
+	private int hPort;
 	
 	public DFSParticipant (String name, String coordinator, int port) {
 		this.name = name;
@@ -33,12 +33,12 @@ public class DFSParticipant implements DFSNode {
 	 * TODO: Return list of ORIGINAL replicas that it has access to.
 	 */
 	
-	public void writeFile (File f) {
+	public void writeFile (MRFile f) {
 		
 	}
 
 	@Override
-	public File getFile(String name) throws RemoteException {
+	public MRFile getFile(String name) throws RemoteException {
 		// TODO Auto-generated method stub
 		return null;
 	}
