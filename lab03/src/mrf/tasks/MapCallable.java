@@ -2,6 +2,6 @@ package mrf.tasks;
 
 import java.io.File;
 
-public interface MapCallable extends SerializableCallable{
-	public void setFile(File f);
+public interface MapCallable<T> extends MRTask<T> {
+	public void map(File in, File out);
 }
