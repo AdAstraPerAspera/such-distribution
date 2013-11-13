@@ -38,7 +38,7 @@ public class DFSCoordinator implements DFSMaster {
 	 */
 	
 	
-	public DFSCoordinator (String host, String configPath) throws Exception {
+	public DFSCoordinator (String host, String configPath, int port) throws Exception {
 		try {
 			FileInputStream fis = new FileInputStream(configPath);
 			HashMap<String, String> parsed = ConfigParser.parse(fis);
@@ -51,7 +51,7 @@ public class DFSCoordinator implements DFSMaster {
 				} else if (s.equals("initData")) {
 					initData = parsed.get(s);
 				} else {
-					HashSet<String> files = new HashSet();
+					HashSet<String> files = new HashSet<String>();
 					String tmploc = parsed.get(s);
 					this.part2file.put(s, files);
 					this.part2loc.put(s, tmploc);
@@ -110,11 +110,11 @@ public class DFSCoordinator implements DFSMaster {
 	
 	public static void main (String[] args) {
 		String host = (args.length < 1) ? null : args[0];
-		String config = (args.length < 2) ? null : args[1];
-		int port = (args.length < 3) ? 15150 : Integer.parseInt(args[2]);
+		int port = (args.length < 2) ? 15150 : Integer.parseInt(args[1]);
+		String config = (args.length < 3) ? null : args[2];
 		try {
 			Registry registry = LocateRegistry.getRegistry(host);
-			DFSCoordinator DFS = new DFSCoordinator(host, config);
+			DFSCoordinator DFS = new DFSCoordinator(host, config, port);
 			DFSMaster stub = (DFSMaster) UnicastRemoteObject.exportObject(DFS, 0);
 			registry.bind("master", stub);
 		} catch (Exception e) {

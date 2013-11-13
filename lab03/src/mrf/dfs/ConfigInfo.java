@@ -5,10 +5,12 @@ import java.io.Serializable;
 public class ConfigInfo implements Serializable {
 	String host;
 	String name;
+	int hostPort;
 	
-	public ConfigInfo(String host, String name) {
+	public ConfigInfo(String host, String name, int port) {
 		this.host = host;
 		this.name = name;
+		this.hostPort = port;
 	}
 	
 	public String getHost () {
@@ -17,6 +19,10 @@ public class ConfigInfo implements Serializable {
 	
 	public String getName () {
 		return this.name;
+	}
+	
+	public int getPort () {
+		return this.hostPort;
 	}
 	/*
 	public void setHost(String host) {

@@ -10,6 +10,6 @@ public interface DFSNode extends Remote {
 	
 	public void writeFile(File f) throws RemoteException;
 	
-	public void getFile(String name) throws RemoteException;
+	public File getFile(String name) throws RemoteException;
 
 }
