@@ -7,18 +7,19 @@ import mrf.admin.scheduler.Scheduler;
 import mrf.admin.scheduler.ConcreteScheduler;
 import mrf.taskengine.worker.ConcreteMapReduceWorker;
 import mrf.taskengine.worker.MapReduceWorker;
+import mrf.taskengine.worker.NodeInformation;
 import mrf.taskengine.worker.WorkerSettings;
 
 public class MasterServerState {
-	private MasterSettings  setting;
-	private Set<String>     nodeNames;
-	private Set<String>		taskNames;
-	private Scheduler       scheduler;
-	private MapReduceWorker worker;
+	private MasterSettings				 setting;
+	private Map<String, NodeInformation> nodeNames;
+	private Set<String>					 taskNames;
+	private Scheduler					 scheduler;
+	private MapReduceWorker				 worker;
 	
 	public MasterServerState(MasterSettings setting){
 		this.setting   = setting;
-		this.nodeNames = Collections.newSetFromMap(new ConcurrentHashMap<String, Boolean>());
+		this.nodeNames = new ConcurrentHashMap<String, NodeInformation>();
 		this.taskNames = Collections.newSetFromMap(new ConcurrentHashMap<String, Boolean>());
 		this.scheduler = new ConcreteScheduler(new HashSet<String>());
 		scheduler.addNode("master");
@@ -32,8 +33,8 @@ public class MasterServerState {
 		return setting.getValue(s);
 	}
 	
-	public void addNode(String s){
-		nodeNames.add(s);
+	public void addNode(String s, NodeInformation i){
+		nodeNames.put(s, i);
 	}
 	
 	public void removeNode(String s){
@@ -48,5 +49,13 @@ public class MasterServerState {
 	
 	public Scheduler getScheduler(){
 		return scheduler;
+	}
+	
+	public boolean runTask(String n, SerializableCallable t){
+		return worker.queueTask(n, t);
+	}
+	
+	public NodeInformation getNodeInfo(String s){
+		return nodeNames.get(s);
 	}
 }
