@@ -37,5 +37,7 @@ public class MasterServerMain {
 			e1.printStackTrace();
 			System.err.println("Error accessing config file!");
 		}
+		
+		//TODO: get results from 
 	}
 }

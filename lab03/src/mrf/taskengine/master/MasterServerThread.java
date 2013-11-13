@@ -5,6 +5,7 @@ import java.net.*;
 import java.util.UUID;
 
 import mrf.taskengine.worker.NodeInformation;
+import mrf.tasks.SerializableCallable;
 
 public class MasterServerThread implements Runnable {
 

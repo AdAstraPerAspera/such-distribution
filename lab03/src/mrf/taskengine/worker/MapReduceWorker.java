@@ -3,7 +3,8 @@ package mrf.taskengine.worker;
 import java.util.HashMap;
 import java.util.Set;
 
-import mrf.taskengine.master.SerializableCallable;
+import mrf.tasks.MapReduceTask;
+import mrf.tasks.SerializableCallable;
 
 /**
  * An interface for a compute node class.
@@ -22,7 +23,7 @@ public interface MapReduceWorker {
 	 * @param c - task to be added
 	 * @return success of operation
 	 */
-	public boolean addTask(SerializableCallable c);
+	public boolean addTask(MapReduceTask c);
 		
 	/**
 	 * Adds a task to the node's queue.

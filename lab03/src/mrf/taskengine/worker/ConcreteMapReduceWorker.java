@@ -6,7 +6,8 @@ import java.util.*;
 import java.util.concurrent.*;
 
 import mrf.taskengine.master.CommonObjects;
-import mrf.taskengine.master.SerializableCallable;
+import mrf.tasks.MapReduceTask;
+import mrf.tasks.SerializableCallable;
 
 public class ConcreteMapReduceWorker implements RemoteMapReduceWorker {
 	
@@ -21,7 +22,7 @@ public class ConcreteMapReduceWorker implements RemoteMapReduceWorker {
 		this.futures    = new HashMap<String, Future<Object>>();
 	}
 	
-	public boolean addTask(SerializableCallable c){
+	public boolean addTask(MapReduceTask c){
 		String mhost = settings.getMasterHost();
 		int    mport = settings.getMasterPort();
 		

@@ -9,6 +9,7 @@ import mrf.taskengine.worker.ConcreteMapReduceWorker;
 import mrf.taskengine.worker.MapReduceWorker;
 import mrf.taskengine.worker.NodeInformation;
 import mrf.taskengine.worker.WorkerSettings;
+import mrf.tasks.SerializableCallable;
 
 public class MasterServerState {
 	private MasterSettings				 setting;

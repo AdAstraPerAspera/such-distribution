@@ -1,4 +1,4 @@
-package mrf.taskengine.master;
+package mrf.tasks;
 
 import java.io.Serializable;
 import java.util.concurrent.Callable;
