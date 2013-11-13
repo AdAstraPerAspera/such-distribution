@@ -8,6 +8,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -35,19 +36,19 @@ public class DFSCoordinator implements DFSMaster {
 	private String url;
 	private int port;
 	
+	private Registry reg;
+	
 	
 	/* 
-	 * TODO: Replicate files among participants
-	 * TODO: Track Replication
-	 * 
 	 * TODO: Send a copy of a file from one node to another if requested
 	 * 
 	 * TODO: Threads
 	 */
 	
-	public DFSCoordinator (String host, String configPath, int port) throws Exception {
+	public DFSCoordinator (String host, String configPath, int port, Registry registry) throws Exception {
 		this.url = host;
 		this.port = port;
+		this.reg = registry;
 		try {
 			FileInputStream fis = new FileInputStream(configPath);
 			HashMap<String, String> parsed = ConfigParser.parse(fis);
@@ -96,13 +97,7 @@ public class DFSCoordinator implements DFSMaster {
 			File data = new File(initData);
 			File[] dataFiles = data.listFiles();
 			for (File f: dataFiles) {
-				/* 
-				 * TODO: Distribute files here, use partNames and partIndex for even distribution
-				 */
-				for(int i = 0; i < this.repfactor; i++){
-					// For the multiple copies
-					continue;
-				}
+				distributeFile(F2MRFile(f));
 			}
 
 			
@@ -115,11 +110,11 @@ public class DFSCoordinator implements DFSMaster {
 		}
 	}
 	
-	protected int portFromLoc(String str) {
+	public int portFromLoc(String str) {
 		String[] s = str.split(":");
 		return Integer.parseInt(s[1]);
 	}
-	protected String hostFromLoc(String str) {
+	public String hostFromLoc(String str) {
 		String[] s = str.split(":");
 		return s[0];
 	}
@@ -154,15 +149,51 @@ public class DFSCoordinator implements DFSMaster {
 
 	@Override
 	public HashSet<String> lookupFile(String name) throws RemoteException {
-		// TODO Auto-generated method stub
-		return null;
+		return file2part.get(name);
 	}
 
 
 	@Override
-	public void distributeFile(MRFile f) throws RemoteException {
-		
-		
+	public void distributeFile(MRFile mrf) throws RemoteException {
+		if(mrf != null) {
+			ArrayList<MRFile> A = partitionFile(mrf);
+			for(int i = 0; i < A.size(); i++) {
+				int repcount = 0;
+				int startIndex = partIndex;
+				boolean firstFileInst = true;
+				while (repcount < this.repfactor && firstFileInst) {
+					String part = partNames[partIndex];
+					String fName = mrf.getName();
+					// Check to see if we are trying to add the file to a node that already has it
+					HashSet<String> fs = part2file.get(part);
+					HashSet<String> ps = file2part.get(fName);
+					firstFileInst = firstFileInst & fs.add(fName);
+					firstFileInst = firstFileInst & ps.add(part);
+					HashSet<String> oldfs = part2file.put(part, fs);
+					HashSet<String> oldps = file2part.put(fName, ps);
+					/* 
+					 * If we have not, then this is our first time here, so write the file and increment the
+					 * number of replications we have made.
+					 */
+					try {
+						if(firstFileInst) {
+							DFSParticipant stub = (DFSParticipant) reg.lookup(part);
+							stub.writeFile(A.get(i));
+							repcount++;
+						}
+						partIndex = (partIndex + 1) % partNames.length;
+					} catch (NotBoundException e) {
+						part2file.put(part, oldfs);
+						file2part.put(fName, oldps);
+						partIndex = (partIndex + 1) % partNames.length;
+					}
+					// If we have gone through ever possible participant, break the current file distribution
+					if (partIndex == startIndex) {
+						break;
+					}
+				}
+			}
+		}
 	}
 	
 	public static void main (String[] args) {
@@ -172,7 +203,7 @@ public class DFSCoordinator implements DFSMaster {
 		String config = (args.length < 3) ? null : args[2];
 		try {
 			Registry registry = LocateRegistry.getRegistry(host);
-			DFSCoordinator DFS = new DFSCoordinator(host, config, port);
+			DFSCoordinator DFS = new DFSCoordinator(host, config, port, registry);
 			DFSMaster stub = (DFSMaster) UnicastRemoteObject.exportObject(DFS, 0);
 			registry.bind("master", stub);
 		} catch (Exception e) {

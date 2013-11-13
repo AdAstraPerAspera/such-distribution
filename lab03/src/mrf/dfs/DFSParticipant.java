@@ -33,7 +33,7 @@ public class DFSParticipant implements DFSNode {
 	 * TODO: Return list of ORIGINAL replicas that it has access to.
 	 */
 	
-	public void writeFile (MRFile f) {
+	public void writeFile (MRFile mrf) {
 		
 	}
 
