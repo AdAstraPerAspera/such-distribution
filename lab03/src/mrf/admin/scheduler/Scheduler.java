@@ -1,59 +1,33 @@
 package mrf.admin.scheduler;
 
-import java.util.*;
-
 public interface Scheduler {
 	/**
-	 * Adds a new worker node
-	 * @param s
-	 * @return
+	 * TODO: Complete Scheduler
+	 * 
+	 * TODO: Concrete implementation of MasterServer
+	 * 
+	 * TODO: Main files for Master and Worker
+	 * 
+	 * TODO: Complete integration with DFS
+	 * 
+	 * TODO: Complete management stuff
+	 * 
+	 * 
+	 * TODO: Examples
 	 */
-	public boolean addNode(String s);
+	
+	//to reschedule, call completeTask and one of the scheduling functions
 	
 	/**
-	 * Removes a worker node
-	 * @param s
-	 * @return set of tasks that need to be reassigned
+	 * Schedules a Mapping task to a node, giving preference to
+	 * nodes which have the file required
+	 * @param taskName - name of the task to schedule
+	 * @param file - name of required file
+	 * @return name of node to schedule task to
 	 */
-	public Set<String> removeNode(String s);
+	public String scheduleMapTask(String taskName, String file);
 	
-	/**
-	 * Schedules a task to a node
-	 * @param task
-	 * @return
-	 */
-	public String schedule(String task);
+	public String scheduleReduceTask(String taskName);
 	
-	/**
-	 * Schedules a set of tasks to nodes
-	 * @param task
-	 * @return
-	 */
-	public HashMap<String, Set<String>> schedule(Set<String> task);
-	
-	/**
-	 * Reschedules a failed task
-	 * @param task
-	 * @return
-	 */
-	public String fail(String task);
-	
-	/**
-	 * Reschedules a set of failed tasks
-	 * @param task
-	 * @return
-	 */
-	public HashMap<String, Set<String>> fail(Set<String> task);
-	
-	/**
-	 * Removes a completed task
-	 * @param task
-	 */
-	public void complete(String task);
-	
-	/**
-	 * Removes a set of completed tasks
-	 * @param task
-	 */
-	public void complete(Set<String> task);
+	public void completeTask(String nodeName, String taskName);
 }

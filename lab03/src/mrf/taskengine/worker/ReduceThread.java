@@ -2,7 +2,6 @@ package mrf.taskengine.worker;
 
 import java.util.ArrayList;
 
-import mrf.dfs.DFSNode;
 import mrf.tasks.ReduceCallable;
 
 public class ReduceThread<T> {
