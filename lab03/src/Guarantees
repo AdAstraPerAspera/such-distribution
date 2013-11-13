@@ -1,0 +1,7 @@
+Design Decisions - 
+
+Worker Nodes must have the same names as the DFSNodes that they sit on.
+
+Task Coordinator should live in the same JVM as the DFS Coordinator
+
+Worker Nodes should live in the same JVM as a DFSNode

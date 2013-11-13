@@ -13,10 +13,12 @@ import java.rmi.server.UnicastRemoteObject;
 public class DFSParticipant implements DFSNode {
 	String name;
 	String coordinator;
+	int hPort;
 	
-	public DFSParticipant (String name, String coordinator) {
+	public DFSParticipant (String name, String coordinator, int port) {
 		this.name = name;
 		this.coordinator = coordinator;
+		this.hPort = port;
 	}
 
 	/*
@@ -36,9 +38,9 @@ public class DFSParticipant implements DFSNode {
 	}
 
 	@Override
-	public void getFile(String name) throws RemoteException {
+	public File getFile(String name) throws RemoteException {
 		// TODO Auto-generated method stub
-		
+		return null;
 	}
 	
 	public static void main (String[] args) {
@@ -49,21 +51,20 @@ public class DFSParticipant implements DFSNode {
 			
 			ObjectInputStream ois = new ObjectInputStream(soc.getInputStream());
 			ConfigInfo ci = (ConfigInfo) ois.readObject();
-			ois.close();
-			soc.close();
 			
+			// Do everything I need to before I send my ACK.
 			String host = ci.getHost();
 			String name = ci.getName();
 			int hPort = ci.getPort();
 			
-			DFSParticipant DFS = new DFSParticipant(name, host);
+			DFSParticipant DFS = new DFSParticipant(name, host, hPort);
 			DFSNode stub = (DFSNode) UnicastRemoteObject.exportObject(DFS, 0);
 			Registry registry = LocateRegistry.getRegistry(host);
 			registry.bind(name, stub);
 			
-			soc = new Socket(host, hPort);
 			ObjectOutputStream oos = new ObjectOutputStream(soc.getOutputStream());
 			oos.writeObject(ci);
+			ois.close();
 			oos.close();
 			soc.close();
 			

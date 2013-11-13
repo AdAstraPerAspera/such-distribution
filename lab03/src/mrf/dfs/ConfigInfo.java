@@ -7,7 +7,7 @@ public class ConfigInfo implements Serializable {
 	String name;
 	int hostPort;
 	
-	public ConfigInfo(String host, String name, int port) {
+	public ConfigInfo(String name, String host, int port) {
 		this.host = host;
 		this.name = name;
 		this.hostPort = port;
