@@ -29,7 +29,8 @@ public class ConcreteScheduler implements Scheduler{
 	
 	@Override
 	public Set<String> removeNode(String node){
-		return false;
+		load.remove(node);
+		return asgn.remove(node);
 	}
 	
 	@Override
@@ -68,27 +69,44 @@ public class ConcreteScheduler implements Scheduler{
 	@Override
 	public String fail(String task) {
 		for(String k : asgn.keySet()){
-			
+			if(asgn.get(k).contains(task)){
+				load.put(k, load.get(k) - 1);
+				asgn.get(k).remove(task);
+			}
 		}
 		
-		return null;
+		return schedule(task);
 	}
 
 	@Override
 	public HashMap<String, Set<String>> fail(Set<String> task) {
-		// TODO Auto-generated method stub
-		return null;
+		HashMap<String, Set<String>> retVal = new HashMap<String, Set<String>>();
+		
+		for(String s : task){
+			String result = fail(s);
+			if(!retVal.containsKey(result)){
+				retVal.put(result, new HashSet<String>());
+			}
+			retVal.get(result).add(s);
+		}
+		
+		return retVal;
 	}
 
 	@Override
 	public void complete(String task) {
-		// TODO Auto-generated method stub
-		
+		for(String k : asgn.keySet()){
+			if(asgn.get(k).contains(task)){
+				load.put(k, load.get(k) - 1);
+				asgn.get(k).remove(task);
+			}
+		}
 	}
 
 	@Override
 	public void complete(Set<String> task) {
-		// TODO Auto-generated method stub
-		
+		for(String s : task){
+			complete(s);
+		}
 	}
 }
