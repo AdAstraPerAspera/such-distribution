@@ -1,5 +1,9 @@
 package mrf.taskengine.worker;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.ObjectInputStream;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
@@ -34,7 +38,7 @@ public class WorkerNode implements TaskWorker{
 		ArrayList<T> data = new ArrayList<T>();
 		int i = 0;
 		for(TaskWorker w : workers){
-			ArrayList<T> wData = w.getReduceResults(name + ":" + i);
+			ArrayList<T> wData = w.getReduceResults(name + ":" + i, (T) null);
 			for(T datum : wData){
 				data.add(datum);
 			}
@@ -45,9 +49,20 @@ public class WorkerNode implements TaskWorker{
 		master.doneReducing(name, result);
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
-	public <T> ArrayList<T> getReduceResults(String name) throws RemoteException{
-		return (ArrayList<T>) node.getFile(name).getContents();
+	public <T> ArrayList<T> getReduceResults(String name, T obj) throws RemoteException{
+		try {
+			FileInputStream   temp = new FileInputStream("/tmp/" + this.name + "/" + name);
+			ObjectInputStream  ois = new ObjectInputStream(temp);
+			return (ArrayList<T>) ois.readObject();
+		} catch (Exception e) {
+			// Should not reach here
+			e.printStackTrace();
+		}
+		return null;
+		
+		//return (ArrayList<T>) node.getFile(name).getContents();
 	}
 	
 	@Override
