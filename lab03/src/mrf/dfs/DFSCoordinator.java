@@ -46,12 +46,9 @@ public class DFSCoordinator implements DFSMaster {
 			HashMap<String, String> parsed = ConfigParser.parse(fis);
 			fis.close();
 			
-			HashMap<String, HashSet<String>> p2f = new HashMap<String, HashSet<String>>();
-			HashMap<String, HashSet<String>> f2p = new HashMap<String, HashSet<String>>();
-			HashMap<String, String> p2l = new HashMap<String, String>();
-			this.part2file = p2f;
-			this.file2part = f2p;
-			this.part2loc = p2l;
+			this.part2file = new HashMap<String, HashSet<String>>();
+			this.file2part = new HashMap<String, HashSet<String>>();
+			this.part2loc = new HashMap<String, String>();
 			
 			
 			for(String s: parsed.keySet()) {
