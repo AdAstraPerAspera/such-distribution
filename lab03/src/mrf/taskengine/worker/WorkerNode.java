@@ -24,9 +24,9 @@ public class WorkerNode implements TaskWorker{
 	}
 	
 	@Override
-	public <T> void runMapTask(MapCallable<T> t, String inPath, String name)
+	public <U, T> void runMapTask(MapCallable<U, T> t, String inPath, String name)
 			throws RemoteException {
-		(new MapThread<T>(node, t, inPath, name)).run();
+		(new MapThread<U, T>(node, t, inPath, "/tmp/" + this.name + "/" + name)).run();
 		master.doneMapping(name);
 	}
 

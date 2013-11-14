@@ -14,7 +14,7 @@ public interface TaskMaster extends Remote {
 	
 	public List<String> reduceData(String taskName) throws RemoteException;
 	
-	public <T> void addTask(MapReduceTask<T> task) throws RemoteException;
+	public <U, T> void addTask(MapReduceTask<U, T> task) throws RemoteException;
 	
 	public boolean addNode(TaskWorker worker) throws RemoteException;
 	

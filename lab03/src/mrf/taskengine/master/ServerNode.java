@@ -27,7 +27,7 @@ public class ServerNode implements TaskMaster{
 	//map from task names to completed map nodes
 	private static Map<String, Set<String>>   dataRcv = new ConcurrentHashMap<String, Set<String>>();
 	//map from task names to tasks
-	private static Map<String, MapReduceTask<?>> taskLst = new ConcurrentHashMap<String, MapReduceTask<?>>();  
+	private static Map<String, MapReduceTask<?, ?>> taskLst = new ConcurrentHashMap<String, MapReduceTask<?, ?>>();  
 	
 	public ServerNode(DFSMaster dfs){
 		ServerNode.dfs = dfs;
@@ -66,7 +66,7 @@ public class ServerNode implements TaskMaster{
 	}
 
 	@Override
-	public <T> void addTask(MapReduceTask<T> task) throws RemoteException {
+	public <U, T> void addTask(MapReduceTask<U, T> task) throws RemoteException {
 		taskLst.put(task.getName(), task);
 		dataMap.put(task.getName(), new ArrayList<String>());
 		dataRcv.put(task.getName(), new HashSet<String>());

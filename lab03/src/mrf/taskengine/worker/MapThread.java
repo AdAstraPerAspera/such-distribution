@@ -6,13 +6,13 @@ import mrf.dfs.DFSNode;
 import mrf.dfs.MRFile;
 import mrf.tasks.MapCallable;
 
-public class MapThread<T> {
-	private DFSNode        node;
-	private MapCallable<T> m;
-	private String         pathIn;
-	private String         pathOut;
+public class MapThread<U, T> {
+	private DFSNode           node;
+	private MapCallable<U, T> m;
+	private String            pathIn;
+	private String            pathOut;
 	
-	public MapThread(DFSNode node, MapCallable<T> m, String pathIn, String pathOut){
+	public MapThread(DFSNode node, MapCallable<U, T> m, String pathIn, String pathOut){
 		this.node    = node;
 		this.m       = m;
 		this.pathIn  = pathIn;
@@ -22,8 +22,7 @@ public class MapThread<T> {
 	public void run() {
 		try {
 			MRFile fileIn  = node.getFile(pathIn);
-			MRFile fileOut = node.getFile(pathOut);
-			m.map(fileIn, fileOut);
+			m.map(fileIn, pathOut);
 		} catch (RemoteException e) {
 			// execution should never reach here
 			e.printStackTrace();
