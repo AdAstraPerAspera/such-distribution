@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 
+import mrf.admin.manager.ConfigData;
 import mrf.config.ConfigParser;
 
 public class DFSCoordinator implements DFSMaster {
@@ -37,39 +38,16 @@ public class DFSCoordinator implements DFSMaster {
 	 * TODO: Threads
 	 */
 	
-	public DFSCoordinator (String configPath) throws Exception {
-		String initData = null;
-		try {
-			FileInputStream fis = new FileInputStream(configPath);
-			HashMap<String, String> parsed = ConfigParser.parse(fis);
-			fis.close();
-			
-			this.part2file = new HashMap<String, HashSet<String>>();
-			this.file2part = new HashMap<String, HashSet<String>>();
-			this.part2loc  = new HashMap<String, String>();
-			
-			for(String s: parsed.keySet()) {
-				if(s.equals("factor")) {
-					this.repfactor = Integer.parseInt(parsed.get(s));
-				} else if (s.equals("chunksize")) {
-					this.chunksize = Integer.parseInt(parsed.get(s));
-				} else if (s.equals("initdata")) {
-					initData = parsed.get(s);
-				} else if (s.equals("dfsmaster")) {
-					String loc = parsed.get(s);
-					this.url = hostFromLoc(loc);
-					this.port = portFromLoc(loc);
-				} else {
-					HashSet<String> files = new HashSet<String>();
-					String tmploc = parsed.get(s);
-					this.part2file.put(s, files);
-					this.part2loc.put(s, tmploc);
-				}
-			}
-		} catch (FileNotFoundException e) {
-			System.err.println("Invalid Config File Path: " + e);
-		}
-		
+	public DFSCoordinator (ConfigData cd) throws Exception {
+		String initData = cd.getInitData();
+		this.port = cd.getPort();
+		this.url = cd.getHost();
+		this.repfactor = cd.getRep();
+		this.chunksize = cd.getChunk();
+		this.part2file = cd.getP2F();
+		this.part2loc = cd.getP2L();
+		this.file2part = new HashMap<String, HashSet<String>>();
+
 		if (this.repfactor <= 0) {
 			throw new Exception("Failed to parse a valid replication factor from the config file");
 		}
