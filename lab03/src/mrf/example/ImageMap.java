@@ -2,8 +2,7 @@ package mrf.example;
 
 import java.util.ArrayList;
 
-import mrf.dfs.MRFile;
-import mrf.tasks.MapCallable;
+import mrf.tasks.AbstractMapCallable;
 
 public class ImageMap extends AbstractMapCallable<ArrayList<Byte>, ArrayList<Byte>> {
 
