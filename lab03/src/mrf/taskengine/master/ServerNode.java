@@ -88,9 +88,18 @@ public class ServerNode implements TaskMaster{
 	}
 	
 	@Override
-	public void poll() {
-		// TODO Auto-generated method stub
-		
+	public List<String> poll() {
+		ArrayList<String> avail = new ArrayList<String>();
+
+		for(TaskWorker w : workers.values()){
+			try {
+				avail.add(w.getName());
+			} catch (RemoteException e) {
+				continue;
+			}
+		}
+
+		return avail;
 	}
 
 }

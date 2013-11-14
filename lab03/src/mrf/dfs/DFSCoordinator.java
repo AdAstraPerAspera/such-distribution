@@ -2,7 +2,6 @@ package mrf.dfs;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -10,15 +9,12 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 
-
 import mrf.admin.manager.ConfigData;
-import mrf.config.ConfigParser;
 
 public class DFSCoordinator implements DFSMaster {
 
@@ -60,7 +56,7 @@ public class DFSCoordinator implements DFSMaster {
 		
 		for (String p : this.partNames) {
 			String loc = part2loc.get(p);
-			ConfigInfo ci = new ConfigInfo(p, url, port);
+			ConfigInfo ci = new ConfigInfo(p, url, port, cd.getRegPort());
 			Socket soc = new Socket(hostFromLoc(loc), portFromLoc(loc));
 			ObjectOutputStream oos = new ObjectOutputStream(soc.getOutputStream());
 			oos.writeObject(ci);
@@ -162,18 +158,4 @@ public class DFSCoordinator implements DFSMaster {
 			}
 		}
 	}
-	
-	public static void main (String[] args) {
-		// TODO: Change this to only take a config file - No Host address or Port, those should be parsed from config
-		String config = (args.length < 1) ? null : args[0];
-		try {
-			DFSCoordinator DFS = new DFSCoordinator(config);
-			Registry registry = LocateRegistry.createRegistry(DFS.port);
-			DFSMaster stub = (DFSMaster) UnicastRemoteObject.exportObject(DFS, 0);
-			registry.bind("dfsmaster", stub);
-		} catch (Exception e) {
-			System.err.println("Client exception: " + e);
-		}
-	}
-	
 }

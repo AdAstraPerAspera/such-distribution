@@ -2,4 +2,5 @@ factor=1
 chunksize=10
 initdata=./data/
 dfsmaster=localhost:15500
+registry=localhost:15650
 part1=localhost:1554

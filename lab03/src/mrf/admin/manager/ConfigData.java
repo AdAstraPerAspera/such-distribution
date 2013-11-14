@@ -12,11 +12,13 @@ public class ConfigData {
 	private String initData;
 	
 	private String url;
+	private int regport;
 	private int port;
 	
-	public ConfigData (String h, int p, int r, int c, HashMap<String, HashSet<String>> p2f, HashMap<String, String> p2l, String idata) {
+	public ConfigData (String h, int p, int p2, int r, int c, HashMap<String, HashSet<String>> p2f, HashMap<String, String> p2l, String idata) {
 		this.url = h;
 		this.port = p;
+		this.regport = p2;
 		this.repfactor = r;
 		this.chunksize = c;
 		this.part2file = p2f;
@@ -26,6 +28,10 @@ public class ConfigData {
 	
 	public int getPort() {
 		return this.port;
+	}
+	
+	public int getRegPort(){
+		return this.regport;
 	}
 	
 	public String getHost() {

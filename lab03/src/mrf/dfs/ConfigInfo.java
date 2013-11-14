@@ -3,14 +3,16 @@ package mrf.dfs;
 import java.io.Serializable;
 
 public class ConfigInfo implements Serializable {
-	String host;
-	String name;
-	int hostPort;
+	private String host;
+	private String name;
+	private int hostPort;
+	private int regPort;
 	
-	public ConfigInfo(String name, String host, int port) {
+	public ConfigInfo(String name, String host, int port, int regPort) {
 		this.host = host;
 		this.name = name;
 		this.hostPort = port;
+		this.regPort = port;
 	}
 	
 	public String getHost () {
@@ -23,6 +25,10 @@ public class ConfigInfo implements Serializable {
 	
 	public int getPort () {
 		return this.hostPort;
+	}
+	
+	public int getRegPort(){
+		return this.regPort;
 	}
 	/*
 	public void setHost(String host) {
