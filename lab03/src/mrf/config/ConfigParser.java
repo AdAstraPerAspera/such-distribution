@@ -16,13 +16,10 @@ public class ConfigParser {
 		String s = br.readLine();
 		
 		while(s != null){
-			System.out.println(s);
 			String[] split = s.split("=");
 			
 			try {
-				map.put(split[0].toUpperCase(), split[1]);
-				System.out.println(split[0]);
-				System.out.println(split[1]);
+				map.put(split[0].toLowerCase(), split[1]);
 			} catch (ArrayIndexOutOfBoundsException e){
 				throw new IOException("Unexpected file format!\nMake sure all lines in the config file are of the form PARAMETER=value.");
 			}

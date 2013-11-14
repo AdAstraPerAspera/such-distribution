@@ -1,7 +1,5 @@
-factor=2
+factor=1
 chunksize=10
-initData=null
+initdata=./data/
 dfsmaster=localhost:15500
 part1=localhost:1554
-part2=localhost:1555
-part3=localhost:1556

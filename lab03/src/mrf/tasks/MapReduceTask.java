@@ -1,10 +1,9 @@
 package mrf.tasks;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 @SuppressWarnings("serial")
-public class MapReduceTask<U, T> implements MRTask{
+public class MapReduceTask<U, T> implements MRTask<U, T>{
 	private String            name;
 	private MapCallable<U, T>    mapTask;
 	private ReduceCallable<T> reduceTask;

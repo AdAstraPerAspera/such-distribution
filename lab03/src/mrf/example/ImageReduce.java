@@ -7,7 +7,7 @@ import mrf.tasks.ReduceCallable;
 public class ImageReduce implements ReduceCallable<ArrayList<Byte>> {
 
 	@Override
-	public ArrayList reduce(ArrayList<ArrayList<Byte>> f) {
+	public ArrayList<Byte> reduce(ArrayList<ArrayList<Byte>> f) {
 		// TODO Auto-generated method stub
 		return null;
 	}

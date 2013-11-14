@@ -3,10 +3,8 @@ package mrf.dfs;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.ServerSocket;
 import java.net.Socket;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -48,15 +46,14 @@ public class DFSCoordinator implements DFSMaster {
 			
 			this.part2file = new HashMap<String, HashSet<String>>();
 			this.file2part = new HashMap<String, HashSet<String>>();
-			this.part2loc = new HashMap<String, String>();
-			
+			this.part2loc  = new HashMap<String, String>();
 			
 			for(String s: parsed.keySet()) {
 				if(s.equals("factor")) {
 					this.repfactor = Integer.parseInt(parsed.get(s));
 				} else if (s.equals("chunksize")) {
 					this.chunksize = Integer.parseInt(parsed.get(s));
-				} else if (s.equals("initData")) {
+				} else if (s.equals("initdata")) {
 					initData = parsed.get(s);
 				} else if (s.equals("dfsmaster")) {
 					String loc = parsed.get(s);
