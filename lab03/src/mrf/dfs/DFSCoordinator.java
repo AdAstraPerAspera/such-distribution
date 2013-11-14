@@ -32,8 +32,8 @@ public class DFSCoordinator implements DFSMaster {
 	private static int partIndex;
 	private String[] partNames;
 	
-	private String url;
-	private int port;
+	public String url;
+	public int port;
 	
 	/* 
 	 * TODO: Threads
@@ -188,7 +188,7 @@ public class DFSCoordinator implements DFSMaster {
 		String config = (args.length < 1) ? null : args[0];
 		try {
 			DFSCoordinator DFS = new DFSCoordinator(config);
-			Registry registry = LocateRegistry.getRegistry(DFS.url, DFS.port);
+			Registry registry = LocateRegistry.createRegistry(DFS.port);
 			DFSMaster stub = (DFSMaster) UnicastRemoteObject.exportObject(DFS, 0);
 			registry.bind("dfsmaster", stub);
 		} catch (Exception e) {
