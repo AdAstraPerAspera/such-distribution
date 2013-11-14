@@ -1,8 +1,6 @@
 package mrf.taskengine.worker;
 
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.ObjectInputStream;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -55,6 +53,7 @@ public class WorkerNode implements TaskWorker{
 		try {
 			FileInputStream   temp = new FileInputStream("/tmp/" + this.name + "/" + name);
 			ObjectInputStream  ois = new ObjectInputStream(temp);
+			temp.close();
 			return (ArrayList<T>) ois.readObject();
 		} catch (Exception e) {
 			// Should not reach here

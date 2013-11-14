@@ -3,6 +3,7 @@ package mrf.tasks;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+@SuppressWarnings("serial")
 public class MapReduceTask<T> implements Serializable{
 	private String            name;
 	private MapCallable<T>    mapTask;

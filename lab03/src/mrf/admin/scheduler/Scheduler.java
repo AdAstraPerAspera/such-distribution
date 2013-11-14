@@ -43,5 +43,7 @@ public interface Scheduler {
 	 */
 	public void completeTask(String nodeName, String taskName);
 	
+	public void addNode(String nodeName, int maxLoad);
+	
 	public void setDFS(DFSMaster dfs);
 }

@@ -8,6 +8,7 @@ import mrf.tasks.MapCallable;
 import mrf.tasks.ReduceCallable;
 
 public interface TaskWorker extends Remote {
+	
 	public <T> void runMapTask(MapCallable<T> t, String inPath, String name) throws RemoteException;
 	
 	public <T> void runReduceTask(ReduceCallable<T> t, ArrayList<TaskWorker> inPaths, String name) throws RemoteException;

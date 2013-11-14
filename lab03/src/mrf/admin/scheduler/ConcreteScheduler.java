@@ -1,6 +1,7 @@
 package mrf.admin.scheduler;
 
 import java.rmi.RemoteException;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -74,6 +75,12 @@ public class ConcreteScheduler implements Scheduler{
 		tasks.get(nodeName).remove(taskName);
 	}
 
+	@Override
+	public void addNode(String nodeName, int maxLoad) {
+		this.tasks.put(nodeName, Collections.newSetFromMap(new ConcurrentHashMap<String, Boolean>()));
+		this.maxLoad.put(nodeName, maxLoad);
+	}
+	
 	@Override
 	public void setDFS(DFSMaster dfs) {
 		fileSys = dfs;

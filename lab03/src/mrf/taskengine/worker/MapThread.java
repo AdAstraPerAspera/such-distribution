@@ -1,6 +1,5 @@
 package mrf.taskengine.worker;
 
-import java.io.File;
 import java.rmi.RemoteException;
 
 import mrf.dfs.DFSNode;

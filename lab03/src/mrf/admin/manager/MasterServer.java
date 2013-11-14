@@ -1,4 +1,4 @@
-package mrf.taskengine.master;
+package mrf.admin.manager;
 
 public class MasterServer {
 
