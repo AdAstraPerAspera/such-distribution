@@ -32,11 +32,13 @@ public class WorkerNode implements TaskWorker{
 	public <T> void runReduceTask(ReduceCallable<T> t, ArrayList<TaskWorker> workers, String name)
 			throws RemoteException {
 		ArrayList<T> data = new ArrayList<T>();
+		int i = 0;
 		for(TaskWorker w : workers){
-			ArrayList<T> wData = w.getReduceResults(name);
+			ArrayList<T> wData = w.getReduceResults(name + ":" + i);
 			for(T datum : wData){
 				data.add(datum);
 			}
+			i++;
 		}
 		
 		T result = (new ReduceThread<T>(t, data)).run();
@@ -44,9 +46,8 @@ public class WorkerNode implements TaskWorker{
 	}
 	
 	@Override
-	public <T> T getReduceResults(String name) throws RemoteException{
-		//TODO retrieve cached file
-		return null;
+	public <T> ArrayList<T> getReduceResults(String name) throws RemoteException{
+		return (ArrayList<T>) node.getFile(name).getContents();
 	}
 	
 	@Override

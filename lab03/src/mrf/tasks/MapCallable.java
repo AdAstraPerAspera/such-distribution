@@ -2,6 +2,8 @@ package mrf.tasks;
 
 import java.io.File;
 
+import mrf.dfs.MRFile;
+
 public interface MapCallable<T> extends MRTask<T> {
-	public void map(File in, File out);
+	public void map(MRFile fileIn, MRFile fileOut);
 }

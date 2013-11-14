@@ -4,6 +4,7 @@ import java.io.File;
 import java.rmi.RemoteException;
 
 import mrf.dfs.DFSNode;
+import mrf.dfs.MRFile;
 import mrf.tasks.MapCallable;
 
 public class MapThread<T> {
@@ -21,8 +22,8 @@ public class MapThread<T> {
 	
 	public void run() {
 		try {
-			File fileIn = node.getFile(pathIn);
-			File fileOut = node.getFile(pathOut);
+			MRFile fileIn  = node.getFile(pathIn);
+			MRFile fileOut = node.getFile(pathOut);
 			m.map(fileIn, fileOut);
 		} catch (RemoteException e) {
 			// execution should never reach here
