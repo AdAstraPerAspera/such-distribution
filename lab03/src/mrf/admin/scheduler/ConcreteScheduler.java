@@ -74,4 +74,9 @@ public class ConcreteScheduler implements Scheduler{
 		tasks.get(nodeName).remove(taskName);
 	}
 
+	@Override
+	public void setDFS(DFSMaster dfs) {
+		fileSys = dfs;
+	}
+
 }

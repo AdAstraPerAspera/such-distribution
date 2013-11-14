@@ -9,12 +9,16 @@ import mrf.tasks.MapCallable;
 import mrf.tasks.ReduceCallable;
 
 public class WorkerNode implements TaskWorker{
+	private String     name;
 	private DFSNode	   node;
 	private TaskMaster master;
+	private int        maxLoad;
 
-	public WorkerNode(DFSNode node, TaskMaster master){
-		this.node   = node;
-		this.master = master;
+	public WorkerNode(String name, DFSNode node, TaskMaster master){
+		this.name    = name;
+		this.node    = node;
+		this.master  = master;
+		this.maxLoad = Runtime.getRuntime().availableProcessors();
 	}
 	
 	@Override
@@ -40,7 +44,18 @@ public class WorkerNode implements TaskWorker{
 	}
 	
 	@Override
-	public <T> T getReduceResults(String name){
+	public <T> T getReduceResults(String name) throws RemoteException{
+		//TODO retrieve cached file
 		return null;
+	}
+	
+	@Override
+	public int getMaxLoad() throws RemoteException{
+		return maxLoad;
+	}
+	
+	@Override
+	public String getName() throws RemoteException{
+		return this.name;
 	}
 }

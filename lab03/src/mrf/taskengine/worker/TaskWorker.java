@@ -12,5 +12,9 @@ public interface TaskWorker extends Remote {
 	
 	public <T> void runReduceTask(ReduceCallable<T> t, ArrayList<TaskWorker> inPaths, String name) throws RemoteException;
 
-	public <T> T getReduceResults(String name);
+	public <T> T getReduceResults(String name) throws RemoteException;
+	
+	public int getMaxLoad() throws RemoteException;
+	
+	public String getName() throws RemoteException;
 }

@@ -1,27 +1,33 @@
 package mrf.tasks;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class MapReduceTask<T> {
+public class MapReduceTask<T> implements Serializable{
+	private String            name;
 	private MapCallable<T>    mapTask;
 	private ReduceCallable<T> reduceTask;
 	private ArrayList<String> files;
 	
-	public MapReduceTask(MapCallable<T> mapTask, ReduceCallable<T> reduceTask, ArrayList<String> files){
+	public MapReduceTask(String name, MapCallable<T> mapTask, ReduceCallable<T> reduceTask, ArrayList<String> files){
 		this.mapTask    = mapTask;
 		this.reduceTask = reduceTask;
 		this.files      = files;
 	}
 	
-	public MRTask<T> getMapTask(){
+	public MapCallable<T> getMapTask(){
 		return mapTask;
 	}
 	
-	public MRTask<T> getReduceTask(){
+	public ReduceCallable<T> getReduceTask(){
 		return reduceTask;
 	}
 	
 	public ArrayList<String> getFiles(){
 		return files;
+	}
+	
+	public String getName(){
+		return name;
 	}
 }
