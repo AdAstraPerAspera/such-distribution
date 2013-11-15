@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Set;
 
 import mrf.config.ConfigParser;
 import mrf.dfs.DFSCoordinator;
@@ -103,6 +104,15 @@ public class MasterServer {
 		while(true){
 			String input = cin.nextLine();
 			switch(input.toLowerCase()){
+			case "files":
+			case "availablefiles":
+				Set<String> files = dfsMaster.listFiles();
+				System.out.println("Available files: ");
+				for(String s : files){
+					System.out.print(s + " ");
+				}
+				System.out.println();
+				break;
 			case "status":
 			case "poll":
 				System.out.println("Live mapreduce nodes: ");
@@ -114,6 +124,7 @@ public class MasterServer {
 				break;
 			default:
 				System.out.println("Options are:\npoll (displays a list of living nodes)");
+				System.out.println("files (displays a list of files in the DFS)");
 			}
 		}
 	}

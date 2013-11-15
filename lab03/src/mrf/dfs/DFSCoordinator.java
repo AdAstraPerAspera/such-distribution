@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Set;
 
 import mrf.admin.manager.ConfigData;
 
@@ -160,5 +161,10 @@ public class DFSCoordinator implements DFSMaster {
 				}
 			}
 		}
+	}
+
+	@Override
+	public Set<String> listFiles() throws RemoteException {
+		return file2part.keySet();
 	}
 }
