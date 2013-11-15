@@ -88,7 +88,7 @@ public class ServerNode implements TaskMaster{
 	public boolean addNode(TaskWorker worker) throws RemoteException {
 		if(workers.containsKey(worker.getName())) return false;
 		workers.put(worker.getName(), worker);
-		sched.addNode(worker.getName(), worker.getMaxLoad());
+		sched.addNode(worker, worker.getName(), worker.getMaxLoad());
 		return true;
 	}
 	

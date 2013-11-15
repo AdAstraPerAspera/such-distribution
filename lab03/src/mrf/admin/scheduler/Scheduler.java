@@ -1,6 +1,7 @@
 package mrf.admin.scheduler;
 
 import mrf.dfs.DFSMaster;
+import mrf.taskengine.worker.TaskWorker;
 
 /**
  * Interface for a simple task scheduler
@@ -36,7 +37,7 @@ public interface Scheduler {
 	 * @param nodeName
 	 * @param maxLoad
 	 */
-	public void addNode(String nodeName, int maxLoad);
+	public void addNode(TaskWorker worker, String nodeName, int maxLoad);
 	
 	/**
 	 * Adds a reference to the DFS

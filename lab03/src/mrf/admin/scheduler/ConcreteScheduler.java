@@ -7,6 +7,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import mrf.dfs.DFSMaster;
+import mrf.taskengine.worker.TaskWorker;
 
 /**
  * Concrete implementation of Scheduler
@@ -20,11 +21,13 @@ public class ConcreteScheduler implements Scheduler{
 	private DFSMaster 				 fileSys;
 	private Map<String, Set<String>> tasks;
 	private Map<String, Integer>	 maxLoad;
+	private Map<String, TaskWorker>  workers;
 	
 	public ConcreteScheduler(DFSMaster fileSys){
 		this.fileSys = fileSys;
 		this.tasks   = new ConcurrentHashMap<String, Set<String>>();
 		this.maxLoad = new ConcurrentHashMap<String, Integer>();
+		this.workers = new ConcurrentHashMap<String, TaskWorker>();
 	}
 	
 	@Override
@@ -48,8 +51,13 @@ public class ConcreteScheduler implements Scheduler{
 			
 			for(String n : tasks.keySet()){
 				if(tasks.get(n).size() < minLoad || minLoad < 0){
-					minLoad = tasks.get(n).size();
-					minNode = n;
+					try {
+						workers.get(n).getName();
+						minLoad = tasks.get(n).size();
+						minNode = n;
+					} catch(Exception e){
+						continue;
+					}
 				}
 			}
 			
@@ -68,8 +76,13 @@ public class ConcreteScheduler implements Scheduler{
 		
 		for(String n : tasks.keySet()){
 			if(tasks.get(n).size() < minLoad || minLoad < 0){
-				minLoad = tasks.get(n).size();
-				minNode = n;
+				try {
+					workers.get(n).getName();
+					minLoad = tasks.get(n).size();
+					minNode = n;
+				} catch(Exception e){
+					continue;
+				}
 			}
 		}
 		
@@ -82,9 +95,10 @@ public class ConcreteScheduler implements Scheduler{
 	}
 
 	@Override
-	public void addNode(String nodeName, int maxLoad) {
+	public void addNode(TaskWorker worker, String nodeName, int maxLoad) {
 		this.tasks.put(nodeName, Collections.newSetFromMap(new ConcurrentHashMap<String, Boolean>()));
 		this.maxLoad.put(nodeName, maxLoad);
+		this.workers.put(nodeName, worker);
 	}
 	
 	@Override
