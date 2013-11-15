@@ -6,6 +6,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Remote Interface for the Coordinator
+ * 
+ * @author William Maynes - wmaynes
+ *
+ */
+
 public interface DFSMaster extends Remote {
 	
 	public Set<String> listFiles() throws RemoteException;

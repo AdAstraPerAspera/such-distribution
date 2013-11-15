@@ -13,6 +13,14 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.HashSet;
 
+/**
+ * DFS Participant. Writes files to its local space, recording that it has a copy of said file. 
+ * Also returns files that are requested, whether from local space or somewhere else on the system.
+ * 
+ * @author William Maynes - wmaynes
+ *
+ */
+
 public class DFSParticipant implements DFSNode {
 	private String name;
 	private String coordinator;

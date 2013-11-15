@@ -3,6 +3,13 @@ package mrf.dfs;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+/**
+ * Custom file type for use with the DFS.
+ * 
+ * @author William Maynes - wmaynes
+ *
+ */
+
 public class MRFile implements Serializable {
 	private ArrayList<Object> contents;
 	private String name;

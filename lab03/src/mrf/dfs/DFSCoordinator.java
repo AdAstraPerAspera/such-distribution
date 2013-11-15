@@ -17,6 +17,14 @@ import java.util.Set;
 
 import mrf.admin.manager.ConfigData;
 
+/**
+ * The DFS Coordinator. Distributes files across the system and reports which participants have copies
+ * of which files.
+ * 
+ * @author William Maynes - wmaynes
+ *
+ */
+
 public class DFSCoordinator implements DFSMaster {
 
 	private HashMap<String, HashSet<String>> part2file;

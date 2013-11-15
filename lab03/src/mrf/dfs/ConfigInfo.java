@@ -2,6 +2,13 @@ package mrf.dfs;
 
 import java.io.Serializable;
 
+/**
+ * Object used to send information to DFS Participants.
+ * 
+ * @author William Maynes - wmaynes
+ *
+ */
+
 public class ConfigInfo implements Serializable {
 	private String host;
 	private String name;

@@ -3,6 +3,13 @@ package mrf.admin.manager;
 import java.util.HashMap;
 import java.util.HashSet;
 
+/**
+ * Object used to store information after the config file has been parsed.
+ * 
+ * @author William Maynes - wmaynes
+ *
+ */
+
 public class ConfigData {
 	private HashMap<String, HashSet<String>> part2file;
 	private HashMap<String, String> part2loc;
