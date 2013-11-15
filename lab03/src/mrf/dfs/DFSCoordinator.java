@@ -135,11 +135,11 @@ public class DFSCoordinator implements DFSMaster {
 					// Start by adding the file to the corresponding HashMaps so that they can be used later.
 					HashSet<String> fs = part2file.get(part);
 					HashSet<String> ps = file2part.get(fName + i);
-					fs.add(fName + i);
+					fs.add(fName + "-" + i);
 					if(ps == null) ps = new HashSet<String>();
 					ps.add(part);
 					HashSet<String> oldfs = part2file.put(part, fs);
-					HashSet<String> oldps = file2part.put(fName + i, ps);
+					HashSet<String> oldps = file2part.put(fName + "-" + i, ps);
 					/* 
 					 * Try to actually write the file to the node. If it works, move to the next replica, otherwise
 					 * roll back the change and continue on the same replica count.
