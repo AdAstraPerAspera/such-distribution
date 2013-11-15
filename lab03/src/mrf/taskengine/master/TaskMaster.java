@@ -18,5 +18,5 @@ public interface TaskMaster extends Remote {
 	
 	public boolean addNode(TaskWorker worker) throws RemoteException;
 	
-	public List<String> poll();
+	public List<String> poll() throws RemoteException;
 }

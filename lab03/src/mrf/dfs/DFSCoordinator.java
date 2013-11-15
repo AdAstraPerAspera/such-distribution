@@ -25,10 +25,11 @@ public class DFSCoordinator implements DFSMaster {
 	private int chunksize = 0;
 	
 	private static int partIndex;
-	private String[] partNames;
+	private ArrayList<String> partNames;
 	
 	public String url;
 	public int port;
+	public int regPort;
 	
 	/* 
 	 * TODO: Threads
@@ -37,6 +38,7 @@ public class DFSCoordinator implements DFSMaster {
 	public DFSCoordinator (ConfigData cd) throws Exception {
 		String initData = cd.getInitData();
 		this.port = cd.getPort();
+		this.regPort = cd.getRegPort();
 		this.url = cd.getHost();
 		this.repfactor = cd.getRep();
 		this.chunksize = cd.getChunk();
@@ -51,7 +53,7 @@ public class DFSCoordinator implements DFSMaster {
 			this.repfactor = (this.repfactor <= this.part2file.size()) ? this.repfactor : this.part2file.size();
 		}
 		
-		this.partNames = this.part2loc.keySet().toArray(new String[0]);
+		this.partNames = new ArrayList<String>(this.part2loc.keySet());
 		DFSCoordinator.partIndex = 0;
 		
 		for (String p : this.partNames) {
@@ -121,34 +123,35 @@ public class DFSCoordinator implements DFSMaster {
 	@Override
 	public void distributeFile(MRFile mrf) throws RemoteException {
 		if(mrf != null) {
-			Registry reg = LocateRegistry.getRegistry(url, port);
+			Registry reg = LocateRegistry.getRegistry(url, regPort);
 			ArrayList<MRFile> A = partitionFile(mrf);
 			for(int i = 0; i < A.size(); i++) {
 				int repcount = 0;
 				int startIndex = partIndex;
 				while (repcount < this.repfactor) {
-					String part = partNames[partIndex];
+					String part = partNames.get(partIndex);
 					String fName = mrf.getName();
 					// Start by adding the file to the corresponding HashMaps so that they can be used later.
 					HashSet<String> fs = part2file.get(part);
 					HashSet<String> ps = file2part.get(fName);
 					fs.add(fName);
+					if(ps == null) ps = new HashSet<String>();
 					ps.add(part);
 					HashSet<String> oldfs = part2file.put(part, fs);
 					HashSet<String> oldps = file2part.put(fName, ps);
 					/* 
 					 * Try to actually write the file to the node. If it works, move to the next replica, otherwise
-					 * roll back the cange and continue on the same replica count.
+					 * roll back the change and continue on the same replica count.
 					 */
 					try {
-						DFSParticipant stub = (DFSParticipant) reg.lookup(part);
+						DFSNode stub = (DFSNode) reg.lookup(part);
 						stub.writeFile(A.get(i));
 						repcount++;
-						partIndex = (partIndex + 1) % partNames.length;
+						partIndex = (partIndex + 1) % partNames.size();
 					} catch (NotBoundException e) {
 						part2file.put(part, oldfs);
 						file2part.put(fName, oldps);
-						partIndex = (partIndex + 1) % partNames.length;
+						partIndex = (partIndex + 1) % partNames.size();
 					}
 					// If we have gone through ever possible participant, break the current file distribution
 					if (partIndex == startIndex) {

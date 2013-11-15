@@ -19,6 +19,7 @@ public class ConcreteScheduler implements Scheduler{
 	public ConcreteScheduler(DFSMaster fileSys){
 		this.fileSys = fileSys;
 		this.tasks   = new ConcurrentHashMap<String, Set<String>>();
+		this.maxLoad = new ConcurrentHashMap<String, Integer>();
 	}
 	
 	@Override

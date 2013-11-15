@@ -1,5 +1,6 @@
 package mrf.taskengine.worker;
 
+import java.io.Serializable;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -7,7 +8,7 @@ import java.util.ArrayList;
 import mrf.tasks.MapCallable;
 import mrf.tasks.ReduceCallable;
 
-public interface TaskWorker extends Remote {
+public interface TaskWorker extends Remote, Serializable {
 	
 	public <U, T> void runMapTask(MapCallable<U, T> t, String inPath, String name) throws RemoteException;
 	
