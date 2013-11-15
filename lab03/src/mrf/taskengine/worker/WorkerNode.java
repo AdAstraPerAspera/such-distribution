@@ -10,6 +10,12 @@ import mrf.taskengine.master.TaskMaster;
 import mrf.tasks.MapCallable;
 import mrf.tasks.ReduceCallable;
 
+/**
+ * Concrete implementation of TaskWorker
+ * 
+ * @author Michael Wang - mhw1
+ *
+ */
 public class WorkerNode implements TaskWorker{
 	private String     name;
 	private DFSNode	   node;

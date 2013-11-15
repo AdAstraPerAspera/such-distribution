@@ -17,6 +17,13 @@ import mrf.dfs.DFSMaster;
 import mrf.taskengine.master.ServerNode;
 import mrf.taskengine.master.TaskMaster;
 
+/**
+ * Main method to run the coordinator for both the DFS and the compute nodes
+ * 
+ * @author Michael Wang - mhw1
+ * @author William Maynes - wmaynes
+ *
+ */
 public class MasterServer {
 	
 	private static int portFromLoc(String str) {

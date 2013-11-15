@@ -2,6 +2,12 @@ package mrf.config;
 
 import java.util.HashMap;
 
+/**
+ * Abstract implementation of Settings
+ * 
+ * @author Michael Wang - mhw1
+ *
+ */
 public abstract class AbstractSettings implements Settings{
 	private HashMap<String,String> settings;
 	

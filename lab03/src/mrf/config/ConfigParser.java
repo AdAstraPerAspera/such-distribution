@@ -7,6 +7,12 @@ import java.io.InputStreamReader;
 import java.util.HashMap;
 
 public class ConfigParser {
+	/**
+	 * Parses a settings file and generates a HashMap.
+	 * @param f - FileInputStream to read from
+	 * @return
+	 * @throws IOException
+	 */
 	public static HashMap<String,String> parse(FileInputStream f) throws IOException{
 		HashMap<String,String> map = new HashMap<String,String>();
 		

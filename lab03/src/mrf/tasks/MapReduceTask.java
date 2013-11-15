@@ -2,10 +2,18 @@ package mrf.tasks;
 
 import java.util.ArrayList;
 
+/**
+ * Concrete implementation for MRTask
+ * 
+ * @author Michael Wang - mhw1
+ *
+ * @param <U>
+ * @param <T>
+ */
 @SuppressWarnings("serial")
 public class MapReduceTask<U, T> implements MRTask<U, T>{
 	private String            name;
-	private MapCallable<U, T>    mapTask;
+	private MapCallable<U, T> mapTask;
 	private ReduceCallable<T> reduceTask;
 	private ArrayList<String> files;
 	

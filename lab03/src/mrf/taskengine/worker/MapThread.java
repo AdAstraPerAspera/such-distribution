@@ -6,6 +6,14 @@ import mrf.dfs.DFSNode;
 import mrf.dfs.MRFile;
 import mrf.tasks.MapCallable;
 
+/**
+ * Callable that runs a map task.
+ * 
+ * @author Michael Wang - mhw1
+ *
+ * @param <U> - class to map from
+ * @param <T> - class to map to
+ */
 public class MapThread<U, T> {
 	private DFSNode           node;
 	private MapCallable<U, T> m;

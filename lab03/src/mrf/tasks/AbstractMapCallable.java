@@ -7,6 +7,14 @@ import java.util.ArrayList;
 
 import mrf.dfs.MRFile;
 
+/**
+ * For use with MRTask.  All MapCallables should extend this class
+ * 
+ * @author Michael Wang - mhw1
+ *
+ * @param <U>
+ * @param <T>
+ */
 abstract public class AbstractMapCallable<U, T> implements MapCallable<U, T>{
 
 	@Override

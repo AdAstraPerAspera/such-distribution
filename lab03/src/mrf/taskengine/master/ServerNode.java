@@ -15,6 +15,11 @@ import mrf.dfs.MRFile;
 import mrf.taskengine.worker.TaskWorker;
 import mrf.tasks.MapReduceTask;
 
+/**
+ * Concrete implementation for TaskMaster
+ * 
+ * @author Michael Wang - mhw1
+ */
 public class ServerNode implements TaskMaster{
 
 	private static Scheduler sched = new ConcreteScheduler(null);

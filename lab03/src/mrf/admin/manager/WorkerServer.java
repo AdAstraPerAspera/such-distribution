@@ -17,6 +17,13 @@ import mrf.taskengine.master.TaskMaster;
 import mrf.taskengine.worker.TaskWorker;
 import mrf.taskengine.worker.WorkerNode;
 
+/**
+ * Main class to run a DFS node and an associated compute node
+ * 
+ * @author Michael Wang - mhw1
+ * @author William Maynes - wmaynes
+ *
+ */
 public class WorkerServer {
 	private static String reghost;
 	private static int regport;

@@ -8,6 +8,11 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import mrf.dfs.DFSMaster;
 
+/**
+ * Concrete implementation of Scheduler
+ * @author Michael Wang - mhw1
+ *
+ */
 public class ConcreteScheduler implements Scheduler{
 
 	//Needs to know where files are and how many tasks each node is running;

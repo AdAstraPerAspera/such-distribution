@@ -2,24 +2,12 @@ package mrf.admin.scheduler;
 
 import mrf.dfs.DFSMaster;
 
+/**
+ * Interface for a simple task scheduler
+ * @author Michael Wang - mhw1
+ *
+ */
 public interface Scheduler {
-	/**
-	 * TODO: Complete Scheduler (pretty much done)
-	 * 
-	 * TODO: Concrete implementation of MasterServer
-	 * 
-	 * TODO: Main files for Master and Worker
-	 * 
-	 * TODO: Complete integration with DFS
-	 * 
-	 * TODO: Complete management stuff
-	 * 
-	 * 
-	 * TODO: Examples
-	 */
-	
-	//to reschedule, call completeTask and one of the scheduling functions
-	
 	/**
 	 * Schedules a Mapping task to a node, giving preference to
 	 * nodes which have the file required
@@ -43,7 +31,16 @@ public interface Scheduler {
 	 */
 	public void completeTask(String nodeName, String taskName);
 	
+	/**
+	 * Adds a new compute node to the internal model
+	 * @param nodeName
+	 * @param maxLoad
+	 */
 	public void addNode(String nodeName, int maxLoad);
 	
+	/**
+	 * Adds a reference to the DFS
+	 * @param dfs
+	 */
 	public void setDFS(DFSMaster dfs);
 }
