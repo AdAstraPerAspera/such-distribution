@@ -26,18 +26,6 @@ public class DFSParticipant implements DFSNode {
 		this.localFiles = new HashSet<String>();
 	}
 
-	/*
-	 * TODO: Write File to local-space AND send to coordinator for replication
-	 * 
-	 * TODO: Read file from local-space
-	 * 
-	 * TODO: Get an ORIGINAL local copy from the coordinator
-	 * 
-	 * TODO: Return a TEMP copy to the coordinator
-	 * 
-	 * TODO: Return list of ORIGINAL replicas that it has access to.
-	 */
-	
 	public void writeFile (MRFile mrf) {
 		try {
 			String fName = mrf.getName();
@@ -53,7 +41,6 @@ public class DFSParticipant implements DFSNode {
 
 	@Override
 	public MRFile getFile(String name) throws RemoteException {
-		// TODO Auto-generated method stub
 		MRFile mrf = null;
 		boolean hasFile = localFiles.contains(name);
 		if (hasFile) {

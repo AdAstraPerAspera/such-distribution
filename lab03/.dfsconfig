@@ -1,6 +1,7 @@
-factor=1
+factor=2
 chunksize=10
-initdata=./data/
+initdata=data
 dfsmaster=localhost:15500
 registry=localhost:15650
 part1=localhost:1554
+part2=localhost:1555

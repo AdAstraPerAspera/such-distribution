@@ -12,7 +12,7 @@ public class ConfigInfo implements Serializable {
 		this.host = host;
 		this.name = name;
 		this.hostPort = port;
-		this.regPort = port;
+		this.regPort = regPort;
 	}
 	
 	public String getHost () {

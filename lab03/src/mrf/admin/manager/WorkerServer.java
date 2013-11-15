@@ -18,22 +18,27 @@ import mrf.taskengine.worker.TaskWorker;
 import mrf.taskengine.worker.WorkerNode;
 
 public class WorkerServer {
-	private static DFSNode startDFSNode(Registry registry, int port) throws Exception{
+	private static String reghost;
+	private static int regport;
+	
+	private static DFSNode startDFSNode(int port) throws Exception{
 		ServerSocket s = new ServerSocket(port);
 		Socket soc = s.accept();
 		
-		System.out.println("Inbound connection recieved.");
 		ObjectInputStream ois = new ObjectInputStream(soc.getInputStream());
 		ConfigInfo ci = (ConfigInfo) ois.readObject();
 		
 		// Do everything I need to before I send my ACK.
 		String host = ci.getHost();
+		reghost = ci.getHost();
 		String name = ci.getName();
-		int hPort = ci.getPort();
+		int hPort = ci.getRegPort();
+		regport = ci.getRegPort();
 		
 		DFSParticipant DFS = new DFSParticipant(name, host, hPort);
 		DFSNode stub = (DFSNode) UnicastRemoteObject.exportObject(DFS, 0);
-		registry = LocateRegistry.getRegistry(host, ci.getRegPort());
+		Registry registry = LocateRegistry.getRegistry(host, hPort);
+		System.out.println("Registry: " + hPort);
 		registry.bind(name, stub);
 		
 		ObjectOutputStream oos = new ObjectOutputStream(soc.getOutputStream());
@@ -55,18 +60,28 @@ public class WorkerServer {
 	
 	public static void main(String[] args) throws Exception{
 		Scanner cin = new Scanner(System.in);
-		Registry registry = null;
 		
 		System.out.println("Starting worker node...");
 		System.out.print("Port to listen on? ");
 		int port = cin.nextInt();
-		
-		DFSNode node = WorkerServer.startDFSNode(registry, port);
-		
-		System.out.println("Name of task node? ");
 		String name = cin.nextLine();
 		
-		TaskMaster master = (TaskMaster) registry.lookup("taskmaster");
+		DFSNode node = WorkerServer.startDFSNode(port);
+		
+		System.out.println("Name of task node? ");
+		while(name.equals("") || name.equals("\n") || name == null) name = cin.nextLine();
+		
+		Registry registry = LocateRegistry.getRegistry(reghost, regport);
+		TaskMaster master = null;
+		
+		while(true){
+			try {
+				master = (TaskMaster) registry.lookup("taskmaster");
+			} catch (Exception e) {
+				continue;
+			}
+			break;
+		}
 		TaskWorker worker = startMapReduceNode(name, registry, node, port);
 		
 		registry.bind(name, worker);

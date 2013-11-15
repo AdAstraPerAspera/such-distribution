@@ -96,6 +96,8 @@ public class MasterServer {
 		
 		DFSMaster dfsMaster = MasterServer.startDFS(registry, config);
 		
+		ConfigData cd = readConfig(config);
+		registry = LocateRegistry.getRegistry("localhost", cd.getRegPort());
 		TaskMaster master = MasterServer.startServer(dfsMaster, registry);
 		
 		while(true){
@@ -103,17 +105,15 @@ public class MasterServer {
 			switch(input.toLowerCase()){
 			case "status":
 			case "poll":
+				System.out.println("Live mapreduce nodes: ");
 				List<String> avail = master.poll();
 				for(String s : avail){
-					
+					System.out.print(s + " ");
 				}
-				break;
-			case "quit":
-			case "shutdown":
-			case "exit":
+				System.out.println();
 				break;
 			default:
-				System.out.println("Options are:\nstatus\npoll\n\n");
+				System.out.println("Options are:\npoll (displays a list of living nodes)");
 			}
 		}
 	}
