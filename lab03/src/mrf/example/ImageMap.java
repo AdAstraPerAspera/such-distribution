@@ -14,5 +14,4 @@ public class ImageMap extends AbstractMapCallable<ArrayList<Byte>, ArrayList<Byt
 		}
 		return res;
 	}
-
 }

@@ -134,12 +134,12 @@ public class DFSCoordinator implements DFSMaster {
 					String fName = mrf.getName();
 					// Start by adding the file to the corresponding HashMaps so that they can be used later.
 					HashSet<String> fs = part2file.get(part);
-					HashSet<String> ps = file2part.get(fName);
-					fs.add(fName);
+					HashSet<String> ps = file2part.get(fName + i);
+					fs.add(fName + i);
 					if(ps == null) ps = new HashSet<String>();
 					ps.add(part);
 					HashSet<String> oldfs = part2file.put(part, fs);
-					HashSet<String> oldps = file2part.put(fName, ps);
+					HashSet<String> oldps = file2part.put(fName + i, ps);
 					/* 
 					 * Try to actually write the file to the node. If it works, move to the next replica, otherwise
 					 * roll back the change and continue on the same replica count.
@@ -151,7 +151,7 @@ public class DFSCoordinator implements DFSMaster {
 						partIndex = (partIndex + 1) % partNames.size();
 					} catch (NotBoundException e) {
 						part2file.put(part, oldfs);
-						file2part.put(fName, oldps);
+						file2part.put(fName + i, oldps);
 						partIndex = (partIndex + 1) % partNames.size();
 					}
 					// If we have gone through ever possible participant, break the current file distribution
