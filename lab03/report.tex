@@ -71,6 +71,18 @@ The MRF is the primary workhorse for our framework. As workers receive tasks, th
 \end{question}
 
 \begin{question}{Section 2 - Administration and Configuration}
+\subsection*{The Build}
+For your convenience, we have included a build file. To build the project, simply run the command "ant" in the directory that has build.xml. Once the file has been built, you can run classes with the command "java -cp <classpath>" to run each built class. The following commands will be particularly useful:\\
+
+Running a built MasterServer:\\
+\verb$java -cp bin mrf.MasterServer$
+
+Running a built WorkerServer:\\
+\verb$java -cp bin mrf.WorkerServer$
+
+Running a testMainfile:\\
+\verb$java -cp bin mrf.example.TestMain$
+
 \subsection*{The Configuration File}
 Our framework requires a configuration file be given to the DFS Coordinator. This file is passed as a path writen to Standard In. The Framework will then parse the necessary information out of the config file.
 

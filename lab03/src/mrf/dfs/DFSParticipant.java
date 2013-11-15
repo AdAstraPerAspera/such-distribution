@@ -34,6 +34,9 @@ public class DFSParticipant implements DFSNode {
 		this.localFiles = new HashSet<String>();
 	}
 
+	/**
+	 * Write a file to local space.
+	 */
 	public void writeFile (MRFile mrf) {
 		try {
 			String fName = mrf.getName();
@@ -48,6 +51,9 @@ public class DFSParticipant implements DFSNode {
 	}
 
 	@Override
+	/**
+	 * Get a file from either local space or from somewhere else on the network.
+	 */
 	public MRFile getFile(String name) throws RemoteException {
 		MRFile mrf = null;
 		boolean hasFile = localFiles.contains(name);

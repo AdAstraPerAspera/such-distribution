@@ -40,10 +40,11 @@ public class DFSCoordinator implements DFSMaster {
 	public int port;
 	public int regPort;
 	
-	/* 
-	 * TODO: Threads
+	/**
+	 * Constructor for the DFS - Pulls necessary information out of cd and initializes other fields
+	 * @param cd
+	 * @throws Exception
 	 */
-	
 	public DFSCoordinator (ConfigData cd) throws Exception {
 		String initData = cd.getInitData();
 		this.port = cd.getPort();
@@ -94,6 +95,11 @@ public class DFSCoordinator implements DFSMaster {
 		return s[0];
 	}
 	
+	/**
+	 * Partition a MRFile according to the chunksize
+	 * @param mrf
+	 * @return
+	 */
 	private ArrayList<MRFile> partitionFile (MRFile mrf) {
 		String name = mrf.getName();
 		int c = chunksize;
@@ -107,6 +113,13 @@ public class DFSCoordinator implements DFSMaster {
 		return newFiles;
 	}
 	
+	
+	/**
+	 * Convert a normal file into an MRFile assuming correct format
+	 * @param f
+	 * @return
+	 * @throws Exception
+	 */
 	private MRFile F2MRFile (File f) throws Exception{
 		MRFile mrf = null;
 		if(f.isFile()) {
@@ -128,8 +141,10 @@ public class DFSCoordinator implements DFSMaster {
 		return file2part.get(name);
 	}
 
-
 	@Override
+	/**
+	 * Distribute a MRFile across the network.
+	 */
 	public void distributeFile(MRFile mrf) throws RemoteException {
 		if(mrf != null) {
 			Registry reg = LocateRegistry.getRegistry(url, regPort);
