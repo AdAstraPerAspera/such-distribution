@@ -1,0 +1,10 @@
+<project default="compile">
+  <target name="compile">
+    <mkdir dir="bin"/>
+    <javac srcdir="src"
+           destdir="bin"
+           fork="yes"
+           executable="/usr/local/bin/mpijavac"
+    />
+  </target>
+</project>
