@@ -5,38 +5,19 @@ import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
+import kmeans.type.*;
+
 public class KMeansMain {
-	private enum DataType{
-		DNA, POINT;
-	}
-	
-	private static class Point{
-		double x, y;
-		
-		public Point(double x, double y){
-			this.x = x;
-			this.y = y;
-		}
-		
-		public double getX() { return x; }
-		
-		public double getY() { return y; }
-	}
-	
 	private static void printHelp(){
 	  System.out.println("Need arguments to run:");
     	System.out.println("If using DNA: use arguments \"-d <length of strings> <input file path>\"");
     	System.out.println("If using points: use arguments \"-p <input file path>\"");
     	System.exit(0);
   	}
-
-	private static double cartesianDistance(Point x, Point y){
-		return 0.0;
-	}
 	
 	public static void main(String[] args) throws Exception{
 		//process input
-		KMeansMain.DataType type      = null;
+		DataType type      			  = null;
 		int 				length	  = 0;
 		ArrayList<String>   dnaData   = new ArrayList<String>();
 		ArrayList<Point>    pointData = new ArrayList<Point>();
@@ -44,7 +25,7 @@ public class KMeansMain {
 		if(args.length < 1) {
 			KMeansMain.printHelp();
 		} else if (args[0].equals("-d")){
-			type = KMeansMain.DataType.DNA;
+			type = DataType.DNA;
 			if(args.length < 3){
 				KMeansMain.printHelp();
 			}
@@ -60,7 +41,7 @@ public class KMeansMain {
 			
 			reader.close();
 		} else if (args[0].equals("-p")){
-			type = KMeansMain.DataType.POINT;
+			type = DataType.POINT;
 			if(args.length < 2){
 				KMeansMain.printHelp();
 			}
@@ -70,7 +51,7 @@ public class KMeansMain {
 			
 			while((line = reader.readLine()) != null){
 				String[] points = line.split(",");
-				Point temp = new KMeansMain.Point(Double.parseDouble(points[0]), Double.parseDouble(points[1]));
+				Point temp = new Point(Double.parseDouble(points[0]), Double.parseDouble(points[1]));
 				
 				pointData.add(temp);
 			}
@@ -80,9 +61,9 @@ public class KMeansMain {
 			KMeansMain.printHelp();
 		}
 		
-		if(type == KMeansMain.DataType.DNA){
+		if(type == DataType.DNA){
 			
-		} else if(type == KMeansMain.DataType.POINT){
+		} else if(type == DataType.POINT){
 			
 		} else {
 			System.err.println("Execution should never reach here.");
