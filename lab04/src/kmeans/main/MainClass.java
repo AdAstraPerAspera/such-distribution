@@ -12,11 +12,12 @@ class MainClass {
 		
 		if(myrank == 0){
 			//I am master.
-			Master.run();
+			Master.runMaster();
+			
 			System.out.println("This is the master, rank " + myrank);
 		} else {
 			//I am slave.
-			Slave.run();
+			Slave.runSlave();
 			
 			System.out.println("This is a slave, rank " + myrank);
 		}

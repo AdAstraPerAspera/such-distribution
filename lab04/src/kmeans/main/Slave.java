@@ -1,7 +1,9 @@
 package kmeans.main;
 
 public class Slave {
-	public static void run(){
-		
+	public static void runSlave(){
+		while(true){
+			
+		}
 	}
 }
