@@ -79,7 +79,7 @@ public class KMeansMain {
 		}
 		
 		if(type == DataType.DNA){
-			
+			Calcs.dnaMeans(clusters, eps, length, dnaData);
 		} else if(type == DataType.POINT){
 			Calcs.pointMeans(clusters, pointData, eps);
 		} else {
