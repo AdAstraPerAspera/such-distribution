@@ -12,7 +12,7 @@ class MainClass {
 		
 		if(myrank == 0){
 			//I am master.
-			Master.runMaster();
+			Master.runMaster(size);
 			
 			System.out.println("This is the master, rank " + myrank);
 		} else {
