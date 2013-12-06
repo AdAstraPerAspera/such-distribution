@@ -11,7 +11,7 @@ class MainClass {
     	System.exit(0);
   	}
 	
-	public static void main(String[] args) throws MPIException {
+	public static void main(String[] args) throws Exception {
 		args = MPI.Init(args);
 
 		int myrank = MPI.COMM_WORLD.Rank();

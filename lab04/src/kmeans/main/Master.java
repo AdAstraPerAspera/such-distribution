@@ -7,8 +7,19 @@ import java.util.ArrayList;
 
 import kmeans.type.DataType;
 import kmeans.type.Point;
+import kmeans.type.ReqObj;
 
 public class Master {
+	public static void termAll(int size){
+		ReqObj termReq = new ReqObj();
+		ReqObj[] buf = new ReqObj[1];
+		buf[0] = termReq;
+		
+		for(int i = 1; i < size; i++){
+			MPI.COMM_WORLD.Send(buf, 0, 1, MPI.OBJECT, i, size);
+		}
+	}
+	
 	public static void runMaster(String[] args, int size) throws Exception{
 		//set up data and stuff
 		DataType type      			  = null;
@@ -21,13 +32,13 @@ public class Master {
 		for(int rank = 1; rank < size; rank++){
 			if(args.length < 1) {
 				MainClass.printHelp();
-				//TODO: send message to children to terminate
+				termAll(size);
 				return;
 			} else if (args[0].equals("-d")){
 				type = DataType.DNA;
 				if(args.length < 5){
 					MainClass.printHelp();
-					//TODO: send message to children to terminate
+					termAll(size);
 					return;
 				}
 				length = Integer.parseInt(args[1]);
@@ -55,7 +66,7 @@ public class Master {
 				type = DataType.POINT;
 				if(args.length < 4){
 					MainClass.printHelp();
-					//TODO: send message to children to terminate
+					termAll(size);
 					return;
 				}
 				clusters = Integer.parseInt(args[2]);
@@ -74,7 +85,7 @@ public class Master {
 				reader.close();
 			} else {
 				MainClass.printHelp();
-				//TODO: send message to children to terminate
+				termAll(size);
 				return;
 			}
 		}
