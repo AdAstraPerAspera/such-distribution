@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 #Number of Points
 b=10
