@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.List;
 
 import kmeans.type.DataType;
 import kmeans.type.Point;
@@ -92,7 +93,21 @@ public class Master {
 		
 		//TODO: send messages and shit
 		while(true){
-			
+			if(type == DataType.DNA){
+				//work with strings
+				
+				//split initial data into chunks to be processed
+				ArrayList<ArrayList<String>> chunks = new ArrayList<ArrayList<String>>();
+				for(int i = 0; i < size; i++){
+					chunks.add(new ArrayList<String>());
+				}
+				
+				for(int i = 0; i < dnaData.size(); i ++){
+					chunks.get(i % size).add(dnaData.get(i));
+				}
+			} else {
+				//work with points
+			}
 		}
 	}
 }
