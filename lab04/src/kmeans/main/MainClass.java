@@ -23,5 +23,7 @@ class MainClass {
 		}
 		
 		System.out.println("Total size of system is: " + size);
+		
+		MPI.Finalize();
 	}
 }

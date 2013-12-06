@@ -11,7 +11,7 @@ class Hello {
         int myrank = MPI.COMM_WORLD.Rank();
         int size = MPI.COMM_WORLD.Size();
         if(myrank == 0){
-        	String message = "such message".toCharArray();
+        	char[] message = "such message".toCharArray();
         	MPI.COMM_WORLD.Send(message, 0, message.length, MPI.CHAR, 1, size);
         } else {
         	char[] message = new char[12];
