@@ -45,7 +45,7 @@ public class Calcs {
 			int pointCount = 0;
 			double xCoord = 0.0;
 			double yCoord = 0.0;
-			for(Group g : gPoints) {
+			for(Group<Point> g : gPoints) {
 				if(m.equals(g.getMean())) {
 					pointCount++;
 					Point q = (Point) g.getVal();
@@ -62,7 +62,9 @@ public class Calcs {
 		ArrayList<Point> means = new ArrayList<Point>();
 		int partSize = pData.size()/K;
 		for(int i = 0; i < partSize; i++){
-			means.add(pData.get((int)(Math.random() * partSize)));
+			Point newMean = pData.get((int)(Math.random() * partSize));
+			while(means.contains(newMean)) newMean = pData.get((int)(Math.random() * partSize));
+			means.add(newMean);
 		}
 		double maxMeanChange = Double.MAX_VALUE;
 		while (maxMeanChange > eps) {

@@ -31,6 +31,7 @@ public class KMeansMain {
 			type = DataType.DNA;
 			if(args.length < 5){
 				KMeansMain.printHelp();
+				System.exit(0);
 			}
 			length = Integer.parseInt(args[1]);
 			clusters = Integer.parseInt(args[3]);
@@ -41,6 +42,14 @@ public class KMeansMain {
 			String            line;
 			
 			while((line = reader.readLine()) != null){
+				if(length == 0) {
+					length = line.length();
+				}
+				
+				if(line.length() != length){
+					break;
+				}
+				
 				dnaData.add(line);
 			}
 			
@@ -49,6 +58,7 @@ public class KMeansMain {
 			type = DataType.POINT;
 			if(args.length < 4){
 				KMeansMain.printHelp();
+				System.exit(0);
 			}
 			clusters = Integer.parseInt(args[2]);
 			eps = Double.parseDouble(args[3]);
