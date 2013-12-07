@@ -57,7 +57,7 @@ public class Master {
 				BufferedReader    reader  = new BufferedReader(new InputStreamReader(istream));
 				String            line;
 				
-				while((line = reader.readLine()) != null){
+				while((line = reader.readLine()) != null && line.length() == length){
 					if(length == 0) {
 						length = line.length();
 					}

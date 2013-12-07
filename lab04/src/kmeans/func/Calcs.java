@@ -53,7 +53,12 @@ public class Calcs {
 					yCoord += q.getY();
 				}
 			}
-			newMeans.add(new Point(xCoord / pointCount, yCoord / pointCount));
+			
+			if(pointCount != 0){
+				newMeans.add(new Point(xCoord / pointCount, yCoord / pointCount));
+			} else {
+				newMeans.add(m);
+			}
 		}
 		return newMeans;
 	}
@@ -123,7 +128,11 @@ public class Calcs {
 				else if (gCount >= aCount && gCount >= cCount && gCount >= tCount) { newMean.concat("g"); }
 				else if (tCount >= aCount && tCount >= cCount && tCount >= gCount) { newMean.concat("t"); }
 			}
-			newMeans.add(newMean);
+			if(newMean.length() > 0){
+				newMeans.add(newMean);
+			} else {
+				newMeans.add(m);
+			}
 		}
 		return newMeans;
 	}

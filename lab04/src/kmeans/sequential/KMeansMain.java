@@ -66,7 +66,7 @@ public class KMeansMain {
 			BufferedReader    reader  = new BufferedReader(new InputStreamReader(istream));
 			String            line;
 			
-			while((line = reader.readLine()) != null && line.length() == length){
+			while((line = reader.readLine()) != null){
 				String[] points = line.split(",");
 				Point temp = new Point(Double.parseDouble(points[0]), Double.parseDouble(points[1]));
 				
