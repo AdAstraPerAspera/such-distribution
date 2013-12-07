@@ -12,6 +12,7 @@ import kmeans.func.*;
 
 public class Slave {
 	public static void runSlave(){
+		int rank = MPI.COMM_WORLD.Rank();
 		while(true){
 			Object[] message = new Object[1];
 			MPI.COMM_WORLD.Recv(message, 0, 1, MPI.OBJECT, 0, MPI.ANY_TAG);
@@ -26,24 +27,27 @@ public class Slave {
 						ArrayList<Point> points = request.getPoints();
 						RetObj[] buf = new RetObj[1];
 						buf[0] = new RetObj(rType, dType, Calcs.assocPoints(points, means));
-						MPI.COMM_WORLD.
+						MPI.COMM_WORLD.Isend(buf, 0, 1, MPI.OBJECT, 0, rank);
 					} else if (dType == DataType.DNA) {
 						ArrayList<String> dna = request.getDNA();
 						ArrayList<String> means = request.getDNAMeans();
 						RetObj[] buf = new RetObj[1];
-						Calcs.assocDNA(dna, means);
+						buf[0] = new RetObj(rType, dType, Calcs.assocDNA(dna, means));
+						MPI.COMM_WORLD.Isend(buf, 0, 1, MPI.OBJECT, 0, rank);
 					}
 				} else if (rType == ReqType.RECALC) {
 					if(dType == DataType.POINT) {
 						ArrayList<Point> means = request.getPointMeans();
 						ArrayList<Group<Point>> gPoints = request.getGroupedPoints();
 						RetObj[] buf = new RetObj[1];
-						Calcs.recalculateMeans(means, gPoints);
+						buf[0] = new RetObj(rType, dType, Calcs.recalculateMeans(means, gPoints));
+						MPI.COMM_WORLD.Isend(buf, 0, 1, MPI.OBJECT, 0, rank);
 					} else if (dType == DataType.DNA) {
 						ArrayList<Group<String>> gDNA = request.getGroupedDNA();
 						ArrayList<String> means = request.getDNAMeans();
 						RetObj[] buf = new RetObj[1];
-						Calcs.recalculateDNA(means, gDNA);
+						buf[0] = new RetObj(rType, dType, Calcs.recalculateDNA(means, gDNA));
+						MPI.COMM_WORLD.Isend(buf, 0, 1, MPI.OBJECT, 0, rank);
 					}
 				}
 			}
