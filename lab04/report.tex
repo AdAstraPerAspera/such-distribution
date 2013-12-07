@@ -51,10 +51,40 @@ When you examine the K-Means algorithm, it is simple to see that the vast majori
 
 For Data Associating:
 \begin{enumerate}[]
-\item Master:
-\item 
+\item Master:\\
+\verb$Break data into n chunks$\\
+\verb$For each node i in all nodes$\\
+\verb$     Send ith chunk of data to ith node along with means$\\
+\verb$     Receive results from workers$\\
+\verb$Collate results$
+
+\item Worker:\\
+\verb$For each data point$\\
+\verb$    Calculate distance to each mean$\\
+\verb$    Group each point with closest mean$\\
+\verb$Return grouped points to master$\\
+\end{enumerate}
+For Recalculating Means:
+\begin{enumerate}[]
+\item Master:\\
+\verb$For each mean m$\\
+\verb$    Send full data and m to worker$\\
+\verb$Wait for results from workers$\\
+
+\newpage
+
+\item Worker:\\
+\verb$Initialize totals and a counter$\\
+\verb$For each piece of data d$\\
+\verb$    If d is grouped with m$\\
+\verb$         Add d to totals$\\
+\verb$         counter++$\\
+\verb$return totals / counter$
 \end{enumerate}
 
+For associating the points, since each worker is only responsible for a small chunk of the points, it is faster than the sequential version where a single processor had to associate all of the points on its own.
+
+Also, for recalculating the means, each worker is only responsible for one of the means, as opposed to all of them in the sequential version. Thus, as the number of means and clusters increases, our algorithm actually scales better.
 
 \end{question}
 
