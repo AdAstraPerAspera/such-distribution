@@ -153,7 +153,7 @@ public class Master {
 						
 						ReqObj message = new ReqObj(ReqType.RECALC, DataType.DNA, temp, matchings);
 						
-						MPI.COMM_WORLD.Isend(message, 0, 1, MPI.OJBECT, i, size);
+						MPI.COMM_WORLD.Isend(message, 0, 1, MPI.OBJECT, i, size);
 						
 						reqs[i] = MPI.COMM_WORLD.Irecv(resps[i], 0, 1, MPI.OBJECT, i, MPI.ANY_TAG);
 					}
@@ -231,7 +231,7 @@ public class Master {
 						reqs[i] = MPI.COMM_WORLD.Irecv(resps[i], 0, 1, MPI.OBJECT, i, MPI.ANY_TAG);
 					}
 					
-					MPI.REQUEST.Waitall(reqs);
+					Request.Waitall(reqs);
 					
 					ArrayList<Point> newMeans = new ArrayList<Point>();
 					for(int i = 1; i < clusters; i++){
