@@ -67,8 +67,8 @@ public class Calcs {
 		ArrayList<Point> means = new ArrayList<Point>();
 		int partSize = pData.size()/K;
 		for(int i = 0; i < partSize; i++){
-			Point newMean = pData.get((int)(Math.random() * partSize));
-			while(means.contains(newMean)){ newMean = pData.get((int)(Math.random() * partSize)); }
+			Point newMean = pData.get((int)(Math.random() * partSize) + (i * partSize));
+			while(means.contains(newMean)){ newMean = pData.get((int)(Math.random() * partSize) + (i * partSize)); }
 			means.add(newMean);
 		}
 		double maxMeanChange = Double.MAX_VALUE;
@@ -143,8 +143,8 @@ public class Calcs {
 		
 		System.out.println("Initializing clusters");
 		for(int i = 0; i < partSize; i++){
-			String newMean = dnaData.get((int)(Math.random() * partSize));
-			while(means.contains(newMean)) newMean = dnaData.get((int)(Math.random() * partSize));
+			String newMean = dnaData.get((int)(Math.random() * partSize) + (i * partSize));
+			while(means.contains(newMean)) newMean = dnaData.get((int)(Math.random() * partSize) + (i * partSize));
 			means.add(newMean);
 		}
 		System.out.println("done");
