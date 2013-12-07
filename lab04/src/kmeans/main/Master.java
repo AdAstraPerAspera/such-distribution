@@ -104,12 +104,12 @@ public class Master {
 			
 			//split initial data into chunks to be processed
 			ArrayList<ArrayList<String>> chunks = new ArrayList<ArrayList<String>>();
-			for(int i = 0; i < size; i++){
+			for(int i = 0; i < size - 1; i++){
 				chunks.add(new ArrayList<String>());
 			}
 			
 			for(int i = 0; i < dnaData.size(); i++){
-					chunks.get(i % size).add(dnaData.get(i));
+					chunks.get(i % (size - 1)).add(dnaData.get(i));
 			}
 			
 			ArrayList<String> means = new ArrayList<String>();
@@ -124,7 +124,7 @@ public class Master {
 				Object[][] resps = new Object[size][1];
 				
 				for(int i = 1; i < size; i++){
-					ReqObj message = new ReqObj(ReqType.ASSOC, DataType.DNA, means, chunks.get(i));
+					ReqObj message = new ReqObj(ReqType.ASSOC, DataType.DNA, means, chunks.get(i - 1));
 					Object[] buf = new Object[1];
 					buf[0] = message;
 					
@@ -202,19 +202,19 @@ public class Master {
 			
 			while(change > eps){
 				Object[][] resps = new Object[size][1];
-				
+
 				for(int i = 1; i < size; i++){
-					ReqObj message = new ReqObj(ReqType.ASSOC, DataType.POINT, means, chunks.get(i));
+					ReqObj message = new ReqObj(ReqType.ASSOC, DataType.POINT, means, chunks.get(i - 1));
 					ReqObj[] buf = new ReqObj[1];
 					buf[0] = message;
 					
 					MPI.COMM_WORLD.Isend(buf, 0, 1, MPI.OBJECT, i, size);
 				}
-				
+
 				for(int i = 1; i < size; i++){
 					MPI.COMM_WORLD.Recv(resps[i], 0, 1, MPI.OBJECT, i, MPI.ANY_TAG);
 				}
-				
+
 				ArrayList<Group<Point>> matchings = new ArrayList<Group<Point>>();
 				for(int i = 1; i < size; i++){
 					for(Group<Point> g : ((RetObj) resps[i][0]).getGroupedPoints()){
@@ -223,7 +223,7 @@ public class Master {
 				}
 				
 				resps = new Object[clusters][1];
-				
+
 				for(int i = 0; i < clusters; i++){
 					Point mean = means.get(i);
 					
