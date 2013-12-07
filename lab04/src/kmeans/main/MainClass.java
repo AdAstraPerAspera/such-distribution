@@ -8,7 +8,6 @@ class MainClass {
 	    System.out.println("Need arguments to run:");
     	System.out.println("If using DNA: use arguments \"-d <length of strings> <input file path> <# of clusters> <epsilon>\"");
     	System.out.println("If using points: use arguments \"-p <input file path> <# of clusters> <epsilon>\"");
-    	System.exit(0);
   	}
 	
 	public static void main(String[] args) throws Exception {

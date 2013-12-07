@@ -122,11 +122,11 @@ public class Master {
 			
 			while(change > eps){
 				Request[]  reqs  = new Request[size];
-				RetObj[][] resps = new RetObj[size][1];
+				Object[][] resps = new Object[size][1];
 				
 				for(int i = 1; i < size; i++){
 					ReqObj message = new ReqObj(ReqType.ASSOC, DataType.DNA, means, chunks.get(i));
-					ReqObj[] buf = new ReqObj[1];
+					Object[] buf = new Object[1];
 					buf[0] = message;
 					
 					MPI.COMM_WORLD.Isend(buf, 0, 1, MPI.OBJECT, i, size);
@@ -138,13 +138,13 @@ public class Master {
 				
 				ArrayList<Group<String>> matchings = new ArrayList<Group<String>>();
 				for(int i = 1; i < size; i++){
-					for(Group<String> g : resps[i][0].getGroupedDNA()){
+					for(Group<String> g : ((RetObj) resps[i][0]).getGroupedDNA()){
 						matchings.add(g);
 					}
 				}
 				
 				reqs  = new Request[clusters];
-				resps = new RetObj[clusters][1];
+				resps = new Object[clusters][1];
 				
 				for(int i = 0; i < clusters; i++){
 					String mean = means.get(i);
@@ -153,7 +153,7 @@ public class Master {
 					temp.add(mean);
 					
 					ReqObj message = new ReqObj(ReqType.RECALC, DataType.DNA, temp, matchings);
-					ReqObj[] buf = new ReqObj[1];
+					Object[] buf = new Object[1];
 					buf[0] = message;
 					
 					MPI.COMM_WORLD.Isend(buf, 0, 1, MPI.OBJECT, i, size);
@@ -165,7 +165,7 @@ public class Master {
 				
 				ArrayList<String> newMeans = new ArrayList<String>();
 				for(int i = 0; i < clusters; i++){
-					newMeans.add(resps[i][0].getDNAMeans().get(0));
+					newMeans.add(((RetObj) resps[i][0]).getDNAMeans().get(0));
 				}
 				
 				double maxChange = 0.0;
@@ -204,7 +204,7 @@ public class Master {
 			
 			while(change > eps){
 				Request[]  reqs  = new Request[size];
-				RetObj[][] resps = new RetObj[size][1];
+				Object[][] resps = new Object[size][1];
 				
 				for(int i = 1; i < size; i++){
 					ReqObj message = new ReqObj(ReqType.ASSOC, DataType.POINT, means, chunks.get(i));
@@ -220,13 +220,13 @@ public class Master {
 				
 				ArrayList<Group<Point>> matchings = new ArrayList<Group<Point>>();
 				for(int i = 1; i < size; i++){
-					for(Group<Point> g : resps[i][0].getGroupedPoints()){
+					for(Group<Point> g : ((RetObj) resps[i][0]).getGroupedPoints()){
 						matchings.add(g);
 					}
 				}
 				
 				reqs  = new Request[clusters];
-				resps = new RetObj[clusters][1];
+				resps = new Object[clusters][1];
 				
 				for(int i = 0; i < clusters; i++){
 					Point mean = means.get(i);
@@ -235,7 +235,7 @@ public class Master {
 					temp.add(mean);
 					
 					ReqObj message = new ReqObj(ReqType.RECALC, DataType.POINT, temp, matchings);
-					ReqObj[] buf = new ReqObj[1];
+					Object[] buf = new Object[1];
 					buf[0] = message;
 					
 					MPI.COMM_WORLD.Isend(buf, 0, 1, MPI.OBJECT, i, size);
@@ -247,7 +247,7 @@ public class Master {
 				
 				ArrayList<Point> newMeans = new ArrayList<Point>();
 				for(int i = 0; i < clusters; i++){
-					newMeans.add(resps[i][0].getPointMeans().get(0));
+					newMeans.add(((RetObj) resps[i][0]).getPointMeans().get(0));
 				}
 				
 				double maxChange = 0.0;

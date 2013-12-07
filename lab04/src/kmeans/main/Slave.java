@@ -20,7 +20,7 @@ public class Slave {
 			MPI.COMM_WORLD.Recv(message, 0, 1, MPI.OBJECT, 0, MPI.ANY_TAG);
 			ReqObj request = (ReqObj) message[0];
 			ReqType rType = request.getReq();
-			if(rType == ReqType.TERM) break;
+			if(rType == ReqType.TERM) return;
 			else {
 				DataType dType = request.getType();
 				if (rType == ReqType.ASSOC) {
