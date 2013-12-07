@@ -18,7 +18,7 @@ public class Slave {
 		while(true){
 			Object[] message = new Object[1];
 			MPI.COMM_WORLD.Recv(message, 0, 1, MPI.OBJECT, 0, MPI.ANY_TAG);
-			ReqObj request = (ReqObj) message[1];
+			ReqObj request = (ReqObj) message[0];
 			ReqType rType = request.getReq();
 			if(rType == ReqType.TERM) break;
 			else {
@@ -27,13 +27,13 @@ public class Slave {
 					if(dType == DataType.POINT) {
 						ArrayList<Point> means = request.getPointMeans();
 						ArrayList<Point> points = request.getPoints();
-						RetObj[] buf = new RetObj[1];
+						RetObj[] buf = new RetObj[0];
 						buf[0] = new RetObj(rType, dType, Calcs.assocPoints(points, means));
 						MPI.COMM_WORLD.Isend(buf, 0, 1, MPI.OBJECT, 0, rank);
 					} else if (dType == DataType.DNA) {
 						ArrayList<String> dna = request.getDNA();
 						ArrayList<String> means = request.getDNAMeans();
-						RetObj[] buf = new RetObj[1];
+						RetObj[] buf = new RetObj[0];
 						buf[0] = new RetObj(rType, dType, Calcs.assocDNA(dna, means));
 						MPI.COMM_WORLD.Isend(buf, 0, 1, MPI.OBJECT, 0, rank);
 					}
@@ -41,13 +41,13 @@ public class Slave {
 					if(dType == DataType.POINT) {
 						ArrayList<Point> means = request.getPointMeans();
 						ArrayList<Group<Point>> gPoints = request.getGroupedPoints();
-						RetObj[] buf = new RetObj[1];
+						RetObj[] buf = new RetObj[0];
 						buf[0] = new RetObj(rType, dType, Calcs.recalculateMeans(means, gPoints));
 						MPI.COMM_WORLD.Isend(buf, 0, 1, MPI.OBJECT, 0, rank);
 					} else if (dType == DataType.DNA) {
 						ArrayList<Group<String>> gDNA = request.getGroupedDNA();
 						ArrayList<String> means = request.getDNAMeans();
-						RetObj[] buf = new RetObj[1];
+						RetObj[] buf = new RetObj[0];
 						buf[0] = new RetObj(rType, dType, Calcs.recalculateDNA(means, gDNA));
 						MPI.COMM_WORLD.Isend(buf, 0, 1, MPI.OBJECT, 0, rank);
 					}
