@@ -1,5 +1,7 @@
 package kmeans.main;
 
+import mpi.*;
+
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
@@ -11,6 +13,8 @@ import kmeans.type.DataType;
 import kmeans.type.Group;
 import kmeans.type.Point;
 import kmeans.type.ReqObj;
+import kmeans.type.ReqType;
+import kmeans.type.RetObj;
 
 public class Master {
 	public static void termAll(int size){
@@ -110,10 +114,10 @@ public class Master {
 				}
 				
 				ArrayList<String> means = new ArrayList<String>();
-				int partSize = dnaData.size()/K;
-				for(int i = 0; i < partSize; i++){
-					String newMean = dnaData.get((int)(Math.random() * partSize));
-					while(means.contains(newMean)) newMean = dnaData.get((int)(Math.random() * partSize));
+				int partSize = dnaData.size() / clusters;
+				for(int i = 0; i < clusters; i++){
+					String newMean = dnaData.get((int)(Math.random() * partSize) + i * partSize);
+					while(means.contains(newMean)) newMean = dnaData.get((int)(Math.random() * partSize) + i * partSize);
 					means.add(newMean);
 				}
 				
@@ -147,18 +151,18 @@ public class Master {
 				
 				ArrayList<Point> means = new ArrayList<Point>();
 				int partSize = pointData.size() / clusters;
-				for(int i = 0; i < partSize; i++){
-					Point newMean = pointData.get((int)(Math.random() * partSize));
-					while(means.contains(newMean)){ newMean = pointData.get((int)(Math.random() * partSize)); }
+				for(int i = 0; i < clusters; i++){
+					Point newMean = pointData.get((int)(Math.random() * partSize) + i * partSize);
+					while(means.contains(newMean)){ newMean = pointData.get((int)(Math.random() * partSize) + i * partSize); }
 					means.add(newMean);
 				}
 				
 				while(change > eps){
-					Request[] reqs = new Request[size];
-					Object[][] resps = new Object[size][1];
+					Request[]  reqs  = new Request[size];
+					RetObj[][] resps = new RetObj[size][1];
 					
 					for(int i = 1; i < size; i++){
-						ReqObj message = new ReqObj(ReqObj.ReqType.ASSOC, DataType.POINT, means, chunks.get(i));
+						ReqObj message = new ReqObj(ReqType.ASSOC, DataType.POINT, means, chunks.get(i));
 						
 						MPI.COMM_WORLD.Isend(message, 0, 1, MPI.OBJECT, i, size);
 						
@@ -167,16 +171,33 @@ public class Master {
 					
 					MPI.COMM_WORLD.Waitall(reqs);
 					
+					ArrayList<Group<Point>> matchings = new ArrayList<Group<Point>>();
 					for(int i = 1; i < size; i++){
-						//process responses
+						for(Group<Point> g : resps[i][0].getGroupedPoints()){
+							matchings.add(g);
+						}
 					}
 					
-					for(int i = 1; i < clusters; i++){
-						//send new requests
+					reqs  = new Request[size];
+					resps = new RetObj[size][1];
+					
+					for(int i = 0; i < clusters; i++){
+						Point mean = means.get(i);
+						
+						ArrayList<Point> temp = new ArrayList<Point>();
+						temp.add(mean);
+						
+						ReqObj message = new ReqObj(ReqType.RECALC, DataType.POINT, temp, matchings);
+						
+						MPI.COMM_WORLD.Isend(message, 0, 1, MPI.OJBECT, i, size);
+						
+						reqs[i] = MPI.COMM_WORLD.Irecv(resps[i], 0, 1, MPI.OBJECT, i, MPI.ANY_TAG);
 					}
 					
+					MPI.COMM_WORLD.Waitall(reqs);
+					
 					for(int i = 1; i < clusters; i++){
-						//process responses
+						//
 					}
 					
 					/*ArrayList<Group<Point>> groupedPoints = assocPoints(pData, means);
