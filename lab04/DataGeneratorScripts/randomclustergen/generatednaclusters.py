@@ -65,6 +65,5 @@ for c in xrange(elements - clusters):
 f = open(output, 'wb')
 for string in allstrings:
   f.write(string + '\n')
-  print string
 
 f.close()
