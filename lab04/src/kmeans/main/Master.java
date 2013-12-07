@@ -99,161 +99,166 @@ public class Master {
 		}
 		
 		//TODO: send messages and shit
-		while(true){
-			if(type == DataType.DNA){
-				//work with strings
-				
-				//split initial data into chunks to be processed
-				ArrayList<ArrayList<String>> chunks = new ArrayList<ArrayList<String>>();
-				for(int i = 0; i < size; i++){
-					chunks.add(new ArrayList<String>());
-				}
-				
-				for(int i = 0; i < dnaData.size(); i++){
+		if(type == DataType.DNA){
+			//work with strings
+			
+			//split initial data into chunks to be processed
+			ArrayList<ArrayList<String>> chunks = new ArrayList<ArrayList<String>>();
+			for(int i = 0; i < size; i++){
+				chunks.add(new ArrayList<String>());
+			}
+			
+			for(int i = 0; i < dnaData.size(); i++){
 					chunks.get(i % size).add(dnaData.get(i));
+			}
+			
+			ArrayList<String> means = new ArrayList<String>();
+			int partSize = dnaData.size() / clusters;
+			for(int i = 0; i < clusters; i++){
+				String newMean = dnaData.get((int)(Math.random() * partSize) + i * partSize);
+				while(means.contains(newMean)) newMean = dnaData.get((int)(Math.random() * partSize) + i * partSize);
+				means.add(newMean);
+			}
+			
+			while(change > eps){
+				Request[]  reqs  = new Request[size];
+				RetObj[][] resps = new RetObj[size][1];
+				
+				for(int i = 1; i < size; i++){
+					ReqObj message = new ReqObj(ReqType.ASSOC, DataType.DNA, means, chunks.get(i));
+					ReqObj[] buf = new ReqObj[1];
+					buf[0] = message;
+					
+					MPI.COMM_WORLD.Isend(buf, 0, 1, MPI.OBJECT, i, size);
+					
+					reqs[i] = MPI.COMM_WORLD.Irecv(resps[i], 0, 1, MPI.OBJECT, i, MPI.ANY_TAG);
 				}
 				
-				ArrayList<String> means = new ArrayList<String>();
-				int partSize = dnaData.size() / clusters;
+				Request.Waitall(reqs);
+				
+				ArrayList<Group<String>> matchings = new ArrayList<Group<String>>();
+				for(int i = 1; i < size; i++){
+					for(Group<String> g : resps[i][0].getGroupedDNA()){
+						matchings.add(g);
+					}
+				}
+				
+				reqs  = new Request[clusters];
+				resps = new RetObj[clusters][1];
+				
 				for(int i = 0; i < clusters; i++){
-					String newMean = dnaData.get((int)(Math.random() * partSize) + i * partSize);
-					while(means.contains(newMean)) newMean = dnaData.get((int)(Math.random() * partSize) + i * partSize);
-					means.add(newMean);
+					String mean = means.get(i);
+					
+					ArrayList<String> temp = new ArrayList<String>();
+					temp.add(mean);
+					
+					ReqObj message = new ReqObj(ReqType.RECALC, DataType.DNA, temp, matchings);
+					ReqObj[] buf = new ReqObj[1];
+					buf[0] = message;
+					
+					MPI.COMM_WORLD.Isend(buf, 0, 1, MPI.OBJECT, i, size);
+					
+					reqs[i] = MPI.COMM_WORLD.Irecv(resps[i], 0, 1, MPI.OBJECT, i, MPI.ANY_TAG);
 				}
 				
-				while(change > eps){
-					Request[]  reqs  = new Request[size];
-					RetObj[][] resps = new RetObj[size][1];
-					
-					for(int i = 1; i < size; i++){
-						ReqObj message = new ReqObj(ReqType.ASSOC, DataType.DNA, means, chunks.get(i));
-						ReqObj[] buf = new ReqObj[1];
-						buf[0] = message;
-						
-						MPI.COMM_WORLD.Isend(buf, 0, 1, MPI.OBJECT, i, size);
-						
-						reqs[i] = MPI.COMM_WORLD.Irecv(resps[i], 0, 1, MPI.OBJECT, i, MPI.ANY_TAG);
-					}
-					
-					Request.Waitall(reqs);
-					
-					ArrayList<Group<String>> matchings = new ArrayList<Group<String>>();
-					for(int i = 1; i < size; i++){
-						for(Group<String> g : resps[i][0].getGroupedDNA()){
-							matchings.add(g);
-						}
-					}
-					
-					reqs  = new Request[clusters];
-					resps = new RetObj[clusters][1];
-					
-					for(int i = 0; i < clusters; i++){
-						String mean = means.get(i);
-						
-						ArrayList<String> temp = new ArrayList<String>();
-						temp.add(mean);
-						
-						ReqObj message = new ReqObj(ReqType.RECALC, DataType.DNA, temp, matchings);
-						ReqObj[] buf = new ReqObj[1];
-						buf[0] = message;
-						
-						MPI.COMM_WORLD.Isend(buf, 0, 1, MPI.OBJECT, i, size);
-						
-						reqs[i] = MPI.COMM_WORLD.Irecv(resps[i], 0, 1, MPI.OBJECT, i, MPI.ANY_TAG);
-					}
-					
-					Request.Waitall(reqs);
-					
-					ArrayList<String> newMeans = new ArrayList<String>();
-					for(int i = 1; i < clusters; i++){
-						newMeans.add(resps[i][0].getDNAMeans().get(0));
-					}
-					
-					double maxChange = 0.0;
-					for(int i = 0; i < newMeans.size(); i++) {
-						double iChange = (Calcs.dnaDistance(means.get(i), newMeans.get(i)) / (dnaData.get(0).length() * 1.0));
-						if (iChange > maxChange) { maxChange = iChange; }
-					}
-					means = newMeans;
-					change = maxChange;
-				}								
-			} else {
-				//work with points
+				Request.Waitall(reqs);
 				
-				//split initial data into chunks to be processed
-				ArrayList<ArrayList<Point>> chunks = new ArrayList<ArrayList<Point>>();
-				for(int i = 0; i < size - 1; i++){
-					chunks.add(new ArrayList<Point>());
+				ArrayList<String> newMeans = new ArrayList<String>();
+				for(int i = 1; i < clusters; i++){
+					newMeans.add(resps[i][0].getDNAMeans().get(0));
 				}
 				
-				for(int i = 0; i < pointData.size(); i ++){
-					chunks.get(i % (size - 1)).add(pointData.get(i));
+				double maxChange = 0.0;
+				for(int i = 0; i < newMeans.size(); i++) {
+					double iChange = (Calcs.dnaDistance(means.get(i), newMeans.get(i)) / (dnaData.get(0).length() * 1.0));
+					if (iChange > maxChange) { maxChange = iChange; }
+				}
+				means = newMeans;
+				change = maxChange;
+			}
+			for(String s : means){
+				System.out.println(s);
+			}
+		} else {
+			//work with points
+			
+			//split initial data into chunks to be processed
+			ArrayList<ArrayList<Point>> chunks = new ArrayList<ArrayList<Point>>();
+			for(int i = 0; i < size - 1; i++){
+				chunks.add(new ArrayList<Point>());
+			}
+			
+			for(int i = 0; i < pointData.size(); i ++){
+				chunks.get(i % (size - 1)).add(pointData.get(i));
+			}
+			
+			ArrayList<Point> means = new ArrayList<Point>();
+			int partSize = pointData.size() / clusters;
+			for(int i = 0; i < clusters; i++){
+				Point newMean = pointData.get((int)(Math.random() * partSize) + i * partSize);
+				while(means.contains(newMean)){ newMean = pointData.get((int)(Math.random() * partSize) + i * partSize); }
+				means.add(newMean);
+				}
+			
+			while(change > eps){
+				Request[]  reqs  = new Request[size];
+				RetObj[][] resps = new RetObj[size][1];
+				
+				for(int i = 1; i < size; i++){
+					ReqObj message = new ReqObj(ReqType.ASSOC, DataType.POINT, means, chunks.get(i));
+					ReqObj[] buf = new ReqObj[1];
+					buf[0] = message;
+					
+					MPI.COMM_WORLD.Isend(buf, 0, 1, MPI.OBJECT, i, size);
+					
+					reqs[i] = MPI.COMM_WORLD.Irecv(resps[i], 0, 1, MPI.OBJECT, i, MPI.ANY_TAG);
 				}
 				
-				ArrayList<Point> means = new ArrayList<Point>();
-				int partSize = pointData.size() / clusters;
+				Request.Waitall(reqs);
+				
+				ArrayList<Group<Point>> matchings = new ArrayList<Group<Point>>();
+				for(int i = 1; i < size; i++){
+					for(Group<Point> g : resps[i][0].getGroupedPoints()){
+						matchings.add(g);
+					}
+				}
+				
+				reqs  = new Request[clusters];
+				resps = new RetObj[clusters][1];
+				
 				for(int i = 0; i < clusters; i++){
-					Point newMean = pointData.get((int)(Math.random() * partSize) + i * partSize);
-					while(means.contains(newMean)){ newMean = pointData.get((int)(Math.random() * partSize) + i * partSize); }
-					means.add(newMean);
+					Point mean = means.get(i);
+					
+					ArrayList<Point> temp = new ArrayList<Point>();
+					temp.add(mean);
+					
+					ReqObj message = new ReqObj(ReqType.RECALC, DataType.POINT, temp, matchings);
+					ReqObj[] buf = new ReqObj[1];
+					buf[0] = message;
+					
+					MPI.COMM_WORLD.Isend(buf, 0, 1, MPI.OBJECT, i, size);
+					
+					reqs[i] = MPI.COMM_WORLD.Irecv(resps[i], 0, 1, MPI.OBJECT, i, MPI.ANY_TAG);
 				}
 				
-				while(change > eps){
-					Request[]  reqs  = new Request[size];
-					RetObj[][] resps = new RetObj[size][1];
-					
-					for(int i = 1; i < size; i++){
-						ReqObj message = new ReqObj(ReqType.ASSOC, DataType.POINT, means, chunks.get(i));
-						ReqObj[] buf = new ReqObj[1];
-						buf[0] = message;
-						
-						MPI.COMM_WORLD.Isend(buf, 0, 1, MPI.OBJECT, i, size);
-						
-						reqs[i] = MPI.COMM_WORLD.Irecv(resps[i], 0, 1, MPI.OBJECT, i, MPI.ANY_TAG);
-					}
-					
-					Request.Waitall(reqs);
-					
-					ArrayList<Group<Point>> matchings = new ArrayList<Group<Point>>();
-					for(int i = 1; i < size; i++){
-						for(Group<Point> g : resps[i][0].getGroupedPoints()){
-							matchings.add(g);
-						}
-					}
-					
-					reqs  = new Request[clusters];
-					resps = new RetObj[clusters][1];
-					
-					for(int i = 0; i < clusters; i++){
-						Point mean = means.get(i);
-						
-						ArrayList<Point> temp = new ArrayList<Point>();
-						temp.add(mean);
-						
-						ReqObj message = new ReqObj(ReqType.RECALC, DataType.POINT, temp, matchings);
-						ReqObj[] buf = new ReqObj[1];
-						buf[0] = message;
-						
-						MPI.COMM_WORLD.Isend(buf, 0, 1, MPI.OBJECT, i, size);
-						
-						reqs[i] = MPI.COMM_WORLD.Irecv(resps[i], 0, 1, MPI.OBJECT, i, MPI.ANY_TAG);
-					}
-					
-					Request.Waitall(reqs);
-					
-					ArrayList<Point> newMeans = new ArrayList<Point>();
-					for(int i = 1; i < clusters; i++){
-						newMeans.add(resps[i][0].getPointMeans().get(0));
-					}
-					
-					double maxChange = 0.0;
-					for(int i = 0; i < newMeans.size(); i++) {
-						double iChange = Calcs.cartesianDistance(means.get(i), newMeans.get(i));
-						if (iChange > maxChange) { maxChange = iChange; }
-					}
-					means = newMeans;
-					change = maxChange;
+				Request.Waitall(reqs);
+				
+				ArrayList<Point> newMeans = new ArrayList<Point>();
+				for(int i = 1; i < clusters; i++){
+					newMeans.add(resps[i][0].getPointMeans().get(0));
 				}
+				
+				double maxChange = 0.0;
+				for(int i = 0; i < newMeans.size(); i++) {
+					double iChange = Calcs.cartesianDistance(means.get(i), newMeans.get(i));
+					if (iChange > maxChange) { maxChange = iChange; }
+				}
+				means = newMeans;
+				change = maxChange;
+			}
+			
+			for(Point p : means){
+				System.out.println(p.getX() + ", " + p.getY());
 			}
 		}
 	}
