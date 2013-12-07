@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (TeX Live 2011) (format=pdflatex 2011.10.19)  7 DEC 2013 13:47
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (TeX Live 2011) (format=pdflatex 2011.10.19)  7 DEC 2013 14:09
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -147,6 +147,10 @@ Underfull \hbox (badness 10000) in paragraph at lines 42--45
 
  []
 
+
+LaTeX Warning: The counter will not be printed.
+             The label is:  on input line 53.
+
 [1
 
 {/usr/local/texlive/2011basic/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
@@ -154,17 +158,17 @@ Underfull \hbox (badness 10000) in paragraph at lines 42--45
 Here is how much of TeX's memory you used:
  1322 strings out of 494752
  15034 string characters out of 3171019
- 62758 words of memory out of 3000000
+ 63758 words of memory out of 3000000
  4577 multiletter control sequences out of 15000+200000
  5151 words of font info for 19 fonts, out of 3000000 for 9000
  166 hyphenation exceptions out of 8191
- 27i,4n,43p,229b,117s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 27i,4n,43p,411b,117s stack positions out of 5000i,500n,10000p,200000b,50000s
 </usr/local/texlive/2011basic/texmf-dist/fonts/type1/public/ams
 fonts/cm/cmbx10.pfb></usr/local/texlive/2011basic/texmf-dist/fonts/type1/public
 /amsfonts/cm/cmbx12.pfb></usr/local/texlive/2011basic/texmf-dist/fonts/type1/pu
 blic/amsfonts/cm/cmr10.pfb></usr/local/texlive/2011basic/texmf-dist/fonts/type1
 /public/amsfonts/cm/cmr12.pfb>
-Output written on report.pdf (1 page, 46247 bytes).
+Output written on report.pdf (1 page, 50673 bytes).
 PDF statistics:
  24 PDF objects out of 1000 (max. 8388607)
  16 compressed objects within 1 object stream
