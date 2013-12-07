@@ -122,23 +122,18 @@ public class Master {
 			
 			while(change > eps){
 				Object[][] resps = new Object[size][1];
-				Request[]  reqs  = new Request[(size - 1) * 2];
 				
 				for(int i = 1; i < size; i++){
 					ReqObj message = new ReqObj(ReqType.ASSOC, DataType.DNA, means, chunks.get(i - 1));
 					Object[] buf = new Object[1];
 					buf[0] = message;
 					
-					reqs[(i - 1) * 2] = MPI.COMM_WORLD.Isend(buf, 0, 1, MPI.OBJECT, i, size);
-					
-					reqs[(i - 1) * 2 + 1] = MPI.COMM_WORLD.Irecv(resps[i], 0, 1, MPI.OBJECT, i, MPI.ANY_TAG);
+					MPI.COMM_WORLD.Isend(buf, 0, 1, MPI.OBJECT, i, size);
 				}
 				
-				Request.Waitall(reqs);
-				
-				/*for(int i = 1; i < size; i++){
+				for(int i = 1; i < size; i++){
 					MPI.COMM_WORLD.Recv(resps[i], 0, 1, MPI.OBJECT, i, MPI.ANY_TAG);
-				}*/
+				}
 				
 				ArrayList<Group<String>> matchings = new ArrayList<Group<String>>();
 				for(int i = 1; i < size; i++){
@@ -148,7 +143,6 @@ public class Master {
 				}
 				
 				resps = new Object[clusters][1];
-				reqs = new Request[clusters * 2];
 				
 				for(int i = 0; i < clusters; i++){
 					String mean = means.get(i);
@@ -160,16 +154,12 @@ public class Master {
 					Object[] buf = new Object[1];
 					buf[0] = message;
 					
-					reqs[(i * 2)] = MPI.COMM_WORLD.Isend(buf, 0, 1, MPI.OBJECT, i % (size - 1) + 1, size);
-					
-					reqs[(i * 2) + 1] = MPI.COMM_WORLD.Irecv(resps[i], 0, 1, MPI.OBJECT, i, MPI.ANY_TAG);
+					MPI.COMM_WORLD.Isend(buf, 0, 1, MPI.OBJECT, i % (size - 1) + 1, size);
 				}
 				
-				Request.Waitall(reqs);
-				
-				/*for(int i = 0; i < clusters; i++){
+				for(int i = 0; i < clusters; i++){
 					MPI.COMM_WORLD.Recv(resps[i], 0, 1, MPI.OBJECT, i % (size - 1) + 1, MPI.ANY_TAG);
-				}*/
+				}
 				
 				ArrayList<String> newMeans = new ArrayList<String>();
 				for(int i = 0; i < clusters; i++){
@@ -212,23 +202,18 @@ public class Master {
 			
 			while(change > eps){
 				Object[][] resps = new Object[size][1];
-				Request[] reqs = new Request[size - 1];
 
 				for(int i = 1; i < size; i++){
 					ReqObj message = new ReqObj(ReqType.ASSOC, DataType.POINT, means, chunks.get(i - 1));
 					ReqObj[] buf = new ReqObj[1];
 					buf[0] = message;
 					
-					reqs[(i - 1) * 2] = MPI.COMM_WORLD.Isend(buf, 0, 1, MPI.OBJECT, i, size);
-					
-					reqs[(i - 1) * 2 + 1] = MPI.COMM_WORLD.Irecv(resps[i], 0, 1, MPI.OBJECT, i, MPI.ANY_TAG);
+					MPI.COMM_WORLD.Isend(buf, 0, 1, MPI.OBJECT, i, size);
 				}
 
-				Request.Waitall(reqs);
-				
-				/*for(int i = 1; i < size; i++){
+				for(int i = 1; i < size; i++){
 					MPI.COMM_WORLD.Recv(resps[i], 0, 1, MPI.OBJECT, i, MPI.ANY_TAG);
-				}*/
+				}
 
 				ArrayList<Group<Point>> matchings = new ArrayList<Group<Point>>();
 				for(int i = 1; i < size; i++){
@@ -238,7 +223,6 @@ public class Master {
 				}
 				
 				resps = new Object[clusters][1];
-				reqs = new Request[clusters * 2];
 
 				for(int i = 0; i < clusters; i++){
 					Point mean = means.get(i);
@@ -250,16 +234,12 @@ public class Master {
 					Object[] buf = new Object[1];
 					buf[0] = message;
 					
-					reqs[i * 2] = MPI.COMM_WORLD.Isend(buf, 0, 1, MPI.OBJECT, i % (size - 1) + 1, size);
-					
-					reqs[(i * 2) + 1] = MPI.COMM_WORLD.Irecv(resps[i], 0, 1, MPI.OBJECT, i, MPI.ANY_TAG);
+					MPI.COMM_WORLD.Isend(buf, 0, 1, MPI.OBJECT, i % (size - 1) + 1, size);
 				}
 				
-				/*for(int i = 0; i < clusters; i++){
+				for(int i = 0; i < clusters; i++){
 					MPI.COMM_WORLD.Recv(resps[i], 0, 1, MPI.OBJECT, i % (size - 1) + 1, MPI.ANY_TAG);
-				}*/
-				
-				Request.Waitall(reqs);
+				}
 				
 				ArrayList<Point> newMeans = new ArrayList<Point>();
 				for(int i = 0; i < clusters; i++){
