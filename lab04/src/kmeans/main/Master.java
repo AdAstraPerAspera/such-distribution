@@ -154,11 +154,11 @@ public class Master {
 					Object[] buf = new Object[1];
 					buf[0] = message;
 					
-					MPI.COMM_WORLD.Isend(buf, 0, 1, MPI.OBJECT, i, size);
+					MPI.COMM_WORLD.Isend(buf, 0, 1, MPI.OBJECT, i % (size - 1) + 1, size);
 				}
 				
 				for(int i = 0; i < clusters; i++){
-					MPI.COMM_WORLD.Recv(resps[i], 0, 1, MPI.OBJECT, i, MPI.ANY_TAG);
+					MPI.COMM_WORLD.Recv(resps[i], 0, 1, MPI.OBJECT, i % (size - 1) + 1, MPI.ANY_TAG);
 				}
 				
 				ArrayList<String> newMeans = new ArrayList<String>();
@@ -234,11 +234,11 @@ public class Master {
 					Object[] buf = new Object[1];
 					buf[0] = message;
 					
-					MPI.COMM_WORLD.Isend(buf, 0, 1, MPI.OBJECT, i, size);
+					MPI.COMM_WORLD.Isend(buf, 0, 1, MPI.OBJECT, i % (size - 1) + 1, size);
 				}
 				
 				for(int i = 0; i < clusters; i++){
-					MPI.COMM_WORLD.Recv(resps[i], 0, 1, MPI.OBJECT, i, MPI.ANY_TAG);
+					MPI.COMM_WORLD.Recv(resps[i], 0, 1, MPI.OBJECT, i % (size - 1) + 1, MPI.ANY_TAG);
 				}
 				
 				ArrayList<Point> newMeans = new ArrayList<Point>();
