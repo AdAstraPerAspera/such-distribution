@@ -1,6 +1,8 @@
 package kmeans.type;
 
-public class Group <T> {
+import java.io.Serializable;
+
+public class Group <T> implements Serializable{
 	private T value, mean;
 	
 	public Group (T v, T m) {
