@@ -127,8 +127,10 @@ public class Master {
 					
 					for(int i = 1; i < size; i++){
 						ReqObj message = new ReqObj(ReqType.ASSOC, DataType.DNA, means, chunks.get(i));
+						ReqObj[] buf = new ReqObj[1];
+						buf[0] = message;
 						
-						MPI.COMM_WORLD.Isend(message, 0, 1, MPI.OBJECT, i, size);
+						MPI.COMM_WORLD.Isend(buf, 0, 1, MPI.OBJECT, i, size);
 						
 						reqs[i] = MPI.COMM_WORLD.Irecv(resps[i], 0, 1, MPI.OBJECT, i, MPI.ANY_TAG);
 					}
@@ -152,8 +154,10 @@ public class Master {
 						temp.add(mean);
 						
 						ReqObj message = new ReqObj(ReqType.RECALC, DataType.DNA, temp, matchings);
+						ReqObj[] buf = new ReqObj[1];
+						buf[0] = message;
 						
-						MPI.COMM_WORLD.Isend(message, 0, 1, MPI.OBJECT, i, size);
+						MPI.COMM_WORLD.Isend(buf, 0, 1, MPI.OBJECT, i, size);
 						
 						reqs[i] = MPI.COMM_WORLD.Irecv(resps[i], 0, 1, MPI.OBJECT, i, MPI.ANY_TAG);
 					}
@@ -200,8 +204,10 @@ public class Master {
 					
 					for(int i = 1; i < size; i++){
 						ReqObj message = new ReqObj(ReqType.ASSOC, DataType.POINT, means, chunks.get(i));
+						ReqObj[] buf = new ReqObj[1];
+						buf[0] = message;
 						
-						MPI.COMM_WORLD.Isend(message, 0, 1, MPI.OBJECT, i, size);
+						MPI.COMM_WORLD.Isend(buf, 0, 1, MPI.OBJECT, i, size);
 						
 						reqs[i] = MPI.COMM_WORLD.Irecv(resps[i], 0, 1, MPI.OBJECT, i, MPI.ANY_TAG);
 					}
@@ -225,8 +231,10 @@ public class Master {
 						temp.add(mean);
 						
 						ReqObj message = new ReqObj(ReqType.RECALC, DataType.POINT, temp, matchings);
+						ReqObj[] buf = new ReqObj[1];
+						buf[0] = message;
 						
-						MPI.COMM_WORLD.Isend(message, 0, 1, MPI.OBJECT, i, size);
+						MPI.COMM_WORLD.Isend(buf, 0, 1, MPI.OBJECT, i, size);
 						
 						reqs[i] = MPI.COMM_WORLD.Irecv(resps[i], 0, 1, MPI.OBJECT, i, MPI.ANY_TAG);
 					}
