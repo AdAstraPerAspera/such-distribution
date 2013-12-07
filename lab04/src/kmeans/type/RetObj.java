@@ -22,7 +22,7 @@ public class RetObj implements Serializable {
 	public RetObj (ReqType r, DataType t, ArrayList result) {
 		this.retType = r;
 		this.type = t;
-		if(r == ReqType.ASSOC){
+		if(r == ReqType.RECALC){
 			if (t == DataType.DNA){
 				this.dnaMeans = (ArrayList<String>) result;
 			}
@@ -30,7 +30,7 @@ public class RetObj implements Serializable {
 				this.pMeans = (ArrayList<Point>) result;
 			}
 		}
-		else if (r == ReqType.RECALC){
+		else if (r == ReqType.ASSOC){
 			if(t == DataType.DNA) {
 				this.dnaGroups = (ArrayList<Group<String>>) result;
 			}
