@@ -66,7 +66,7 @@ public class Calcs {
 	public static ArrayList<Point> pointMeans(int K, ArrayList<Point> pData, Double eps) {
 		ArrayList<Point> means = new ArrayList<Point>();
 		int partSize = pData.size()/K;
-		for(int i = 0; i < partSize; i++){
+		for(int i = 0; i < K; i++){
 			Point newMean = pData.get((int)(Math.random() * partSize) + (i * partSize));
 			while(means.contains(newMean)){ newMean = pData.get((int)(Math.random() * partSize) + (i * partSize)); }
 			means.add(newMean);
@@ -142,7 +142,7 @@ public class Calcs {
 		int partSize = dnaData.size()/K;
 		
 		System.out.println("Initializing clusters");
-		for(int i = 0; i < partSize; i++){
+		for(int i = 0; i < K; i++){
 			String newMean = dnaData.get((int)(Math.random() * partSize) + (i * partSize));
 			while(means.contains(newMean)) newMean = dnaData.get((int)(Math.random() * partSize) + (i * partSize));
 			means.add(newMean);
