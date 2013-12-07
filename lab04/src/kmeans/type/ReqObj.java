@@ -26,7 +26,7 @@ public class ReqObj implements Serializable {
 	
 	public ArrayList<Point> getPointMeans() { return this.pMeans; }
 	
-	public ArrayList<String> getStringMeans() { return this.dnaMeans; }
+	public ArrayList<String> getDNAMeans() { return this.dnaMeans; }
 	
 	public ArrayList<Group<Point>> getGroupedPoints() { return this.pGroups; }
 	
