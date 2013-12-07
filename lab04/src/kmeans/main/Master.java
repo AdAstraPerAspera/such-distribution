@@ -131,7 +131,7 @@ public class Master {
 					
 					MPI.COMM_WORLD.Isend(buf, 0, 1, MPI.OBJECT, i, size);
 					
-					reqs[i - 1] = MPI.COMM_WORLD.Irecv(resps[i], 0, 1, MPI_OBJECT, i, MPI.ANY_TAG);
+					reqs[i - 1] = MPI.COMM_WORLD.Irecv(resps[i], 0, 1, MPI.OBJECT, i, MPI.ANY_TAG);
 				}
 				
 				Request.Waitall(reqs);
@@ -162,10 +162,10 @@ public class Master {
 					
 					MPI.COMM_WORLD.Isend(buf, 0, 1, MPI.OBJECT, i % (size - 1) + 1, size);
 					
-					reqs[i] = MPI.COMM_WORLD.Irecv(resps[i], 0, 1, MPI_OBJECT, i, MPI.ANY_TAG);
+					reqs[i] = MPI.COMM_WORLD.Irecv(resps[i], 0, 1, MPI.OBJECT, i, MPI.ANY_TAG);
 				}
 				
-				Request.waitall(reqs);
+				Request.Waitall(reqs);
 				
 				/*for(int i = 0; i < clusters; i++){
 					MPI.COMM_WORLD.Recv(resps[i], 0, 1, MPI.OBJECT, i % (size - 1) + 1, MPI.ANY_TAG);
@@ -221,10 +221,10 @@ public class Master {
 					
 					MPI.COMM_WORLD.Isend(buf, 0, 1, MPI.OBJECT, i, size);
 					
-					reqs[i - 1] = MPI.COMM_WORLD.Irecv(resps[i], 0, 1, MPI_OBJECT, i, MPI.ANY_TAG);
+					reqs[i - 1] = MPI.COMM_WORLD.Irecv(resps[i], 0, 1, MPI.OBJECT, i, MPI.ANY_TAG);
 				}
 
-				Request.waitall(reqs);
+				Request.Waitall(reqs);
 				
 				/*for(int i = 1; i < size; i++){
 					MPI.COMM_WORLD.Recv(resps[i], 0, 1, MPI.OBJECT, i, MPI.ANY_TAG);
@@ -252,14 +252,14 @@ public class Master {
 					
 					MPI.COMM_WORLD.Isend(buf, 0, 1, MPI.OBJECT, i % (size - 1) + 1, size);
 					
-					reqs[i] = MPI.COMM_WORLD.Irecv(resps[i], 0, 1, MPI_OBJECT, i, MPI.ANY_TAG);
+					reqs[i] = MPI.COMM_WORLD.Irecv(resps[i], 0, 1, MPI.OBJECT, i, MPI.ANY_TAG);
 				}
 				
 				/*for(int i = 0; i < clusters; i++){
 					MPI.COMM_WORLD.Recv(resps[i], 0, 1, MPI.OBJECT, i % (size - 1) + 1, MPI.ANY_TAG);
 				}*/
 				
-				Request.Waitall();
+				Request.Waitall(reqs);
 				
 				ArrayList<Point> newMeans = new ArrayList<Point>();
 				for(int i = 0; i < clusters; i++){
