@@ -3,6 +3,13 @@ package kmeans.type;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+/**
+ * 
+ * @author wmaynes
+ *
+ * The object for returning information to the master from workers
+ *
+ */
 public class RetObj implements Serializable {
 	private ReqType retType;
 	private DataType type;

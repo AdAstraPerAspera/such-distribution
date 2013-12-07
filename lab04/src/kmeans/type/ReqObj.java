@@ -3,6 +3,14 @@ package kmeans.type;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+/**
+ * 
+ * @author wmaynes
+ *
+ * Object for sending requests to the workers
+ *
+ */
+
 public class ReqObj implements Serializable {
 
 	private ReqType query;

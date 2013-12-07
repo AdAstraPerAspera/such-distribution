@@ -2,6 +2,16 @@ package kmeans.type;
 
 import java.io.Serializable;
 
+/**
+ * 
+ * @author wmaynes
+ *
+ * @param <T>
+ * 
+ * Simple class for grouping two objects of the same type
+ * 
+ */
+
 public class Group <T> implements Serializable{
 	private T value, mean;
 	

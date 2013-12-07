@@ -8,6 +8,15 @@ import java.util.ArrayList;
 import kmeans.func.Calcs;
 import kmeans.type.*;
 
+/**
+ * 
+ * @author wmaynes
+ * @author mhw1
+ * 
+ * Sequentail implementation of K-means
+ *
+ */
+
 public class KMeansMain {
 	private static void printHelp(){
 	    System.out.println("Need arguments to run:");

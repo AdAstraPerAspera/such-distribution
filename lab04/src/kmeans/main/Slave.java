@@ -12,6 +12,13 @@ import kmeans.type.ReqType;
 import kmeans.type.RetObj;
 import kmeans.func.*;
 
+/**
+ * 
+ * @author wmaynes
+ * 
+ * Code for the workers.
+ * 
+ */
 public class Slave {
 	public static void runSlave() throws Exception{
 		int rank = MPI.COMM_WORLD.Rank();
