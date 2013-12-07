@@ -25,10 +25,6 @@ public class Master {
 		for(int i = 1; i < size; i++){
 			MPI.COMM_WORLD.Send(buf, 0, 1, MPI.OBJECT, i, size);
 		}
-		
-		MPI.Finalize();
-		
-		System.exit(0);
 	}
 	
 	public static void runMaster(String[] args, int size) throws Exception{

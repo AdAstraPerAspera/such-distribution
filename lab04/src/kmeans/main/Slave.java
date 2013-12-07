@@ -54,6 +54,5 @@ public class Slave {
 				}
 			}
 		}
-		MPI.Finalize();
 	}
 }
