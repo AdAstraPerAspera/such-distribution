@@ -80,7 +80,6 @@ public class KMeansMain {
 		}
 		
 		if(type == DataType.DNA){
-			System.out.println("getting means");
 			ArrayList<String> finalMeans = Calcs.dnaMeans(clusters, eps, length, dnaData);
 			for(String s : finalMeans){
 				System.out.println(s);

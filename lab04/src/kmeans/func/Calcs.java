@@ -13,7 +13,7 @@ public class Calcs {
 	public static int dnaDistance (String A, String B) {
 		int diffCount = 0;
 		for(int i = 0; i < A.length(); i++) {
-			if(A.substring(i, i+1).equals(B.substring(i, i+1))) { diffCount++; }
+			if(!A.substring(i, i+1).equals(B.substring(i, i+1))) { diffCount++; }
 		}
 		return diffCount;
 	}
@@ -38,10 +38,6 @@ public class Calcs {
 	public static ArrayList<Point> recalculateMeans(ArrayList<Point> means, ArrayList<Group<Point>> gPoints) {
 		ArrayList<Point> newMeans = new ArrayList<Point>();
 		for(Point m : means) {
-			/* 
-			 * Since we're picking our means from existing points we know we must have at least one point which is
-			 * grouped to each point.
-			 */
 			int pointCount = 0;
 			double xCoord = 0.0;
 			double yCoord = 0.0;
@@ -107,6 +103,7 @@ public class Calcs {
 		ArrayList<String> newMeans = new ArrayList<String> ();
 		for (String m : means) {
 			String newMean = new String();
+			
 			for(int i = 0; i < m.length(); i++){
 				int aCount = 0;
 				int cCount = 0;
@@ -116,17 +113,17 @@ public class Calcs {
 					if(m.equals(g.getMean())) {
 						String dna = g.getVal();
 						char c = dna.charAt(i);
-						if (c == 'a') { aCount ++; }
-						else if (c == 'c') { cCount ++; }
-						else if (c == 'g') { gCount ++; }
-						else if (c == 't') { tCount ++; }
+						if (c == 'A') { aCount ++; }
+						else if (c == 'C') { cCount ++; }
+						else if (c == 'G') { gCount ++; }
+						else if (c == 'T') { tCount ++; }
 						else { System.err.println("lolwut. How'd I get here? Bad DNA bro."); }
 					}
 				}
-				if (aCount >= cCount && aCount >= gCount && aCount >= tCount) { newMean.concat("a"); }
-				else if (cCount >= aCount && cCount >= gCount && cCount >= tCount) { newMean.concat("c"); }
-				else if (gCount >= aCount && gCount >= cCount && gCount >= tCount) { newMean.concat("g"); }
-				else if (tCount >= aCount && tCount >= cCount && tCount >= gCount) { newMean.concat("t"); }
+				if (aCount >= cCount && aCount >= gCount && aCount >= tCount) { newMean = newMean.concat("A"); }
+				else if (cCount >= aCount && cCount >= gCount && cCount >= tCount) { newMean = newMean.concat("C"); }
+				else if (gCount >= aCount && gCount >= cCount && gCount >= tCount) { newMean = newMean.concat("G"); }
+				else if (tCount >= aCount && tCount >= cCount && tCount >= gCount) { newMean = newMean.concat("T"); }
 			}
 			if(newMean.length() > 0){
 				newMeans.add(newMean);
@@ -141,13 +138,11 @@ public class Calcs {
 		ArrayList<String> means = new ArrayList<String>();
 		int partSize = dnaData.size()/K;
 		
-		System.out.println("Initializing clusters");
 		for(int i = 0; i < K; i++){
 			String newMean = dnaData.get((int)(Math.random() * partSize) + (i * partSize));
 			while(means.contains(newMean)) newMean = dnaData.get((int)(Math.random() * partSize) + (i * partSize));
 			means.add(newMean);
 		}
-		System.out.println("done");
 		double maxProportionChange = Double.MAX_VALUE;
 		while (maxProportionChange > eps) {
 			ArrayList<Group<String>> groupedDNA = assocDNA(dnaData, means);

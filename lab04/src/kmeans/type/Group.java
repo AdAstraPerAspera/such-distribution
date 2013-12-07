@@ -5,7 +5,7 @@ public class Group <T> {
 	
 	public Group (T v, T m) {
 		this.value = v;
-		this.mean = mean;
+		this.mean = m;
 	}
 
 	public T getVal () { return value; }
