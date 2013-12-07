@@ -79,9 +79,15 @@ public class KMeansMain {
 		}
 		
 		if(type == DataType.DNA){
-			Calcs.dnaMeans(clusters, eps, length, dnaData);
+			ArrayList<String> finalMeans = Calcs.dnaMeans(clusters, eps, length, dnaData);
+			for(String s : finalMeans){
+				System.out.println(s);
+			}
 		} else if(type == DataType.POINT){
-			Calcs.pointMeans(clusters, pointData, eps);
+			ArrayList<Point> finalMeans = Calcs.pointMeans(clusters, pointData, eps);
+			for(Point p : finalMeans){
+				System.out.println(p.getX() + ", " + p.getY());
+			}
 		} else {
 			System.err.println("Execution should never reach here.");
 			System.exit(-1);
