@@ -17,6 +17,8 @@ class MainClass {
 		int myrank = MPI.COMM_WORLD.Rank();
 		int size   = MPI.COMM_WORLD.Size();
 		
+		System.out.println("I am rank " + myrank);
+		
 		if(myrank == 0){
 			//I am master.
 			Master.runMaster(args, size);
