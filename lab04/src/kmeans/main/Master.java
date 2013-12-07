@@ -122,21 +122,69 @@ public class Master {
 				}
 				
 				while(change > eps){
+					Request[]  reqs  = new Request[size];
+					RetObj[][] resps = new RetObj[size][1];
 					
+					for(int i = 1; i < size; i++){
+						ReqObj message = new ReqObj(ReqType.ASSOC, DataType.DNA, means, chunks.get(i));
+						
+						MPI.COMM_WORLD.Isend(message, 0, 1, MPI.OBJECT, i, size);
+						
+						reqs[i] = MPI.COMM_WORLD.Irecv(resps[i], 0, 1, MPI.OBJECT, i, MPI.ANY_TAG);
+					}
 					
+					MPI.COMM_WORLD.Waitall(reqs);
 					
+					ArrayList<Group<String>> matchings = new ArrayList<Group<String>>();
+					for(int i = 1; i < size; i++){
+						for(Group<String> g : resps[i][0].getGroupedDNA()){
+							matchings.add(g);
+						}
+					}
 					
-					/*ArrayList<Group<String>> groupedDNA = assocDNA(dnaData, means);
-					ArrayList<String> newMeans = recalculateDNA(means, groupedDNA);
+					reqs  = new Request[clusters];
+					resps = new RetObj[clusters][1];
+					
+					for(int i = 0; i < clusters; i++){
+						String mean = means.get(i);
+						
+						ArrayList<String> temp = new ArrayList<String>();
+						temp.add(mean);
+						
+						ReqObj message = new ReqObj(ReqType.RECALC, DataType.DNA, temp, matchings);
+						
+						MPI.COMM_WORLD.Isend(message, 0, 1, MPI.OJBECT, i, size);
+						
+						reqs[i] = MPI.COMM_WORLD.Irecv(resps[i], 0, 1, MPI.OBJECT, i, MPI.ANY_TAG);
+					}
+					
+					MPI.COMM_WORLD.Waitall(reqs);
+					
+					ArrayList<String> newMeans = new ArrayList<String>();
+					for(int i = 1; i < clusters; i++){
+						newMeans.add(resps[i][0].getDNAMeans().get(0));
+					}
+					
 					double maxChange = 0.0;
 					for(int i = 0; i < newMeans.size(); i++) {
-						double change = (Calcs.dnaDistance(means.get(i), newMeans.get(i)) / (n * 1.0));
-						if (change > maxChange) { maxChange = change; }
+						double iChange = (Calcs.dnaDistance(means.get(i), newMeans.get(i)) / (n * 1.0));
+						if (iChange > maxChange) { maxChange = iChange; }
 					}
 					means = newMeans;
-					maxProportionChange = maxChange;*/
+					change = maxChange;
+				}								
+				
+				/*ArrayList<Group<String>> groupedDNA = assocDNA(dnaData, means);
+				ArrayList<String> newMeans = recalculateDNA(means, groupedDNA);
+				double maxChange = 0.0;
+				for(int i = 0; i < newMeans.size(); i++) {
+					double change = (Calcs.dnaDistance(means.get(i), newMeans.get(i)) / (n * 1.0));
+					if (change > maxChange) { maxChange = change; }
 				}
-			} else {
+				means = newMeans;
+				maxProportionChange = maxChange;*/
+			}
+		} else {
 				//work with points
 				
 				//split initial data into chunks to be processed
