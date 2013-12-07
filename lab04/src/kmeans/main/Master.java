@@ -167,7 +167,7 @@ public class Master {
 					
 					double maxChange = 0.0;
 					for(int i = 0; i < newMeans.size(); i++) {
-						double iChange = (Calcs.dnaDistance(means.get(i), newMeans.get(i)) / (n * 1.0));
+						double iChange = (Calcs.dnaDistance(means.get(i), newMeans.get(i)) / (dnaData.get(0).length() * 1.0));
 						if (iChange > maxChange) { maxChange = iChange; }
 					}
 					means = newMeans;
@@ -226,12 +226,12 @@ public class Master {
 						
 						ReqObj message = new ReqObj(ReqType.RECALC, DataType.POINT, temp, matchings);
 						
-						MPI.COMM_WORLD.Isend(message, 0, 1, MPI.OJBECT, i, size);
+						MPI.COMM_WORLD.Isend(message, 0, 1, MPI.OBJECT, i, size);
 						
 						reqs[i] = MPI.COMM_WORLD.Irecv(resps[i], 0, 1, MPI.OBJECT, i, MPI.ANY_TAG);
 					}
 					
-					MPI.COMM_WORLD.Waitall(reqs);
+					MPI.REQUEST.Waitall(reqs);
 					
 					ArrayList<Point> newMeans = new ArrayList<Point>();
 					for(int i = 1; i < clusters; i++){
