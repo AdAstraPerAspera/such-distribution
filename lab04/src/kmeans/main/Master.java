@@ -135,7 +135,7 @@ public class Master {
 				}
 				
 				for(int i = 1; i < size; i++){
-					MPI.COMM_WORLD.Recv(resps[i], 0, 1, MPI.OBJECT, i, size);
+					MPI.COMM_WORLD.Recv(resps[i], 0, 1, MPI.OBJECT, i, MPI.ANY_TAG);
 				}
 				
 				//Request.Waitall(reqs);
@@ -166,7 +166,7 @@ public class Master {
 				}
 				
 				for(int i = 0; i < clusters; i++){
-					MPI.COMM_WORLD.Recv(resps[i], 0, 1, MPI.OBJECT, i, size);
+					MPI.COMM_WORLD.Recv(resps[i], 0, 1, MPI.OBJECT, i, MPI.ANY_TAG);
 				}
 				
 				//Request.Waitall(reqs);
@@ -178,7 +178,7 @@ public class Master {
 				
 				double maxChange = 0.0;
 				for(int i = 0; i < newMeans.size(); i++) {
-					double iChange = (Calcs.dnaDistance(means.get(i), newMeans.get(i)) / (dnaData.get(0).length() * 1.0));
+					double iChange = (Calcs.dnaDistance(means.get(i), newMeans.get(i)) / (length * 1.0));
 					if (iChange > maxChange) { maxChange = iChange; }
 				}
 				means = newMeans;
@@ -225,7 +225,7 @@ public class Master {
 				}
 				
 				for(int i = 1; i < size; i++){
-					MPI.COMM_WORLD.Recv(resps[i], 0, 1, MPI.OBJECT, i, size);
+					MPI.COMM_WORLD.Recv(resps[i], 0, 1, MPI.OBJECT, i, MPI.ANY_TAG);
 				}
 				
 				//Request.Waitall(reqs);
@@ -256,7 +256,7 @@ public class Master {
 				}
 				
 				for(int i = 0; i < clusters; i++){
-					MPI.COMM_WORLD.Recv(resps[i], 0, 1, MPI.OBJECT, i, size);
+					MPI.COMM_WORLD.Recv(resps[i], 0, 1, MPI.OBJECT, i, MPI.ANY_TAG);
 				}
 				
 				//Request.Waitall(reqs);
