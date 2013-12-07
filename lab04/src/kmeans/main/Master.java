@@ -28,7 +28,7 @@ public class Master {
 	}
 	
 	public static void runMaster(String[] args, int size) throws Exception{
-		//set up data and stuff
+		//grab data from command line arguments
 		DataType type      			  = null;
 		int 				length	  = 0;
 		int                 clusters  = 0;
@@ -37,65 +37,63 @@ public class Master {
 		ArrayList<String>   dnaData   = new ArrayList<String>();
 		ArrayList<Point>    pointData = new ArrayList<Point>();
 		
-		for(int rank = 1; rank < size; rank++){
-			if(args.length < 1) {
-				MainClass.printHelp();
-				termAll(size);
-				return;
-			} else if (args[0].equals("-d")){
-				type = DataType.DNA;
-				if(args.length < 5){
-					MainClass.printHelp();
-					termAll(size);
-					return;
-				}
-				length = Integer.parseInt(args[1]);
-				clusters = Integer.parseInt(args[3]);
-				eps = Double.parseDouble(args[4]);
-				
-				FileInputStream   istream = new FileInputStream(args[2]);
-				BufferedReader    reader  = new BufferedReader(new InputStreamReader(istream));
-				String            line;
-				
-				while((line = reader.readLine()) != null && line.length() == length){
-					if(length == 0) {
-						length = line.length();
-					}
-					
-					if(line.length() != length){
-						break;
-					}
-					
-					dnaData.add(line);
-				}
-				
-				reader.close();
-			} else if (args[0].equals("-p")){
-				type = DataType.POINT;
-				if(args.length < 4){
-					MainClass.printHelp();
-					termAll(size);
-					return;
-				}
-				clusters = Integer.parseInt(args[2]);
-				eps = Double.parseDouble(args[3]);
-				FileInputStream   istream = new FileInputStream(args[1]);
-				BufferedReader    reader  = new BufferedReader(new InputStreamReader(istream));
-				String            line;
-				
-				while((line = reader.readLine()) != null){
-					String[] points = line.split(",");
-					Point temp = new Point(Double.parseDouble(points[0]), Double.parseDouble(points[1]));
-					
-					pointData.add(temp);
-				}
-				
-				reader.close();
-			} else {
+		if(args.length < 1) {
+			MainClass.printHelp();
+			termAll(size);
+			return;
+		} else if (args[0].equals("-d")){
+			type = DataType.DNA;
+			if(args.length < 5){
 				MainClass.printHelp();
 				termAll(size);
 				return;
 			}
+			length = Integer.parseInt(args[1]);
+			clusters = Integer.parseInt(args[3]);
+			eps = Double.parseDouble(args[4]);
+			
+			FileInputStream   istream = new FileInputStream(args[2]);
+			BufferedReader    reader  = new BufferedReader(new InputStreamReader(istream));
+			String            line;
+			
+			while((line = reader.readLine()) != null && line.length() == length){
+				if(length == 0) {
+					length = line.length();
+				}
+				
+				if(line.length() != length){
+					break;
+				}
+				
+				dnaData.add(line);
+			}
+			
+			reader.close();
+		} else if (args[0].equals("-p")){
+			type = DataType.POINT;
+			if(args.length < 4){
+				MainClass.printHelp();
+				termAll(size);
+				return;
+			}
+			clusters = Integer.parseInt(args[2]);
+			eps = Double.parseDouble(args[3]);
+			FileInputStream   istream = new FileInputStream(args[1]);
+			BufferedReader    reader  = new BufferedReader(new InputStreamReader(istream));
+			String            line;
+			
+			while((line = reader.readLine()) != null){
+				String[] points = line.split(",");
+				Point temp = new Point(Double.parseDouble(points[0]), Double.parseDouble(points[1]));
+				
+				pointData.add(temp);
+			}
+			
+			reader.close();
+		} else {
+			MainClass.printHelp();
+			termAll(size);
+			return;
 		}
 		
 		//TODO: send messages and shit
