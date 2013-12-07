@@ -140,11 +140,14 @@ public class Calcs {
 	public static ArrayList<String> dnaMeans(int K, double eps, int n, ArrayList<String> dnaData) {
 		ArrayList<String> means = new ArrayList<String>();
 		int partSize = dnaData.size()/K;
+		
+		System.out.println("Initializing clusters");
 		for(int i = 0; i < partSize; i++){
 			String newMean = dnaData.get((int)(Math.random() * partSize));
 			while(means.contains(newMean)) newMean = dnaData.get((int)(Math.random() * partSize));
 			means.add(newMean);
 		}
+		System.out.println("done");
 		double maxProportionChange = Double.MAX_VALUE;
 		while (maxProportionChange > eps) {
 			ArrayList<Group<String>> groupedDNA = assocDNA(dnaData, means);

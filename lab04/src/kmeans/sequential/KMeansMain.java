@@ -41,8 +41,6 @@ public class KMeansMain {
 			BufferedReader    reader  = new BufferedReader(new InputStreamReader(istream));
 			String            line;
 			
-			System.out.println("Processing input...");
-			
 			while((line = reader.readLine()) != null){
 				if(line.length() != length){
 					break;
@@ -57,8 +55,6 @@ public class KMeansMain {
 			}
 			
 			reader.close();
-			
-			System.out.println("Done processing input");
 		} else if (args[0].equals("-p")){
 			type = DataType.POINT;
 			if(args.length < 4){
@@ -84,6 +80,7 @@ public class KMeansMain {
 		}
 		
 		if(type == DataType.DNA){
+			System.out.println("getting means");
 			ArrayList<String> finalMeans = Calcs.dnaMeans(clusters, eps, length, dnaData);
 			for(String s : finalMeans){
 				System.out.println(s);
