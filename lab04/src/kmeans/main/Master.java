@@ -133,7 +133,7 @@ public class Master {
 						reqs[i] = MPI.COMM_WORLD.Irecv(resps[i], 0, 1, MPI.OBJECT, i, MPI.ANY_TAG);
 					}
 					
-					MPI.COMM_WORLD.Waitall(reqs);
+					REQUEST.Waitall(reqs);
 					
 					ArrayList<Group<String>> matchings = new ArrayList<Group<String>>();
 					for(int i = 1; i < size; i++){
@@ -158,7 +158,7 @@ public class Master {
 						reqs[i] = MPI.COMM_WORLD.Irecv(resps[i], 0, 1, MPI.OBJECT, i, MPI.ANY_TAG);
 					}
 					
-					MPI.COMM_WORLD.Waitall(reqs);
+					REQUEST.Waitall(reqs);
 					
 					ArrayList<String> newMeans = new ArrayList<String>();
 					for(int i = 1; i < clusters; i++){
@@ -206,7 +206,7 @@ public class Master {
 						reqs[i] = MPI.COMM_WORLD.Irecv(resps[i], 0, 1, MPI.OBJECT, i, MPI.ANY_TAG);
 					}
 					
-					MPI.COMM_WORLD.Waitall(reqs);
+					Request.Waitall(reqs);
 					
 					ArrayList<Group<Point>> matchings = new ArrayList<Group<Point>>();
 					for(int i = 1; i < size; i++){
