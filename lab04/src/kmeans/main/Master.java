@@ -178,8 +178,8 @@ public class Master {
 						}
 					}
 					
-					reqs  = new Request[size];
-					resps = new RetObj[size][1];
+					reqs  = new Request[clusters];
+					resps = new RetObj[clusters][1];
 					
 					for(int i = 0; i < clusters; i++){
 						Point mean = means.get(i);
@@ -196,19 +196,18 @@ public class Master {
 					
 					MPI.COMM_WORLD.Waitall(reqs);
 					
+					ArrayList<Point> newMeans = new ArrayList<Point>();
 					for(int i = 1; i < clusters; i++){
-						//
+						newMeans.add(resps[i][0].getPointMeans().get(0));
 					}
 					
-					/*ArrayList<Group<Point>> groupedPoints = assocPoints(pData, means);
-					ArrayList<Point> newMeans = recalculateMeans(means, groupedPoints);
 					double maxChange = 0.0;
 					for(int i = 0; i < newMeans.size(); i++) {
-						double change = Calcs.cartesianDistance(means.get(i), newMeans.get(i));
-						if (change > maxChange) { maxChange = change; }
+						double iChange = Calcs.cartesianDistance(means.get(i), newMeans.get(i));
+						if (iChange > maxChange) { maxChange = iChange; }
 					}
 					means = newMeans;
-					maxMeanChange = maxChange;*/
+					change = maxChange;
 				}
 			}
 		}
