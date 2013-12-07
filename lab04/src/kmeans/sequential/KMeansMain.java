@@ -41,11 +41,9 @@ public class KMeansMain {
 			BufferedReader    reader  = new BufferedReader(new InputStreamReader(istream));
 			String            line;
 			
+			System.out.println("Processing input...");
+			
 			while((line = reader.readLine()) != null){
-				if(length == 0) {
-					length = line.length();
-				}
-				
 				if(line.length() != length){
 					break;
 				}
@@ -53,7 +51,14 @@ public class KMeansMain {
 				dnaData.add(line);
 			}
 			
+			if(dnaData.size() < clusters){
+				System.out.println("Not enough data of correct length!");
+				System.exit(0);
+			}
+			
 			reader.close();
+			
+			System.out.println("Done processing input");
 		} else if (args[0].equals("-p")){
 			type = DataType.POINT;
 			if(args.length < 4){
