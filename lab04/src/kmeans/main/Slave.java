@@ -13,7 +13,7 @@ import kmeans.type.RetObj;
 import kmeans.func.*;
 
 public class Slave {
-	public static void runSlave(){
+	public static void runSlave() throws Exception{
 		int rank = MPI.COMM_WORLD.Rank();
 		while(true){
 			Object[] message = new Object[1];
