@@ -6,7 +6,8 @@ import kmeans.type.DataType;
 import kmeans.type.Group;
 import kmeans.type.Point;
 import kmeans.type.ReqObj;
-import kmeans.type.ReqObj.ReqType;
+import kmeans.type.ReqType;
+import kmeans.type.RetObj;
 import kmeans.func.*;
 
 public class Slave {
@@ -23,20 +24,25 @@ public class Slave {
 					if(dType == DataType.POINT) {
 						ArrayList<Point> means = request.getPointMeans();
 						ArrayList<Point> points = request.getPoints();
-						Calcs.assocPoints(points, means);
+						RetObj[] buf = new RetObj[1];
+						buf[0] = new RetObj(rType, dType, Calcs.assocPoints(points, means));
+						MPI.COMM_WORLD.
 					} else if (dType == DataType.DNA) {
 						ArrayList<String> dna = request.getDNA();
 						ArrayList<String> means = request.getDNAMeans();
+						RetObj[] buf = new RetObj[1];
 						Calcs.assocDNA(dna, means);
 					}
 				} else if (rType == ReqType.RECALC) {
 					if(dType == DataType.POINT) {
 						ArrayList<Point> means = request.getPointMeans();
 						ArrayList<Group<Point>> gPoints = request.getGroupedPoints();
+						RetObj[] buf = new RetObj[1];
 						Calcs.recalculateMeans(means, gPoints);
 					} else if (dType == DataType.DNA) {
 						ArrayList<Group<String>> gDNA = request.getGroupedDNA();
 						ArrayList<String> means = request.getDNAMeans();
+						RetObj[] buf = new RetObj[1];
 						Calcs.recalculateDNA(means, gDNA);
 					}
 				}

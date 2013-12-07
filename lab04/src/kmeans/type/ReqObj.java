@@ -3,14 +3,8 @@ package kmeans.type;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import kmeans.type.ReqObj.ReqType;
-
 public class ReqObj implements Serializable {
 
-	public enum ReqType {
-		ASSOC, RECALC, TERM;
-	}
-	
 	private ReqType query;
 	private DataType type;
 	private ArrayList<Point> pMeans;
