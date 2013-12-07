@@ -17,7 +17,7 @@ import kmeans.type.ReqType;
 import kmeans.type.RetObj;
 
 public class Master {
-	public static void termAll(int size){
+	public static void termAll(int size) throws Exception{
 		ReqObj termReq = new ReqObj();
 		ReqObj[] buf = new ReqObj[1];
 		buf[0] = termReq;
