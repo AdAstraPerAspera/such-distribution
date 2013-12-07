@@ -219,7 +219,7 @@ public class Master {
 					ReqObj[] buf = new ReqObj[1];
 					buf[0] = message;
 					
-					reqs[(i - 1) * 2]MPI.COMM_WORLD.Isend(buf, 0, 1, MPI.OBJECT, i, size);
+					reqs[(i - 1) * 2] = MPI.COMM_WORLD.Isend(buf, 0, 1, MPI.OBJECT, i, size);
 					
 					reqs[(i - 1) * 2 + 1] = MPI.COMM_WORLD.Irecv(resps[i], 0, 1, MPI.OBJECT, i, MPI.ANY_TAG);
 				}
@@ -250,7 +250,7 @@ public class Master {
 					Object[] buf = new Object[1];
 					buf[0] = message;
 					
-					reqs[i * 2]MPI.COMM_WORLD.Isend(buf, 0, 1, MPI.OBJECT, i % (size - 1) + 1, size);
+					reqs[i * 2] = MPI.COMM_WORLD.Isend(buf, 0, 1, MPI.OBJECT, i % (size - 1) + 1, size);
 					
 					reqs[(i * 2) + 1] = MPI.COMM_WORLD.Irecv(resps[i], 0, 1, MPI.OBJECT, i, MPI.ANY_TAG);
 				}
