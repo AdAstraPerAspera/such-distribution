@@ -1,5 +1,7 @@
 package kmeans.main;
 
+import mpi.*;
+
 import java.util.ArrayList;
 
 import kmeans.type.DataType;
