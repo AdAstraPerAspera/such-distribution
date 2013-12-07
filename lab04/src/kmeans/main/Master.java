@@ -168,7 +168,7 @@ public class Master {
 				Request.Waitall(reqs);
 				
 				ArrayList<String> newMeans = new ArrayList<String>();
-				for(int i = 1; i < clusters; i++){
+				for(int i = 0; i < clusters; i++){
 					newMeans.add(resps[i][0].getDNAMeans().get(0));
 				}
 				
@@ -183,6 +183,8 @@ public class Master {
 			for(String s : means){
 				System.out.println(s);
 			}
+			
+			termAll(size);
 		} else {
 			//work with points
 			
@@ -202,7 +204,7 @@ public class Master {
 				Point newMean = pointData.get((int)(Math.random() * partSize) + i * partSize);
 				while(means.contains(newMean)){ newMean = pointData.get((int)(Math.random() * partSize) + i * partSize); }
 				means.add(newMean);
-				}
+			}
 			
 			while(change > eps){
 				Request[]  reqs  = new Request[size];
@@ -248,7 +250,7 @@ public class Master {
 				Request.Waitall(reqs);
 				
 				ArrayList<Point> newMeans = new ArrayList<Point>();
-				for(int i = 1; i < clusters; i++){
+				for(int i = 0; i < clusters; i++){
 					newMeans.add(resps[i][0].getPointMeans().get(0));
 				}
 				
@@ -264,6 +266,8 @@ public class Master {
 			for(Point p : means){
 				System.out.println(p.getX() + ", " + p.getY());
 			}
+			
+			termAll(size);
 		}
 	}
 }
