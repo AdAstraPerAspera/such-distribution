@@ -173,18 +173,7 @@ public class Master {
 					means = newMeans;
 					change = maxChange;
 				}								
-				
-				/*ArrayList<Group<String>> groupedDNA = assocDNA(dnaData, means);
-				ArrayList<String> newMeans = recalculateDNA(means, groupedDNA);
-				double maxChange = 0.0;
-				for(int i = 0; i < newMeans.size(); i++) {
-					double change = (Calcs.dnaDistance(means.get(i), newMeans.get(i)) / (n * 1.0));
-					if (change > maxChange) { maxChange = change; }
-				}
-				means = newMeans;
-				maxProportionChange = maxChange;*/
-			}
-		} else {
+			} else {
 				//work with points
 				
 				//split initial data into chunks to be processed
